@@ -1,0 +1,6 @@
+pyscp
+prettytable==2.0.0
+requests==2.25.1
+qtmodern==0.2.0
+PyGithub==1.54.1
+PyQt5==5.15.2
