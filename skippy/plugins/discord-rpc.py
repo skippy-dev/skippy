@@ -215,9 +215,9 @@ from skippy.utils.plugin import PluginBase
 from skippy.utils.logger import log
 
 class Plugin(PluginBase):
-    __alias__ = "ExamplePlugin"
+    __alias__ = "Discord RPC Plugin"
 
-    __description__ = "I am a example plugin."
+    __description__ = "Discord RPC Plugin."
     __author__ = "MrNereof"
     __version__ = "1.0.0"
 
