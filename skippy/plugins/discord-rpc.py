@@ -46,7 +46,6 @@ class DiscordIpcClient(metaclass=ABCMeta):
         self.client_id = client_id
         self._connect()
         self._do_handshake()
-        logger.info("connected via ID %s", client_id)
 
     @classmethod
     def for_platform(cls, client_id, platform=sys.platform):
@@ -91,7 +90,6 @@ class DiscordIpcClient(metaclass=ABCMeta):
         return buf
 
     def close(self):
-        logger.warning("closing connection")
         try:
             self.send({}, op=OP_CLOSE)
         finally:
@@ -150,9 +148,7 @@ class WinDiscordIpcClient(DiscordIpcClient):
             path = self._pipe_pattern.format(i)
             try:
                 self._f = open(path, "w+b")
-            except OSError as e:
-                logger.error("failed to open {!r}: {}".format(path, e))
-            else:
+            except:
                 break
         else:
             return DiscordIpcError("Failed to connect to Discord pipe")
@@ -182,9 +178,7 @@ class UnixDiscordIpcClient(DiscordIpcClient):
                 continue
             try:
                 self._sock.connect(path)
-            except OSError as e:
-                logger.error("failed to open {!r}: {}".format(path, e))
-            else:
+            except:
                 break
         else:
             return DiscordIpcError("Failed to connect to Discord pipe")
@@ -222,13 +216,14 @@ class Plugin(PluginBase):
     __version__ = "1.0.0"
 
     def proccess(self):
-        client_id = '828818867568640071'  # Your application's client ID as a string. (This isn't a real client ID)
-        rpc = DiscordIpcClient.for_platform(client_id)  # Send the client ID to the rpc module
-        log.debug("RPC connection successful.")
+        try:
+            client_id = '828818867568640071'  # Your application's client ID as a string. (This isn't a real client ID)
+            rpc = DiscordIpcClient.for_platform(client_id)  # Send the client ID to the rpc module
+            log.debug("RPC connection successful.")
 
-        start_time = mktime(time.localtime())
+            start_time = mktime(time.localtime())
 
-        activity = {
+            activity = {
                     "state": "Skippy",  # anything you like
                     "details": "Writing an SCP",  # anything you like
                     "timestamps": {
@@ -239,6 +234,9 @@ class Plugin(PluginBase):
                         "small_image": "none",  # must match the image key
                         "large_text": "Skippy",  # anything you like
                         "large_image": "skippy"  # must match the image key
-                    }
+                       }
                 }
-        rpc.set_activity(activity)
+            rpc.set_activity(activity)
+        except:
+            log.debug("Can't connect to Discord RPC.")
+            
