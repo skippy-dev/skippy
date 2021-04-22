@@ -11,7 +11,7 @@ import skippy.utils.plugin
 
 def get_argparser():
     parser = argparse.ArgumentParser()
-    
+
     parser.add_argument(
         "-v",
         "--version",
@@ -26,19 +26,20 @@ def get_argparser():
     )
     parser.add_argument(
         "--logging_level",
-        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="the level to use for logging - defaults to INFO",
-        default='INFO'
+        default="INFO",
     )
-    
+
     return parser
+
 
 def run():
     parser = get_argparser()
 
     args = parser.parse_args()
     log.setLevel(skippy.utils.logger.LOG_LEVELS[args.logging_level])
-    
+
     if args.version:
         log.info(f"skippy v{skippy.config.version}")
     elif args.plugins:
@@ -47,7 +48,12 @@ def run():
         sys.path.append(skippy.config.PLUGINS_FOLDER)
         for plugin in skippy.utils.plugin.PluginLoader.plugins_data():
             table.add_row(
-                [plugin['__alias__'], plugin['__description__'], plugin['__author__'], plugin['__version__']]
+                [
+                    plugin["__alias__"],
+                    plugin["__description__"],
+                    plugin["__author__"],
+                    plugin["__version__"],
+                ]
             )
         print(table)
     else:

@@ -30,7 +30,11 @@ class ToolbarWidget(QWidget):
 
         new_action = QAction(
             QIcon(
-                os.path.join(skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "new.png")
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "new.png",
+                )
             ),
             "New",
             self,
@@ -43,7 +47,11 @@ class ToolbarWidget(QWidget):
 
         open_action = QAction(
             QIcon(
-                os.path.join(skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "open.png")
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "open.png",
+                )
             ),
             "Open",
             self,
@@ -57,7 +65,9 @@ class ToolbarWidget(QWidget):
         upload_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "upload.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "upload.png",
                 )
             ),
             "Upload",
@@ -74,7 +84,9 @@ class ToolbarWidget(QWidget):
         upload_as_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "upload_as.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "upload_as.png",
                 )
             ),
             "Upload as...",
@@ -91,7 +103,9 @@ class ToolbarWidget(QWidget):
         close_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "close.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "close.png",
                 )
             ),
             "Close",
@@ -110,7 +124,9 @@ class ToolbarWidget(QWidget):
         load_session_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "load_session.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "load_session.png",
                 )
             ),
             "Load Session...",
@@ -124,7 +140,9 @@ class ToolbarWidget(QWidget):
         save_session_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "save_session.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "save_session.png",
                 )
             ),
             "Save Session as...",
@@ -139,7 +157,11 @@ class ToolbarWidget(QWidget):
 
         exit_action = QAction(
             QIcon(
-                os.path.join(skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "exit.png")
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "exit.png",
+                )
             ),
             "Exit",
             self,
@@ -156,7 +178,11 @@ class ToolbarWidget(QWidget):
 
         undo_action = QAction(
             QIcon(
-                os.path.join(skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "undo.png")
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "undo.png",
+                )
             ),
             "Undo",
             self,
@@ -171,7 +197,11 @@ class ToolbarWidget(QWidget):
 
         redo_action = QAction(
             QIcon(
-                os.path.join(skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "redo.png")
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "redo.png",
+                )
             ),
             "Redo",
             self,
@@ -188,7 +218,11 @@ class ToolbarWidget(QWidget):
 
         cut_action = QAction(
             QIcon(
-                os.path.join(skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "cut.png")
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "cut.png",
+                )
             ),
             "Cut",
             self,
@@ -203,7 +237,11 @@ class ToolbarWidget(QWidget):
 
         copy_action = QAction(
             QIcon(
-                os.path.join(skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "copy.png")
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "copy.png",
+                )
             ),
             "Copy",
             self,
@@ -219,7 +257,9 @@ class ToolbarWidget(QWidget):
         paste_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "paste.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "paste.png",
                 )
             ),
             "Paste",
@@ -235,7 +275,11 @@ class ToolbarWidget(QWidget):
 
         select_action = QAction(
             QIcon(
-                os.path.join(skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "redo.png")
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "redo.png",
+                )
             ),
             "Select all",
             self,
@@ -252,7 +296,9 @@ class ToolbarWidget(QWidget):
         toggle_theme_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "toggle.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "toggle.png",
                 )
             ),
             "Toggle Theme",
@@ -268,7 +314,9 @@ class ToolbarWidget(QWidget):
         login_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "login.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "login.png",
                 )
             ),
             "Login",
@@ -282,7 +330,9 @@ class ToolbarWidget(QWidget):
         logout_action = QAction(
             QIcon(
                 os.path.join(
-                    skippy.config.ASSETS_FOLDER, self.settings.value("mode", "light"), "logout.png"
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "logout.png",
                 )
             ),
             "Logout",
@@ -292,6 +342,7 @@ class ToolbarWidget(QWidget):
         logout_action.setStatusTip("Logout")
         logout_action.triggered.connect(self.logout)
         self.settings_menu.addAction(logout_action)
+
 
 class LoginStatusWidget(QWidget):
     def __init__(self, parent):
@@ -306,7 +357,7 @@ class LoginStatusWidget(QWidget):
 
         self.layout.addWidget(self.label)
         self.setLayout(self.layout)
-        
+
         username = skippy.utils.profile.Profile.load()[0]
         if username != "" and username != None:
             self.label.setText(f"Signed in as {username}")
@@ -386,7 +437,7 @@ class ProjectList(QWidget):
         tab.layout.addWidget(tags_box)
         tab.layout.addWidget(files_button)
         tab.setLayout(tab.layout)
-        
+
         log.debug(f"New tab is created with title: {title}")
 
         self.tabs.setCurrentIndex(self.tabs.count() - 1)
@@ -478,7 +529,10 @@ class DragAndDropWidget(QWidget):
 
     def __init__(self, parent=None):
         super(DragAndDropWidget, self).__init__(parent)
-        self.width, self.height = parent.frameGeometry().width(), parent.frameGeometry().height()
+        self.width, self.height = (
+            parent.frameGeometry().width(),
+            parent.frameGeometry().height(),
+        )
 
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -620,9 +674,9 @@ class LoginDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parent = parent
-        
+
         self.auth = False
-        
+
         self.layout = QVBoxLayout(self)
 
         self.label = QLabel("Sign in to your Wikidot account", self)
@@ -650,13 +704,13 @@ class LoginDialog(QDialog):
     def login(self):
         login = self.login_box.text()
         password = self.password_box.text()
-        skippy.utils.profile.Profile.save(login,password)
+        skippy.utils.profile.Profile.save(login, password)
         self.parent.show()
         self.auth = True
         log.debug(f"Login as {login}")
         self.parent.login_status.set_text(login)
         self.close()
-    
+
     def closeEvent(self, event):
         if not self.auth:
             sys.exit()
@@ -672,7 +726,7 @@ class UploadDialog(QDialog):
 
         def addSites(sites):
             if sites[0] in self.sites:
-                addSites((sites[0]+"(1)", sites[1]))
+                addSites((sites[0] + "(1)", sites[1]))
             else:
                 self.sites[sites[0]] = sites[1]
                 self.site_box.addItem(sites[0])
@@ -725,10 +779,10 @@ class UploadDialog(QDialog):
         )
         self.widget.data["parent"] = [
             self.sites[site].site.replace("http://", ""),
-            page
+            page,
         ]
         p.set_tags(self.widget.data["tags"])
-        
+
         for file in self.widget.data["files"]:
             p.upload(file, base64.b64decode(self.widget.data["files"][file]))
             log.debug(f"File {file} is uploaded")
@@ -736,7 +790,9 @@ class UploadDialog(QDialog):
             if file.name not in self.widget.data["files"]:
                 p.remove_file(file.name)
                 log.debug(f"File {file.name} is deleted")
-        log.debug(f"""Upload "{self.widget.data["title"]}" to "{"/".join(self.widget.data["parent"])}" """)
+        log.debug(
+            f"""Upload "{self.widget.data["title"]}" to "{"/".join(self.widget.data["parent"])}" """
+        )
         self.close()
 
     def closeEvent(self, e):
@@ -754,7 +810,7 @@ class DownloadDialog(QDialog):
 
         def addSites(sites):
             if sites[0] in self.sites:
-                addSites((sites[0]+"(1)", sites[1]))
+                addSites((sites[0] + "(1)", sites[1]))
             else:
                 self.sites[sites[0]] = sites[1]
                 self.site_box.addItem(sites[0])
@@ -805,7 +861,7 @@ class DownloadDialog(QDialog):
                     .replace("b'", "")
                     .replace("'", "")
                 )
-        
+
         self.parent.tab.new_tab(p.title, p.source, list(p.tags), files, url)
         log.debug(f"""Download page from "{self.sites[site].site}" """)
         self.close()
@@ -826,7 +882,7 @@ class GetSites(QObject):
         for data in self.cache:
             self.progress.emit((data[0], data[1]))
         if len(self.cache) < len(sites):
-            for site in sites[len(self.cache):]:
+            for site in sites[len(self.cache) :]:
                 if self.run:
                     self.progress.emit((site.title, site))
                     self.cache.append((site.title, site))
@@ -852,6 +908,6 @@ class UploadFiles(QObject):
                 filename = os.path.basename(file)
                 with open(file, "rb") as f:
                     source = f.read()
-                log.debug(f'Load {file}')
+                log.debug(f"Load {file}")
                 self.progress.emit((filename, source))
         self.finished.emit()

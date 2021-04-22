@@ -5,12 +5,13 @@ from datetime import date
 import skippy.config
 
 LOG_LEVELS = {
-    'DEBUG': logging.DEBUG,
-    'INFO': logging.INFO,
-    'WARNING': logging.WARNING,
-    'ERROR': logging.ERROR,
-    'CRITICAL': logging.CRITICAL,
+    "DEBUG": logging.DEBUG,
+    "INFO": logging.INFO,
+    "WARNING": logging.WARNING,
+    "ERROR": logging.ERROR,
+    "CRITICAL": logging.CRITICAL,
 }
+
 
 def get_logger(name):
     logger = logging.getLogger(name)
@@ -19,7 +20,9 @@ def get_logger(name):
     c_handler = logging.StreamHandler()
     f_handler = logging.FileHandler(
         os.path.join(skippy.config.LOGS_FOLDER, f"{str(date.today())}.log"),
-        'w', 'utf-8')
+        "w",
+        "utf-8",
+    )
 
     c_format = logging.Formatter(
         "%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"
@@ -38,4 +41,4 @@ def get_logger(name):
     return logger
 
 
-log = get_logger('skippy')
+log = get_logger("skippy")

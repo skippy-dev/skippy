@@ -16,12 +16,13 @@ import json
 import os
 import sys
 
+
 class App(QMainWindow):
     def __init__(self, app):
         super(App, self).__init__()
         self.app = app
-        
-        self.settings = QSettings( 'skippy', 'skippy')
+
+        self.settings = QSettings("skippy", "skippy")
 
         self.tab = ProjectList(self)
         self.tab.tabs.currentChanged.connect(self.update_title)
@@ -39,10 +40,14 @@ class App(QMainWindow):
         self.setStatusBar(self.status)
 
         self.update_title()
-        self.setWindowIcon(QIcon(os.path.join(skippy.config.ASSETS_FOLDER, "skippy.ico")))
+        self.setWindowIcon(
+            QIcon(os.path.join(skippy.config.ASSETS_FOLDER, "skippy.ico"))
+        )
         self.resize(self.settings.value("size", QSize(700, 700)))
         self.move(self.settings.value("pos", QPoint(200, 200)))
-        self.setWindowState(Qt.WindowState(self.settings.value("state", Qt.WindowNoState)))
+        self.setWindowState(
+            Qt.WindowState(self.settings.value("state", Qt.WindowNoState))
+        )
         self.font = QFont("Arial", 10)
         self.setFont(self.font)
 
@@ -75,7 +80,9 @@ class App(QMainWindow):
                 if file.name not in widget.data["files"]:
                     p.remove_file(file.name)
                     log.debug(f"File {file.name} is deleted")
-            log.debug(f"""Upload "{widget.data['title']}" to "{"/".join(widget.data["parent"])}" """)
+            log.debug(
+                f"""Upload "{widget.data['title']}" to "{"/".join(widget.data["parent"])}" """
+            )
         else:
             self.upload_as(widget)
 
@@ -89,7 +96,7 @@ class App(QMainWindow):
 
     @skippy.utils.critical.critical
     def logout(self, *args):
-        skippy.utils.profile.Profile.save('','')
+        skippy.utils.profile.Profile.save("", "")
         self.hide()
         lDialod = LoginDialog(self)
         log.debug(f"Logout")
@@ -130,14 +137,14 @@ class App(QMainWindow):
                     )
                 )
             )
-    
+
     def resizeEvent(self, event):
-        self.login_status.move(self.width()-200,-14)
+        self.login_status.move(self.width() - 200, -14)
         if self.width() < 350:
             self.login_status.hide()
         else:
             self.login_status.show()
-    
+
     def closeEvent(self, e):
         self.settings.setValue("size", self.size())
         self.settings.setValue("pos", self.pos())
@@ -145,23 +152,27 @@ class App(QMainWindow):
 
         e.accept()
 
-def start_ui():    
+
+def start_ui():
     app = QApplication(sys.argv)
     app.setApplicationName("skippy")
-    
+
     window = App(app)
-    
+
     if window.settings.value("mode", "light") == "dark":
         qtmodern.styles.dark(app)
     else:
         qtmodern.styles.light(app)
-    
-    if skippy.utils.profile.Profile.load()[0] == '' or skippy.utils.profile.Profile.load()[1] == '':
+
+    if (
+        skippy.utils.profile.Profile.load()[0] == ""
+        or skippy.utils.profile.Profile.load()[1] == ""
+    ):
         lDialod = LoginDialog(window)
     else:
         window.show()
-    
+
     log.info("Skippy was started...")
-    
+
     app.exec_()
     window.session.save()

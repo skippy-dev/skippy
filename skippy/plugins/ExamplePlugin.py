@@ -1,6 +1,7 @@
 from skippy.utils.plugin import PluginBase
 from skippy.utils.logger import log
 
+
 class Plugin(PluginBase):
     __alias__ = "ExamplePlugin"
 

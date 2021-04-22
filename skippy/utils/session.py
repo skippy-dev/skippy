@@ -16,8 +16,8 @@ class Session:
         session = {"session": []}
         for tab in range(self.tab.tabs.count()):
             widget = self.tab.tabs.widget(tab)
-            if type(widget.data['tags']) == str:
-                widget.data['tags'] = widget.data['tags'].split()
+            if type(widget.data["tags"]) == str:
+                widget.data["tags"] = widget.data["tags"].split()
             session["session"].append(widget.data)
 
         return session

@@ -6,6 +6,7 @@ import os
 from skippy.utils.logger import log
 import skippy.config
 
+
 class PluginBase(metaclass=ABCMeta):
     __alias__ = "Plugin"
 
@@ -16,6 +17,7 @@ class PluginBase(metaclass=ABCMeta):
     @abstractmethod
     def proccess(self):
         pass
+
 
 class PluginLoader:
     def __init__(self):
@@ -39,7 +41,14 @@ class PluginLoader:
         plugins_data = []
         for file in PluginLoader.files():
             plugin = __import__(file).Plugin
-            plugins_data.append({'__alias__': plugin.__alias__, '__description__': plugin.__description__, '__author__': plugin.__author__, '__version__': plugin.__version__})
+            plugins_data.append(
+                {
+                    "__alias__": plugin.__alias__,
+                    "__description__": plugin.__description__,
+                    "__author__": plugin.__author__,
+                    "__version__": plugin.__version__,
+                }
+            )
         return plugins_data
 
     def load(self):

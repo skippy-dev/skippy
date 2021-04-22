@@ -50,7 +50,7 @@ class DiscordIpcClient(metaclass=ABCMeta):
 
     @classmethod
     def for_platform(cls, client_id, platform=sys.platform):
-        if platform == 'win32':
+        if platform == "win32":
             return WinDiscordIpcClient(client_id)
         else:
             return UnixDiscordIpcClient(client_id)
@@ -60,9 +60,15 @@ class DiscordIpcClient(metaclass=ABCMeta):
         pass
 
     def _do_handshake(self):
-        ret_op, ret_data = self.send_recv({'v': 1, 'client_id': self.client_id}, op=OP_HANDSHAKE)
+        ret_op, ret_data = self.send_recv(
+            {"v": 1, "client_id": self.client_id}, op=OP_HANDSHAKE
+        )
         # {'cmd': 'DISPATCH', 'data': {'v': 1, 'config': {...}}, 'evt': 'READY', 'nonce': None}
-        if ret_op == OP_FRAME and ret_data['cmd'] == 'DISPATCH' and ret_data['evt'] == 'READY':
+        if (
+            ret_op == OP_FRAME
+            and ret_data["cmd"] == "DISPATCH"
+            and ret_data["evt"] == "READY"
+        ):
             return
         else:
             if ret_op == OP_CLOSE:
@@ -112,8 +118,8 @@ class DiscordIpcClient(metaclass=ABCMeta):
 
     def send(self, data, op=OP_FRAME):
         logger.debug("sending %s", data)
-        data_str = json.dumps(data, separators=(',', ':'))
-        data_bytes = data_str.encode('utf-8')
+        data_str = json.dumps(data, separators=(",", ":"))
+        data_bytes = data_str.encode("utf-8")
         header = struct.pack("<II", op, len(data_bytes))
         self._write(header)
         self._write(data_bytes)
@@ -125,24 +131,23 @@ class DiscordIpcClient(metaclass=ABCMeta):
         """
         op, length = self._recv_header()
         payload = self._recv_exactly(length)
-        data = json.loads(payload.decode('utf-8'))
+        data = json.loads(payload.decode("utf-8"))
         logger.debug("received %s", data)
         return op, data
 
     def set_activity(self, act):
         # act
         data = {
-            'cmd': 'SET_ACTIVITY',
-            'args': {'pid': os.getpid(),
-                     'activity': act},
-            'nonce': str(uuid.uuid4())
+            "cmd": "SET_ACTIVITY",
+            "args": {"pid": os.getpid(), "activity": act},
+            "nonce": str(uuid.uuid4()),
         }
         self.send(data)
 
 
 class WinDiscordIpcClient(DiscordIpcClient):
 
-    _pipe_pattern = R'\\?\pipe\discord-ipc-{}'
+    _pipe_pattern = R"\\?\pipe\discord-ipc-{}"
 
     def _connect(self):
         for i in range(10):
@@ -168,7 +173,6 @@ class WinDiscordIpcClient(DiscordIpcClient):
 
 
 class UnixDiscordIpcClient(DiscordIpcClient):
-
     def _connect(self):
         self._sock = socket.socket(socket.AF_UNIX)
         pipe_pattern = self._get_pipe_pattern()
@@ -186,14 +190,14 @@ class UnixDiscordIpcClient(DiscordIpcClient):
 
     @staticmethod
     def _get_pipe_pattern():
-        env_keys = ('XDG_RUNTIME_DIR', 'TMPDIR', 'TMP', 'TEMP')
+        env_keys = ("XDG_RUNTIME_DIR", "TMPDIR", "TMP", "TEMP")
         for env_key in env_keys:
             dir_path = os.environ.get(env_key)
             if dir_path:
                 break
         else:
-            dir_path = '/tmp'
-        return os.path.join(dir_path, 'discord-ipc-{}')
+            dir_path = "/tmp"
+        return os.path.join(dir_path, "discord-ipc-{}")
 
     def _write(self, data: bytes):
         self._sock.sendall(data)
@@ -205,9 +209,9 @@ class UnixDiscordIpcClient(DiscordIpcClient):
         self._sock.close()
 
 
-
 from skippy.utils.plugin import PluginBase
 from skippy.utils.logger import log
+
 
 class Plugin(PluginBase):
     __alias__ = "Discord RPC Plugin"
@@ -218,26 +222,23 @@ class Plugin(PluginBase):
 
     def proccess(self):
         try:
-            client_id = '828818867568640071'
+            client_id = "828818867568640071"
             rpc = DiscordIpcClient.for_platform(client_id)
             log.debug("RPC connection successful.")
 
             start_time = mktime(time.localtime())
 
             activity = {
-                    "state": "Skippy",
-                    "details": "Writing an SCP",
-                    "timestamps": {
-                        "start": start_time
-                    },
-                    "assets": {
-                        "small_text": "Skippy",
-                        "small_image": "none",
-                        "large_text": "Skippy",
-                        "large_image": "skippy"
-                       }
-                }
+                "state": "Skippy",
+                "details": "Writing an SCP",
+                "timestamps": {"start": start_time},
+                "assets": {
+                    "small_text": "Skippy",
+                    "small_image": "none",
+                    "large_text": "Skippy",
+                    "large_image": "skippy",
+                },
+            }
             rpc.set_activity(activity)
         except:
             log.debug("Can't connect to Discord RPC.")
-            

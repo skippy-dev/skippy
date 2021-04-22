@@ -18,7 +18,9 @@ def critical(call):
         log.error(e, exc_info=True)
         dialog = QMessageBox()
         dialog.setWindowTitle(f"Error: {str(e)}")
-        dialog.setWindowIcon(QIcon(os.path.join(skippy.config.ASSETS_FOLDER, "skippy.ico")))
+        dialog.setWindowIcon(
+            QIcon(os.path.join(skippy.config.ASSETS_FOLDER, "skippy.ico"))
+        )
         dialog.setText(traceback.format_exc())
         dialog.setIcon(QMessageBox.Critical)
         dialog.exec_()
