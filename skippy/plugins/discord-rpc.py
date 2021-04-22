@@ -4,6 +4,7 @@
 # * https://github.com/discordapp/discord-rpc/tree/master/documentation/hard-mode.md
 # * https://github.com/discordapp/discord-rpc/tree/master/src
 # * https://discordapp.com/developers/docs/rich-presence/how-to#updating-presence-update-presence-payload-fields
+# * https://github.com/niveshbirangal/discord-rpc
 
 from abc import ABCMeta, abstractmethod
 import json
@@ -217,23 +218,23 @@ class Plugin(PluginBase):
 
     def proccess(self):
         try:
-            client_id = '828818867568640071'  # Your application's client ID as a string. (This isn't a real client ID)
-            rpc = DiscordIpcClient.for_platform(client_id)  # Send the client ID to the rpc module
+            client_id = '828818867568640071'
+            rpc = DiscordIpcClient.for_platform(client_id)
             log.debug("RPC connection successful.")
 
             start_time = mktime(time.localtime())
 
             activity = {
-                    "state": "Skippy",  # anything you like
-                    "details": "Writing an SCP",  # anything you like
+                    "state": "Skippy",
+                    "details": "Writing an SCP",
                     "timestamps": {
                         "start": start_time
                     },
                     "assets": {
-                        "small_text": "Skippy",  # anything you like
-                        "small_image": "none",  # must match the image key
-                        "large_text": "Skippy",  # anything you like
-                        "large_image": "skippy"  # must match the image key
+                        "small_text": "Skippy",
+                        "small_image": "none",
+                        "large_text": "Skippy",
+                        "large_image": "skippy"
                        }
                 }
             rpc.set_activity(activity)

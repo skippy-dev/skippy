@@ -675,6 +675,7 @@ class UploadDialog(QDialog):
                 addSites((sites[0]+"(1)", sites[1]))
             else:
                 self.sites[sites[0]] = sites[1]
+                self.site_box.addItem(sites[0])
 
         self.label = QLabel("Enter page url", self)
         self.site_box = QComboBox(self)
@@ -684,7 +685,6 @@ class UploadDialog(QDialog):
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.thread.quit)
         self.worker.progress.connect(addSites)
-        self.worker.progress.connect(lambda site: self.site_box.addItem(site[0]))
         self.page_box = QLineEdit()
         self.page_box.setPlaceholderText("Page name")
         self.comment_box = QLineEdit()
@@ -723,6 +723,10 @@ class UploadDialog(QDialog):
             title=self.widget.data["title"],
             comment=comment,
         )
+        self.widget.data["parent"] = [
+            self.sites[site].site.replace("http://", ""),
+            page
+        ]
         p.set_tags(self.widget.data["tags"])
         
         for file in self.widget.data["files"]:
@@ -732,12 +736,12 @@ class UploadDialog(QDialog):
             if file.name not in self.widget.data["files"]:
                 p.remove_file(file.name)
                 log.debug(f"File {file.name} is deleted")
-        self.widget.data["parent"] = [
-            self.sites[site].site.replace("http://", ""),
-            page
-        ]
         log.debug(f"""Upload "{self.widget.data["title"]}" to "{"/".join(self.widget.data["parent"])}" """)
         self.close()
+
+    def closeEvent(self, e):
+        self.worker.stop()
+        e.accept()
 
 
 class DownloadDialog(QDialog):
@@ -753,6 +757,7 @@ class DownloadDialog(QDialog):
                 addSites((sites[0]+"(1)", sites[1]))
             else:
                 self.sites[sites[0]] = sites[1]
+                self.site_box.addItem(sites[0])
 
         self.label = QLabel("Enter page url", self)
         self.site_box = QComboBox(self)
@@ -762,7 +767,6 @@ class DownloadDialog(QDialog):
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.thread.quit)
         self.worker.progress.connect(addSites)
-        self.worker.progress.connect(lambda site: self.site_box.addItem(site[0]))
         self.page_box = QLineEdit()
         self.page_box.setPlaceholderText("Page name")
         self.button = QPushButton("Ok", self)
@@ -806,16 +810,31 @@ class DownloadDialog(QDialog):
         log.debug(f"""Download page from "{self.sites[site].site}" """)
         self.close()
 
+    def closeEvent(self, e):
+        self.worker.stop()
+        e.accept()
+
 
 class GetSites(QObject):
     progress = pyqtSignal(tuple)
     finished = pyqtSignal()
+    cache = []
+    run = True
 
     def run(self):
-        for e in pyscp.wikidot.User(skippy.utils.profile.Profile.load()[0]).member:
-            self.progress.emit((e.title, e))
-            log.debug(f"Get sites: {e.title}")
+        sites = pyscp.wikidot.User(skippy.utils.profile.Profile.load()[0]).member
+        for data in self.cache:
+            self.progress.emit((data[0], data[1]))
+        if len(self.cache) < len(sites):
+            for site in sites[len(self.cache):]:
+                if self.run:
+                    self.progress.emit((site.title, site))
+                    self.cache.append((site.title, site))
+                    log.debug(f"Get sites: {site.title}")
         self.finished.emit()
+
+    def stop(self):
+        self.run = False
 
 
 class UploadFiles(QObject):
