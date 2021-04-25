@@ -7,14 +7,12 @@ import os
 class Profile:
     @staticmethod
     def load():
-        try:
-            with open(
-                os.path.join(skippy.config.PROPERTY_FOLDER, "profile.json"), "r"
-            ) as f:
+        profile_path = os.path.join(skippy.config.PROPERTY_FOLDER, "profile.json")
+        if os.path.exists(profile_path):
+            with open(profile_path, "r") as f:
                 profile = json.loads(f.read())
-
-            return (profile["login"], profile["password"])
-        except json.decoder.JSONDecodeError:
+                return (profile["login"], profile["password"])
+        else:
             return ("", "")
 
     @staticmethod

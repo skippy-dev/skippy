@@ -40,8 +40,11 @@ class Session:
         log.debug(f"Save session to {path}")
 
     def load(self, path=os.path.join(skippy.config.PROPERTY_FOLDER, "session.json")):
-        with open(path, "r") as f:
-            session = f.read()
+        if os.path.exists(path):
+            with open(path, "r") as f:
+                session = f.read()
+        else:
+            session = ""
         if session != "":
             session = json.loads(session)
             self.set_session(session)
