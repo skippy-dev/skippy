@@ -426,7 +426,7 @@ class ProjectList(QWidget):
         tags_box = FileUploadLineEdit()
         if isinstance(tags, collections.Iterable):
             tags_box.setText(" ".join(tags))
-        tags_box.textChanged.connect(lambda text: setData("tags", text))
+        tags_box.textChanged.connect(lambda text: setData("tags", text.split(' ')))
         tags_box.setStyleSheet("QLineEdit{font-family: Arial; font-size:11pt;}")
 
         files_button = QPushButton("Files", self)
