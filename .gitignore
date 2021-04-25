@@ -56,3 +56,7 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+# User data
+skippy/property/profile.json
+skippy/property/session.json
