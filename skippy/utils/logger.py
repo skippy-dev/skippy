@@ -14,6 +14,8 @@ LOG_LEVELS = {
 
 
 def get_logger(name):
+    if not os.path.isdir(skippy.config.LOGS_FOLDER):
+        os.makedirs(skippy.config.LOGS_FOLDER)
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
 
