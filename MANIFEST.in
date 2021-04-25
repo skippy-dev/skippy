@@ -1,5 +1,6 @@
 include LICENSE
 recursive-include skippy *.py
+recursive-include skippy .gitkeep
 recursive-exclude skippy *.pyc
 include README.md
 include requirements.txt
