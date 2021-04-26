@@ -1,6 +1,7 @@
 from prettytable import PrettyTable
 import argparse
 import sys
+import os
 
 import skippy.app
 import skippy.config
@@ -34,6 +35,11 @@ def get_argparser():
     return parser
 
 
+def init():
+    if not os.path.isdir(skippy.config.PROPERTY_FOLDER):
+        os.makedirs(skippy.config.PROPERTY_FOLDER)
+        log.debug("Property folder was created")
+
 def run():
     parser = get_argparser()
 
@@ -58,6 +64,7 @@ def run():
         print(table)
     else:
         log.debug("Initializing application...")
+        init()
         skippy.utils.plugin.PluginLoader()
         skippy.app.start_ui()
 

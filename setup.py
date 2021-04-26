@@ -29,10 +29,10 @@ setuptools.setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9'],
     keywords=['scp', 'wikidot', 'pyscp', 'skippy'],
-    packages=['skippy', 'skippy.plugins', 'skippy.utils', 'skippy.property', 'skippy.assets',],
+    packages=['skippy', 'skippy.plugins', 'skippy.utils', 'skippy.assets',],
     install_requires=requirements,
     package_dir={'skippy': 'skippy'},
-    package_data={'skippy': ['assets/*.*','assets/dark/*.*','assets/light/*.*','property/.gitkeep']},
+    package_data={'skippy': ['assets/*.*','assets/dark/*.*','assets/light/*.*']},
     entry_points={
           'console_scripts': [
               'skippy = skippy.__main__:run',
