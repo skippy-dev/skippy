@@ -40,6 +40,7 @@ def init():
         os.makedirs(skippy.config.PROPERTY_FOLDER)
         log.debug("Property folder was created")
 
+
 def run():
     parser = get_argparser()
 
