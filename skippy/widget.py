@@ -893,6 +893,7 @@ class DownloadDialog(QDialog):
         self.worker.stop()
         e.accept()
 
+
 class Previewer(QDialog):
     def __init__(self, widget, parent=None):
         super().__init__(parent)
@@ -901,7 +902,7 @@ class Previewer(QDialog):
         previewer = Preview()
 
         self.html = previewer(widget.data)
-        
+
         vbox = QVBoxLayout(self)
 
         self.webEngineView = QWebEngineView()
@@ -912,11 +913,12 @@ class Previewer(QDialog):
         self.setLayout(vbox)
 
         self.setWindowTitle(f"skippy - {skippy.config.version}")
-        self.move(parent.x(),parent.y())
-        self.resize(parent.width(),parent.height())
+        self.move(parent.x(), parent.y())
+        self.resize(parent.width(), parent.height())
         self.setWindowState(parent.windowState())
 
         self.show()
+
 
 class GetSites(QObject):
     progress = pyqtSignal(tuple)

@@ -1,5 +1,6 @@
+prettytable
 pyscp
-prettytable==2.0.0
-requests==2.25.1
-qtmodern==0.2.0
+requests
+qtmodern
 PyQt5
+PyQtWebEngine

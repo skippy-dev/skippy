@@ -242,11 +242,13 @@ class Plugin(PluginBase):
                 },
             }
             rpc.set_activity(activity)
-            
+
             setup_old = app.start_ui
+
             def setup_new():
                 setup_old()
                 rpc.close()
+
             app.start_ui = setup_new
         except:
             log.debug("Can't connect to Discord RPC.")

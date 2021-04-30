@@ -2,13 +2,15 @@ import tempfile
 import pyscp
 import re
 
-class Preview:
-	def __init__(self):
-		self.wiki = pyscp.wikidot.Wiki("www.wikidot.com")
 
-	def __call__(self, data):
-		req = self.wiki._module("edit/PagePreviewModule", source=data["source"])
-		html = ("""
+class Preview:
+    def __init__(self):
+        self.wiki = pyscp.wikidot.Wiki("www.wikidot.com")
+
+    def __call__(self, data):
+        req = self.wiki._module("edit/PagePreviewModule", source=data["source"])
+        html = (
+            """
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru" data-lt-installed="true">
 		<head>
@@ -54,8 +56,8 @@ class Preview:
 	
 		</script>
 		<script type="text/javascript" src="http://d3g0gp89917ko0.cloudfront.net/v--3e3a6f7dbcc9/common--javascript/WIKIDOT.combined.js"></script>\n"""
-			+ self.module_css_preview(data["source"])
-			+ """
+            + self.module_css_preview(data["source"])
+            + """
 		<style>
 			body {
 				padding: 2em;
@@ -65,41 +67,49 @@ class Preview:
 		<body id="html-body">
 		<div id="dummy-ondomready-block" style="display:none;"></div>
 		<div id="page-title">\n"""
-			+ data["title"]
-			+ """
+            + data["title"]
+            + """
 		</div>
 		<div id="page-content">\n"""
-			+ req["body"]
-			+ """
+            + req["body"]
+            + """
 		</div>
 		<div class="page-tags">
         <span>\n"""
-        	+ " ".join([f"<a href='#'>{tag}</a>" for tag in data["tags"]])
-			+ """
+            + " ".join([f"<a href='#'>{tag}</a>" for tag in data["tags"]])
+            + """
         </span>
         </div>
 		</body>
 		</html>"""
-		)
-		html = self.replace_local_images(html,data)
-		with tempfile.NamedTemporaryFile(delete=False, suffix='.html', mode="w", encoding="utf-8") as tmp:
-			tmp.write(html)
-			return tmp.name
+        )
+        html = self.replace_local_images(html, data)
+        with tempfile.NamedTemporaryFile(
+            delete=False, suffix=".html", mode="w", encoding="utf-8"
+        ) as tmp:
+            tmp.write(html)
+            return tmp.name
 
-	def module_css_preview(self, source):
-		styles = re.findall(
-			r"(?<=(?:\[\[module) (?:CSS|css)\]\]\n)((.|\n)+?)(?=\n\[\[\/module\]\])",
-			source,
-		)
-		data = ""
-		for style in styles:
-			data += f"<style>\n{style[0]}\n</style>\n"
-		return data
+    def module_css_preview(self, source):
+        styles = re.findall(
+            r"(?<=(?:\[\[module) (?:CSS|css)\]\]\n)((.|\n)+?)(?=\n\[\[\/module\]\])",
+            source,
+        )
+        data = ""
+        for style in styles:
+            data += f"<style>\n{style[0]}\n</style>\n"
+        return data
 
-	def replace_local_images(self, source, data):
-		images = re.findall(r"""(?<=(<img src="))(http://www.wdfiles.com/local--files//)(.+?)(?=")""", source)
-		for img in images:
-			img = img[1:]
-			if img[1] in data["files"]:
-				source = source.replace(img[0]+img[1],f"data:{img[1].split('.')[1]}/;base64,{data['files'][img[1]]}")
-		return source
+    def replace_local_images(self, source, data):
+        images = re.findall(
+            r"""(?<=(<img src="))(http://www.wdfiles.com/local--files//)(.+?)(?=")""",
+            source,
+        )
+        for img in images:
+            img = img[1:]
+            if img[1] in data["files"]:
+                source = source.replace(
+                    img[0] + img[1],
+                    f"data:{img[1].split('.')[1]}/;base64,{data['files'][img[1]]}",
+                )
+        return source
