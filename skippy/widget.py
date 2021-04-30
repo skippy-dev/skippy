@@ -1,3 +1,4 @@
+from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -11,6 +12,7 @@ import pyscp
 import sys
 import os
 
+from skippy.utils.preview import Preview
 from skippy.utils.logger import log
 import skippy.utils.critical
 import skippy.utils.profile
@@ -290,6 +292,27 @@ class ToolbarWidget(QWidget):
             lambda: self.tab.tabs.currentWidget().findChild(QPlainTextEdit).selectAll()
         )
         self.edit_menu.addAction(select_action)
+
+        self.edit_menu.addSeparator()
+
+        preview_action = QAction(
+            QIcon(
+                os.path.join(
+                    skippy.config.ASSETS_FOLDER,
+                    self.settings.value("mode", "light"),
+                    "preview.png",
+                )
+            ),
+            "Preview",
+            self,
+        )
+        self.action_list[preview_action] = "preview"
+        preview_action.setStatusTip("Preview")
+        preview_action.triggered.connect(
+            lambda: Previewer(self.tab.tabs.currentWidget(), self)
+        )
+        self.edit_toolbar.addAction(preview_action)
+        self.edit_menu.addAction(preview_action)
 
         self.settings_menu = self.menuBar().addMenu("&Settings")
 
@@ -870,6 +893,30 @@ class DownloadDialog(QDialog):
         self.worker.stop()
         e.accept()
 
+class Previewer(QDialog):
+    def __init__(self, widget, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+
+        previewer = Preview()
+
+        self.html = previewer(widget.data)
+        
+        vbox = QVBoxLayout(self)
+
+        self.webEngineView = QWebEngineView()
+        self.webEngineView.load(QUrl.fromLocalFile(self.html))
+
+        vbox.addWidget(self.webEngineView)
+
+        self.setLayout(vbox)
+
+        self.setWindowTitle(f"skippy - {skippy.config.version}")
+        self.move(parent.x(),parent.y())
+        self.resize(parent.width(),parent.height())
+        self.setWindowState(parent.windowState())
+
+        self.show()
 
 class GetSites(QObject):
     progress = pyqtSignal(tuple)
