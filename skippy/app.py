@@ -75,8 +75,11 @@ class App(QMainWindow):
             )
             p.set_tags(widget.data["tags"])
             for file in widget.data["files"]:
-                p.upload(file, base64.b64decode(widget.data["files"][file]))
-                log.debug(f"File {file} is uploaded")
+                try:
+                    p.upload(file, base64.b64decode(widget.data["files"][file]))
+                    log.debug(f"File {file} is uploaded")
+                except RuntimeError as e:
+                    log.debug(f"RuntimeError({str(e)}): File {file} isn't uploaded")
             for file in p.files:
                 if file.name not in widget.data["files"]:
                     p.remove_file(file.name)
@@ -117,6 +120,7 @@ class App(QMainWindow):
         )
         if path != "":
             self.session.load(path)
+        self.session.save()
 
     @skippy.utils.critical.critical
     def toggle_theme(self, *args):

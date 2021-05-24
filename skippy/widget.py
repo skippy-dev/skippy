@@ -431,8 +431,9 @@ class ProjectList(QWidget):
 
         def setData(param, data):
             tab.data[param] = data
+            self.parent.session.save()
 
-        title_box = FileUploadLineEdit()
+        title_box = QLineEdit()
         title_box.setText(title)
         title_box.textEdited.connect(
             lambda: self.tabs.setTabText(self.tabs.currentIndex(), title_box.text())
@@ -441,12 +442,12 @@ class ProjectList(QWidget):
         title_box.textEdited.connect(self.parent.update_title)
         title_box.setStyleSheet("QLineEdit{font-family: Arial; font-size:11pt;}")
 
-        editor = FileUploadPlainEdit()
+        editor = QPlainTextEdit()
         editor.setPlainText(source)
         editor.textChanged.connect(lambda: setData("source", editor.toPlainText()))
         editor.setStyleSheet("QPlainTextEdit{font-family: Arial; font-size:11pt;}")
 
-        tags_box = FileUploadLineEdit()
+        tags_box = QLineEdit()
         if isinstance(tags, collections.Iterable):
             tags_box.setText(" ".join(tags))
         tags_box.textChanged.connect(lambda text: setData("tags", text.split(" ")))
@@ -491,6 +492,7 @@ class ProjectList(QWidget):
         self.worker.moveToThread(self.thread)
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.parent.session.save)
         self.worker.progress.connect(self.upload_file)
         self.thread.start()
 
@@ -505,47 +507,6 @@ class ProjectList(QWidget):
     def files_dialog(self):
         widget = self.tabs.currentWidget()
         fDialog = FilesDialog(widget, self)
-
-
-class FileUploadLineEdit(QLineEdit):
-    def __init__(self, parent=None):
-        super(QLineEdit, self).__init__(parent)
-        self.setAcceptDrops(True)
-
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls():
-            event.accept()
-            self.dadDialog = DragAndDropWidget(self)
-        else:
-            event.ignore()
-
-    def dragLeaveEvent(self, event):
-        event.accept()
-        self.dadDialog.close()
-
-    def dropEvent(self, event):
-        self.dadDialog.close()
-
-
-class FileUploadPlainEdit(QPlainTextEdit):
-    def __init__(self, parent=None):
-        super(QPlainTextEdit, self).__init__(parent)
-        self.setAcceptDrops(True)
-
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls():
-            event.accept()
-            self.dadDialog = DragAndDropWidget(self)
-        else:
-            event.ignore()
-
-    def dragLeaveEvent(self, event):
-        event.accept()
-        self.dadDialog.close()
-
-    def dropEvent(self, event):
-        self.dadDialog.close()
-
 
 class DragAndDropWidget(QWidget):
     CLOSE = pyqtSignal()
@@ -807,8 +768,11 @@ class UploadDialog(QDialog):
         p.set_tags(self.widget.data["tags"])
 
         for file in self.widget.data["files"]:
-            p.upload(file, base64.b64decode(self.widget.data["files"][file]))
-            log.debug(f"File {file} is uploaded")
+            try:
+                p.upload(file, base64.b64decode(self.widget.data["files"][file]))
+                log.debug(f"File {file} is uploaded")
+            except RuntimeError as e:
+                log.debug(f"RuntimeError({str(e)}): File {file} isn't uploaded")
         for file in p.files:
             if file.name not in self.widget.data["files"]:
                 p.remove_file(file.name)
@@ -886,6 +850,7 @@ class DownloadDialog(QDialog):
                 )
 
         self.parent.tab.new_tab(p.title, p.source, list(p.tags), files, url)
+        self.parent.session.save()
         log.debug(f"""Download page from "{self.sites[site].site}" """)
         self.close()
 

@@ -19,7 +19,6 @@ import uuid
 
 
 import time
-from time import mktime
 
 OP_HANDSHAKE = 0
 OP_FRAME = 1
@@ -228,7 +227,7 @@ class Plugin(PluginBase):
             rpc = DiscordIpcClient.for_platform(client_id)
             log.debug("RPC connection successful.")
 
-            start_time = mktime(time.localtime())
+            start_time = time.mktime(time.localtime())
 
             activity = {
                 "state": "Skippy",
@@ -245,10 +244,10 @@ class Plugin(PluginBase):
 
             setup_old = app.start_ui
 
-            def setup_new():
+            def monkey_setup():
                 setup_old()
                 rpc.close()
 
-            app.start_ui = setup_new
+            app.start_ui = monkey_setup
         except:
             log.debug("Can't connect to Discord RPC.")
