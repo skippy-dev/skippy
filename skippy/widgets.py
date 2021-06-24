@@ -297,7 +297,7 @@ class LoginStatusWidget(QWidget):
             self.label.setText("")
 
     def set_text(self, text):
-        self.label.setText(Translator.translate("SIGNED_IN_AS_LABEL").format(username))
+        self.label.setText(Translator.translate("SIGNED_IN_AS_LABEL").format(text))
 
 
 class ProjectList(QWidget):
