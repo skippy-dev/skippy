@@ -221,7 +221,7 @@ class Plugin(PluginBase):
     __author__ = "MrNereof"
     __version__ = "1.0.0"
 
-    def proccess(self):
+    def process(self):
         try:
             client_id = "828818867568640071"
             rpc = DiscordIpcClient.for_platform(client_id)

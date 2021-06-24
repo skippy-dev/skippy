@@ -10,8 +10,6 @@ class Session:
         self.app = app
         self.tab = self.app.tab
 
-        self.load()
-
     def get_session(self):
         session = {"session": []}
         for tab in range(self.tab.tabs.count()):

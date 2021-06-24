@@ -1,7 +1,7 @@
+import skippy
+
 import os
 import json
-
-import skippy
 
 version = skippy.__version__
 
@@ -12,5 +12,7 @@ ASSETS_FOLDER = os.path.join(SKIPPY_FOLDER, "assets")
 PROPERTY_FOLDER = os.path.join(SKIPPY_FOLDER, "property")
 
 LOGS_FOLDER = os.path.join(SKIPPY_FOLDER, "logs")
+
+LANG_FOLDER = os.path.join(SKIPPY_FOLDER, "lang")
 
 PLUGINS_FOLDER = os.path.join(SKIPPY_FOLDER, "plugins")

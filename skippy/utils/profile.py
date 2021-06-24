@@ -12,8 +12,7 @@ class Profile:
             with open(profile_path, "r") as f:
                 profile = json.loads(f.read())
                 return (profile["login"], profile["password"])
-        else:
-            return ("", "")
+        return ("", "")
 
     @staticmethod
     def save(login, password):

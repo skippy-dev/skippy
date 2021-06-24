@@ -9,6 +9,6 @@ class Plugin(PluginBase):
     __author__ = "MrNereof"
     __version__ = "1.0.0"
 
-    def proccess(self):
+    def process(self):
         """do something"""
         log.debug(f"{self.__alias__}: {self.__description__}")
