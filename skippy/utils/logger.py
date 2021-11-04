@@ -1,44 +1,74 @@
-import os
-import logging
-from datetime import date
+"""Logger class
 
+Attributes:
+    log (logging.Logger): Skippy logger
+    LOG_LEVELS (Dict[str, logging.LEVEL]): Log levels same as logging._nameToLevel
+"""
 import skippy.config
 
-LOG_LEVELS = {
-    "DEBUG": logging.DEBUG,
-    "INFO": logging.INFO,
-    "WARNING": logging.WARNING,
-    "ERROR": logging.ERROR,
-    "CRITICAL": logging.CRITICAL,
-}
+import datetime
+import logging
+import os
 
 
-def get_logger(name):
-    if not os.path.isdir(skippy.config.LOGS_FOLDER):
-        os.makedirs(skippy.config.LOGS_FOLDER)
+LOG_LEVELS = logging._nameToLevel
+
+
+def get_file_handler() -> logging.FileHandler:
+    """Get file handler
+
+    Returns:
+        logging.FileHandler: File handler
+    """
+    file_handler = logging.FileHandler(
+        os.path.join(
+            skippy.config.LOGS_FOLDER,
+            f"{datetime.datetime.today().strftime('%Y-%m-%d-%H-%M-%S')}.log",
+        ),
+        "a",
+        "utf-8",
+        True,
+    )
+    file_handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"
+        )
+    )
+    file_handler.setLevel(logging.DEBUG)
+
+    return file_handler
+
+
+def get_stream_handler() -> logging.StreamHandler:
+    """Get stream handler
+
+    Returns:
+        logging.StreamHandler: Stream handler
+    """
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"
+        )
+    )
+
+    return stream_handler
+
+
+def get_logger(name: str) -> logging.Logger:
+    """Get logger by name
+
+    Args:
+        name (str): Logger name
+
+    Returns:
+        logging.Logger: Logger class
+    """
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
 
-    c_handler = logging.StreamHandler()
-    f_handler = logging.FileHandler(
-        os.path.join(skippy.config.LOGS_FOLDER, f"{str(date.today())}.log"),
-        "w",
-        "utf-8",
-    )
-
-    c_format = logging.Formatter(
-        "%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"
-    )
-    f_format = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"
-    )
-    c_handler.setFormatter(c_format)
-    f_handler.setFormatter(f_format)
-
-    f_handler.setLevel(logging.DEBUG)
-
-    logger.addHandler(c_handler)
-    logger.addHandler(f_handler)
+    logger.addHandler(get_stream_handler())
+    logger.addHandler(get_file_handler())
 
     return logger
 

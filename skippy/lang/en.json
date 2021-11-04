@@ -13,6 +13,8 @@
 	"MENU_BAR_UPLOAD_AS_ACTION_STATUS_TIP": "Upload page as...",
 	"MENU_BAR_CLOSE_ACTION_NAME": "Close",
 	"MENU_BAR_CLOSE_ACTION_STATUS_TIP": "Close",
+	"MENU_BAR_LOAD_FILES_ACTION_NAME": "Load files...",
+	"MENU_BAR_LOAD_FILES_ACTION_STATUS_TIP": "Load files to the current page",
 	"MENU_BAR_LOAD_SESSION_ACTION_NAME": "Load Session...",
 	"MENU_BAR_LOAD_SESSION_ACTION_STATUS_TIP": "Load Session...",
 	"MENU_BAR_SAVE_SESSION_ACTION_NAME": "Save Session as...",
@@ -53,6 +55,8 @@
 	"FILES_DIALOG_FILES_LIST_LABEL": "Files list",
 	"FILES_DIALOG_EMPTY_FILES_LIST_LABEL": "Files list is empty...",
 
+	"DIALOG_NEW_VERSION_AVAILABLE_LABEL": "New Skippy version available: v{}!",
+	"DIALOG_YOU_CAN_DOWNLOAD_IT_LABEL": "You can install it by press Install button.",
 	"DIALOG_SIGN_IN_TO_WIKIDOT_LABEL": "Sign in to your Wikidot account",
 	"DIALOG_LOGIN_PLACEHOLDER": "Login",
 	"DIALOG_PASSWORD_PLACEHOLDER": "Password",
@@ -61,5 +65,9 @@
 	"DIALOG_COMMENT_BOX_PLACEHOLDER": "Comment",
 	"DIALOG_COMMENT_BOX_TEXT": "Edit using Skippy",
 	"DIALOG_GENERATE_BUTTON": "Generate",
-	"DIALOG_OK_BUTTON": "Ok"
+	"DIALOG_INSTALL_BUTTON": "Install",
+	"DIALOG_CANCEL_BUTTON": "Cancel",
+	"DIALOG_OK_BUTTON": "Ok",
+
+	"SITE_BOX_LINEEDIT": "Enter wiki url"
 }

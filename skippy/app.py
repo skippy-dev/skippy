@@ -1,198 +1,102 @@
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-import qtmodern.styles
-import collections
+"""Initialization of Skippy and application-wide things.
+"""
+from skippy.gui import start_ui
 
-from skippy.utils.language import Translator
-from skippy.utils.logger import log
-import skippy.utils.critical
-import skippy.utils.session
-import skippy.utils.profile
+from skippy.core import plugins
+
+from skippy.utils import logger, standarddir, discord_rpc, excepthook
 import skippy.config
-from skippy.widgets import *
 
-import base64
-import pyscp
-import json
-import os
+from prettytable import PrettyTable
+import argparse
 import sys
 
 
-class App(QMainWindow):
-    def __init__(self, app):
-        super(App, self).__init__()
-        self.app = app
+def get_argparser() -> argparse.ArgumentParser:
+    """Get the argument parser.
 
-        self.settings = QSettings("skippy", "skippy")
+    Returns:
+        argparse.ArgumentParser: Argument parser
+    """
+    parser = argparse.ArgumentParser()
 
-        Translator.load(self.settings.value("lang", "en"))
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="store_true",
+        help="print the version - will not run the ui",
+    )
+    parser.add_argument(
+        "-p",
+        "--plugins",
+        action="store_true",
+        help="print plugin list - will not run the ui",
+    )
+    parser.add_argument(
+        "--logging_level",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="the level to use for logging - defaults to INFO",
+        default="INFO",
+    )
 
-        self.tab = ProjectList(self)
-        self.tab.tabs.currentChanged.connect(self.update_title)
+    return parser
 
-        self.session = skippy.utils.session.Session(self)
-        self.session.load()
 
-        self.menus = MenusWidget(self)
+def run():
+    """Initialize everything and run the application.
+    """
+    excepthook.init()
 
-        self.login_status = LoginStatusWidget(self)
-        self.login_status.move(500, -14)
+    parser = get_argparser()
 
-        self.setCentralWidget(self.tab)
+    args = parser.parse_args()
 
-        self.status = QStatusBar()
-        self.setStatusBar(self.status)
+    logger.log.setLevel(logger.LOG_LEVELS[args.logging_level])
 
-        self.update_title()
-        self.setWindowIcon(
-            QIcon(os.path.join(skippy.config.ASSETS_FOLDER, "skippy.ico"))
-        )
-        self.resize(self.settings.value("size", QSize(700, 700)))
-        self.move(self.settings.value("pos", QPoint(200, 200)))
-        self.setWindowState(
-            Qt.WindowState(self.settings.value("state", Qt.WindowNoState))
-        )
-        self.font = QFont("Arial", 10)
-        self.setFont(self.font)
+    standarddir.initdirs()
 
-    def update_title(self):
-        self.setWindowTitle(
-            f"{self.tab.tabs.tabText(self.tab.tabs.currentIndex())} | skippy - {skippy.config.version}"
-        )
+    if args.version:
+        logger.log.info(f"skippy v{skippy.config.version}")
+    elif args.plugins:
+        table = PrettyTable()
+        table.field_names = ["Alias", "Description", "Author", "Version"]
 
-    @skippy.utils.critical.critical
-    def download(self, *args):
-        dDialog = DownloadDialog(self)
-
-    @skippy.utils.critical.critical
-    def upload(self, widget):
-        if widget.data["parent"] != None:
-            wiki = pyscp.wikidot.Wiki(widget.data["parent"][0])
-            profile = skippy.utils.profile.Profile.load()
-            wiki.auth(profile[0], profile[1])
-            p = wiki(widget.data["parent"][1])
-            p.edit(
-                source=widget.data["source"],
-                title=widget.data["title"],
-                comment="Edit using Skippy",
-            )
-            p.set_tags(widget.data["tags"])
-            for file in widget.data["files"]:
-                try:
-                    p.upload(file, base64.b64decode(widget.data["files"][file]))
-                    log.debug(f"File {file} is uploaded")
-                except RuntimeError as e:
-                    log.debug(f"RuntimeError({str(e)}): File {file} isn't uploaded")
-            for file in p.files:
-                if file.name not in widget.data["files"]:
-                    p.remove_file(file.name)
-                    log.debug(f"File {file.name} is deleted")
-            log.debug(
-                f"""Upload "{widget.data['title']}" to "{"/".join(widget.data["parent"])}" """
-            )
-        else:
-            self.upload_as(widget)
-
-    @skippy.utils.critical.critical
-    def upload_as(self, widget):
-        uDialog = UploadDialog(widget, self)
-
-    @skippy.utils.critical.critical
-    def login(self, *args):
-        lDialog = LoginDialog(self)
-
-    @skippy.utils.critical.critical
-    def logout(self, *args):
-        skippy.utils.profile.Profile.save("", "")
-        self.hide()
-        lDialod = LoginDialog(self)
-        log.debug(f"Logout")
-
-    @skippy.utils.critical.critical
-    def save_session(self, *args):
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Save file", "", "JSON file (*.json)\nAll files (*.*)"
-        )
-        if path != "":
-            self.session.save(path)
-
-    @skippy.utils.critical.critical
-    def load_session(self, *args):
-        path, _ = QFileDialog.getOpenFileName(
-            self, "Save file", "", "JSON file (*.json)\nAll files (*.*)"
-        )
-        if path != "":
-            self.session.load(path)
-        self.session.save()
-
-    @skippy.utils.critical.critical
-    def toggle_theme(self, *args):
-        if self.settings.value("mode", "light") == "light":
-            log.debug("Dark mode now")
-            self.settings.setValue("mode", "dark")
-            qtmodern.styles.dark(self.app)
-        else:
-            log.debug("Light mode now")
-            self.settings.setValue("mode", "light")
-            qtmodern.styles.light(self.app)
-        for i in self.menus.action_list:
-            i.setIcon(
-                QIcon(
-                    os.path.join(
-                        skippy.config.ASSETS_FOLDER,
-                        self.settings.value("mode", "light"),
-                        f"{self.menus.action_list[i]}.png",
-                    )
-                )
+        for plugin in plugins.PluginLoader.pluginsData():
+            table.add_row(
+                [
+                    plugin["__alias__"],
+                    plugin["__description__"],
+                    plugin["__author__"],
+                    plugin["__version__"],
+                ]
             )
 
-    def updateTranslate(self, lang):
-        self.settings.setValue("lang", lang)
-        self.restart()
-
-    def restart(self):
-        self.close()
-        self.__class__(self.app).show()
-
-    def contextMenuEvent(self, event):
-        self.menus.contextMenu.exec_(self.mapToGlobal(event.pos()))
-
-    def resizeEvent(self, event):
-        self.login_status.move(self.width() - 200, -14)
-        if self.width() < 350:
-            self.login_status.hide()
-        else:
-            self.login_status.show()
-
-    def closeEvent(self, e):
-        self.settings.setValue("size", self.size())
-        self.settings.setValue("pos", self.pos())
-        self.settings.setValue("state", self.windowState())
-
-        e.accept()
-
-
-def start_ui():
-    app = QApplication(sys.argv)
-    app.setApplicationName("skippy")
-
-    window = App(app)
-
-    if window.settings.value("mode", "light") == "dark":
-        qtmodern.styles.dark(app)
+        print(table)
     else:
-        qtmodern.styles.light(app)
+        logger.log.info("Initializing directories...")
 
-    if (
-        skippy.utils.profile.Profile.load()[0] == ""
-        or skippy.utils.profile.Profile.load()[1] == ""
-    ):
-        lDialod = LoginDialog(window)
-    else:
-        window.show()
+        logger.log.info("Initializing plugin loader...")
+        pluginLoader = plugins.PluginLoader()
 
-    log.info("Skippy was started...")
+        logger.log.info("Load plugins...")
+        pluginLoader.loadPlugins()
 
-    app.exec_()
-    window.session.save()
+        logger.log.info("Start plugins...")
+        pluginLoader.startPlugins()
+
+        logger.log.info("Initializing Discord RPC..")
+        rpc = discord_rpc.DiscordRPC()
+
+        logger.log.info("Connect Discord RPC..")
+        rpc.connect()
+
+        logger.log.info("Initializing application...")
+        exit_code = start_ui()
+
+        logger.log.info("Stop plugins...")
+        pluginLoader.stopPlugins()
+
+        logger.log.info("Stop Discord RPC..")
+        rpc.close()
+
+        sys.exit(exit_code)
