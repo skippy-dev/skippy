@@ -24,10 +24,8 @@ class AbstractFileHandler(metaclass=ABCMeta):
         Args:
             filepath (Optional[str], optional): Path to handle file
         """
-        self.filepath = (
-            filepath
-            if filepath
-            else os.path.join(skippy.config.PROPERTY_FOLDER, self.file)
+        self.filepath = filepath or os.path.join(
+            skippy.config.PROPERTY_FOLDER, self.file
         )
 
     def read(self) -> str:

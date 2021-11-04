@@ -382,7 +382,6 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
             if (
                 blockParamNamePrefix
                 and word[-len(blockParamNamePrefix) :] == blockParamNamePrefix
-                and blockNamePrefix in blockPatterns
             ):
                 self.openCompleterPopup(
                     [f'{param}="{params[param]}"' for param in params],

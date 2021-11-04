@@ -28,7 +28,7 @@ class DiscordRPC(Presence, metaclass=Singleton):
     @ignore((PyPresenceException, AssertionError))
     def update(self, title: str, words: int = 0, letters: int = 0):
         super(DiscordRPC, self).update(
-            state=f"Words: {str(words)}, Letters: {str(letters)}",
+            state=f'Words: {words}, Letters: {letters}',
             details=f'Writing an "{title}"',
             start=self._time,
             small_text="Skippy",
