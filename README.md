@@ -22,30 +22,37 @@ Skippy - Simple. Comfortable. Powerful. notepad for www.scpwiki.com
 Installation
 </h2>
 
-Installing Skippy with pip is easy:
+If you have Python you can install Skippy using pip:
 
 ```
-$ pip install skippy-pad
+$ python -m pip install skippy-pad
 ```
+
+Also, if you haven't Python you can install compiled Skippy through <a href="https://github.com/skippy-dev/skippy/releases">Github releases</a>.
 
 <h2>
 Usage
 </h2>
 
-Open console and write:
+If you install Skippy through pip you can open console and write:
 
 ```
-$ skippy
+$ python -m skippy
 ```
 
 <h2>
 Features
 </h2>
 
-* Support Python 3.4+
 * Powerful functional
+* Full preview
+* Uploading pages with title, body, tags and files in one click
+* Downloading pages with all data
 * Easy to use plugin system
-* Support all wikidot site
+* Support all wikidot sites
+* Autoupdating system
+* Multi language interface
+* and many other features!
 
 <h2>
 Screenshots
