@@ -184,7 +184,6 @@ class TabWidget(QtWidgets.QWidget):
     def uploadFile(self, filename: str, source: bytes):
         self.pdata["files"][filename] = base64.b64encode(source).decode("utf-8")
 
-    @ignore(AttributeError)
     def statusBarStats(self):
         words, letters = self.editorStats()
         utils.showStatusMessage(f"Words: {str(words)}, Letters: {str(letters)}")
