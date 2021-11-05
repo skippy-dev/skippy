@@ -10,18 +10,16 @@ import os
 
 class Translator(metaclass=Singleton):
 
-    """Translator class
-    """
-    
+    """Translator class"""
+
     def __init__(self):
-        """Init translator class
-        """
+        """Init translator class"""
         self._language = None
 
     @staticmethod
     def languages() -> List[str]:
         """Get all exist skippy languages
-        
+
         Returns:
             List[str]: List of languages code
         """
@@ -35,10 +33,10 @@ class Translator(metaclass=Singleton):
     @staticmethod
     def getLangName(lang: str) -> str:
         """Get lang name by code
-        
+
         Args:
             lang (str): Language code
-        
+
         Returns:
             str: Language name
         """
@@ -48,10 +46,10 @@ class Translator(metaclass=Singleton):
 
     def load(self, lang: str = "en") -> Language:
         """Load language by code
-        
+
         Args:
             lang (str, optional): Language code
-        
+
         Returns:
             Language: Language namedtuple, with language code and dictionary
         """
@@ -64,10 +62,10 @@ class Translator(metaclass=Singleton):
 
     def translate(self, context: str) -> str:
         """Translate context text
-        
+
         Args:
             context (str): Text context
-        
+
         Returns:
             str: Translated string if available, else return input context
         """

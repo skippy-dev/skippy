@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 
-from skippy.api import PageData
+from skippy.api import PageData, ignore
 
 from skippy.gui import settings, resources, editor, utils
 from skippy.gui.dialogs import filesdialog
@@ -15,7 +15,7 @@ class ProjectList(QtWidgets.QTabWidget):
     titleChanged = QtCore.pyqtSignal(str)
     statsChanged = QtCore.pyqtSignal(str, int, int)
 
-    def __init__(self, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(ProjectList, self).__init__(parent)
         resources.qInitResources()
 
@@ -23,7 +23,11 @@ class ProjectList(QtWidgets.QTabWidget):
         self.currentChanged.connect(
             lambda: self.titleChanged.emit(self.currentTabText())
         )
-        self.currentChanged.connect(lambda: self.currentWidget().statusBarStats())
+        self.currentChanged.connect(
+            lambda: self.currentWidget().statusBarStats()
+            if self.currentWidget()
+            else None
+        )
         self.titleChanged.connect(
             lambda title: self.statsChanged.emit(title, *self.currentEditorStats())
         )
@@ -63,6 +67,7 @@ class ProjectList(QtWidgets.QTabWidget):
     def currentTabText(self) -> str:
         return self.tabText(self.currentIndex())
 
+    @ignore(AttributeError, (0, 0))
     def currentEditorStats(self) -> Tuple[int, int]:
         return self.currentWidget().editorStats()
 
@@ -119,10 +124,10 @@ class TabWidget(QtWidgets.QWidget):
         tags: List[str],
         files: Dict[str, str],
         link: Optional[Tuple[str, str]],
-        parent: Optional[QtCore.QObject] = None,
+        parent: Optional[QtWidgets.QWidget] = None,
     ):
         super(TabWidget, self).__init__(parent)
-        self.layout = QtWidgets.QVBoxLayout(self)
+        self._layout = QtWidgets.QVBoxLayout(self)
 
         self.pdata: PageData = {
             "title": title,
@@ -158,11 +163,11 @@ class TabWidget(QtWidgets.QWidget):
             lambda: filesdialog.FilesDialog(self.pdata["files"], self)
         )
 
-        self.layout.addWidget(self.title_box)
-        self.layout.addWidget(self.editor)
-        self.layout.addWidget(self.tags_box)
-        self.layout.addWidget(self.files_button)
-        self.setLayout(self.layout)
+        self._layout.addWidget(self.title_box)
+        self._layout.addWidget(self.editor)
+        self._layout.addWidget(self.tags_box)
+        self._layout.addWidget(self.files_button)
+        self.setLayout(self._layout)
 
         self.setStyleSheet(
             "QLineEdit, QPlainTextEdit {font-family: Arial; font-size:12pt;}"

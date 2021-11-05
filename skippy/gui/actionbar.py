@@ -176,9 +176,7 @@ class ActionBarBase:
             qaction.setIcon(
                 QtGui.QIcon(
                     os.path.join(
-                        skippy.config.RESOURCES_FOLDER, 
-                        self.theme, 
-                        f"{action.img}.png"
+                        skippy.config.RESOURCES_FOLDER, self.theme, f"{action.img}.png"
                     )
                 )
             )
@@ -208,7 +206,7 @@ class ActionBarBase:
 
 
 class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
-    def __init__(self, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(MenuBar, self).__init__(parent)
         self.initActions()
 
@@ -252,7 +250,7 @@ class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
 
 
 class ToolBar(ActionBarBase, QtWidgets.QToolBar):
-    def __init__(self, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(ToolBar, self).__init__(parent)
         self.initActions()
 
@@ -274,7 +272,7 @@ class ToolBar(ActionBarBase, QtWidgets.QToolBar):
 
 
 class ContextMenu(ActionBarBase, QtWidgets.QMenu):
-    def __init__(self, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(ContextMenu, self).__init__(parent)
         self.initActions()
 

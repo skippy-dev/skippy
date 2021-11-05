@@ -286,7 +286,7 @@ def splitByPosition(line: str, pos: int) -> tuple[str, str]:
 class Completer(QtWidgets.QCompleter):
     insertText = QtCore.pyqtSignal(str)
 
-    def __init__(self, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(Completer, self).__init__(parent)
         self.setCompletionMode(self.PopupCompletion)
         self.highlighted.connect(self.setSelected)
@@ -312,7 +312,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
 
     fileDragAndDroped = QtCore.pyqtSignal(str, bytes)
 
-    def __init__(self, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(AdvancedEditor, self).__init__(parent)
         self.completer = Completer(self)
 
@@ -377,7 +377,10 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
             return
 
         blockParamNamePrefix = block.group(2)
-        if blockNamePrefix in blockPatterns and "" in blockPatterns[blockNamePrefix].dataVar:
+        if (
+            blockNamePrefix in blockPatterns
+            and "" in blockPatterns[blockNamePrefix].dataVar
+        ):
             params = blockPatterns[blockNamePrefix].dataVar[""]
             if (
                 blockParamNamePrefix

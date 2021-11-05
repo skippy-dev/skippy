@@ -12,17 +12,19 @@ import os
 
 
 class UploadDialog(QtWidgets.QDialog):
-    def __init__(self, pdata: PageData, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, pdata: PageData, parent: Optional[QtWidgets.QWidget] = None):
         super(UploadDialog, self).__init__(parent)
         self.pdata = pdata
 
-        self.layout = QtWidgets.QVBoxLayout(self)
+        self._layout = QtWidgets.QVBoxLayout(self)
 
         self.label = QtWidgets.QLabel(
             translator.Translator().translate("DIALOG_ENTER_PAGE_LABEL"), self
         )
 
-        self.site_box = sitebox.SiteBox(self, self.pdata["link"][0] if self.pdata["link"] else "")
+        self.site_box = sitebox.SiteBox(
+            self, self.pdata["link"][0] if self.pdata["link"] else ""
+        )
 
         self.page_box = QtWidgets.QLineEdit()
         self.page_box.setPlaceholderText(
@@ -43,13 +45,13 @@ class UploadDialog(QtWidgets.QDialog):
         )
         self.button.clicked.connect(self.upload)
 
-        self.layout.addWidget(self.label, alignment=QtCore.Qt.AlignCenter)
-        self.layout.addWidget(self.site_box)
-        self.layout.addWidget(self.page_box)
-        self.layout.addWidget(self.comment_box)
-        self.layout.addWidget(self.button, alignment=QtCore.Qt.AlignRight)
+        self._layout.addWidget(self.label, alignment=QtCore.Qt.AlignCenter)
+        self._layout.addWidget(self.site_box)
+        self._layout.addWidget(self.page_box)
+        self._layout.addWidget(self.comment_box)
+        self._layout.addWidget(self.button, alignment=QtCore.Qt.AlignRight)
 
-        self.setLayout(self.layout)
+        self.setLayout(self._layout)
 
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
         self.setWindowIcon(
@@ -63,11 +65,12 @@ class UploadDialog(QtWidgets.QDialog):
     def upload(self):
         site = self.site_box.currentText()
         page = self.page_box.text()
-        comment = self.comment_box.text()
+        if site and page:
+            comment = self.comment_box.text()
 
-        self.pdata["link"] = [site, page]
+            self.pdata["link"] = [site, page]
 
-        self._thread = thread.Thread(workers.UploadWorker(self.pdata, comment))
-        self._thread.start()
-
+            self._thread = thread.Thread(workers.UploadWorker(self.pdata, comment))
+            self._thread.start()
+        
         self.close()

@@ -16,10 +16,10 @@ except ImportError:
 
     def cached_property(func: Callable[[None], Any]) -> property:
         """Cached property
-        
+
         Args:
             func (Callable[[None], Any]): Property method
-        
+
         Returns:
             property: Property instance
         """
@@ -28,10 +28,10 @@ except ImportError:
 
 def version2tuple(version: str) -> Tuple[int]:
     """Convert string version to tuple
-    
+
     Args:
         version (str): String version
-    
+
     Returns:
         Tuple[int]: Tuple version
     """
@@ -40,7 +40,7 @@ def version2tuple(version: str) -> Tuple[int]:
 
 def isFrozen() -> bool:
     """Is Skippy compiled to exe
-    
+
     Returns:
         bool: Compiled or not
     """
@@ -49,15 +49,14 @@ def isFrozen() -> bool:
 
 class AbstractUpdateClient(metaclass=ABCMeta):
 
-    """Abstract update client
-    """
-    
+    """Abstract update client"""
+
     _apiEndpoint: str
 
     @staticmethod
     def getClient() -> "AbstractUpdateClient":
         """Get update client for Skippy
-        
+
         Returns:
             AbstractUpdateClient: Update client
         """
@@ -69,7 +68,7 @@ class AbstractUpdateClient(metaclass=ABCMeta):
     @ignore(ConnectionErrors, {})
     def data(self) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """Update data property
-        
+
         Returns:
             Dict[str, Any]: Update data
         """
@@ -78,7 +77,7 @@ class AbstractUpdateClient(metaclass=ABCMeta):
 
     def checkVersion(self) -> bool:
         """Check if Skippy has a new version
-        
+
         Returns:
             bool: Is new version available
         """
@@ -87,37 +86,33 @@ class AbstractUpdateClient(metaclass=ABCMeta):
     @property
     @abstractmethod
     def version(self):
-        """Abstract version property
-        """
+        """Abstract version property"""
         pass
 
     @abstractmethod
     def update(self):
-        """Abstract update method
-        """
+        """Abstract update method"""
         pass
 
 
 class PyPIClient(AbstractUpdateClient):
 
-    """PyPI update client
-    """
-    
+    """PyPI update client"""
+
     _apiEndpoint = "https://pypi.org/pypi/skippy-pad/json"
 
     @property
     @ignore(KeyError, "0.0.0")
     def version(self) -> str:
         """Update version property
-        
+
         Returns:
             str: Version
         """
         return self.data["info"]["version"]
 
     def update(self):
-        """Update method
-        """
+        """Update method"""
         import os
 
         os.system("start cmd /c python -m pip install skippy-pad -U")
@@ -125,16 +120,15 @@ class PyPIClient(AbstractUpdateClient):
 
 class GithubReleasesClient(AbstractUpdateClient):
 
-    """Github releases client
-    """
-    
+    """Github releases client"""
+
     _apiEndpoint = "https://api.github.com/repos/skippy-dev/skippy/releases"
 
     @property
     @ignore(KeyError, {})
     def data(self) -> Dict[str, Any]:
         """Update data property
-        
+
         Returns:
             Dict[str, Any]: Update data
         """
@@ -144,15 +138,14 @@ class GithubReleasesClient(AbstractUpdateClient):
     @ignore(KeyError, "0.0.0")
     def version(self) -> str:
         """Update version property
-        
+
         Returns:
             str: Version
         """
         return self.data["tag_name"][1:]
 
     def update(self):
-        """Update method
-        """
+        """Update method"""
         import webbrowser
 
         webbrowser.open(self.data["html_url"])

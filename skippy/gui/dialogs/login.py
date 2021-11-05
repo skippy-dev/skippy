@@ -12,9 +12,9 @@ import os
 
 
 class LoginDialog(QtWidgets.QDialog):
-    def __init__(self, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(LoginDialog, self).__init__(parent)
-        self.layout = QtWidgets.QVBoxLayout(self)
+        self._layout = QtWidgets.QVBoxLayout(self)
 
         self.label = QtWidgets.QLabel(
             translator.Translator().translate("DIALOG_SIGN_IN_TO_WIKIDOT_LABEL"), self
@@ -34,12 +34,12 @@ class LoginDialog(QtWidgets.QDialog):
 
         self.button.clicked.connect(self.login)
 
-        self.layout.addWidget(self.label, alignment=QtCore.Qt.AlignCenter)
-        self.layout.addWidget(self.login_box)
-        self.layout.addWidget(self.password_box)
-        self.layout.addWidget(self.button, alignment=QtCore.Qt.AlignRight)
+        self._layout.addWidget(self.label, alignment=QtCore.Qt.AlignCenter)
+        self._layout.addWidget(self.login_box)
+        self._layout.addWidget(self.password_box)
+        self._layout.addWidget(self.button, alignment=QtCore.Qt.AlignRight)
 
-        self.setLayout(self.layout)
+        self.setLayout(self._layout)
 
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
         self.setWindowIcon(
@@ -47,7 +47,7 @@ class LoginDialog(QtWidgets.QDialog):
         )
         self.move(300, 300)
         self.resize(200, 100)
-        
+
         self.exec_()
 
     def login(self):
