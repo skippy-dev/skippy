@@ -186,4 +186,4 @@ class TabWidget(QtWidgets.QWidget):
 
     def statusBarStats(self):
         words, letters = self.editorStats()
-        utils.showStatusMessage(f"Words: {str(words)}, Letters: {str(letters)}")
+        utils.showStatusMessage(f'Words: {words}, Letters: {letters}')

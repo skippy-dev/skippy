@@ -141,11 +141,7 @@ class Skippy(QtWidgets.QMainWindow):
 
     def toggle_theme(self):
         """Toggle current theme."""
-        if self.settings.theme == "light":
-            self.settings.theme = "dark"
-        else:
-            self.settings.theme = "light"
-
+        self.settings.theme = "dark" if self.settings.theme == "light" else "light"
         self.restart()
 
     def updateTranslate(self, lang: str):
