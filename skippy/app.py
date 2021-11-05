@@ -14,7 +14,7 @@ import sys
 
 def get_argparser() -> argparse.ArgumentParser:
     """Get the argument parser.
-
+    
     Returns:
         argparse.ArgumentParser: Argument parser
     """
@@ -42,22 +42,42 @@ def get_argparser() -> argparse.ArgumentParser:
     return parser
 
 
-def run():
-    """Initialize everything and run the application.
+class App:
+
+    """Application class
+    
+    Attributes:
+        args (argparse.Namespace): Command-line arguments
+        exit_code (int): Application exit code (default - 0)
     """
-    excepthook.init()
+    
+    def __init__(self, args: argparse.Namespace):
+        """Initializing application class
+        
+        Args:
+            args (argparse.Namespace): Command-line arguments
+        """
+        self.args = args
+        self.exit_code = 0
 
-    parser = get_argparser()
+    def run(self):
+        """Run application by command-line arguments
+        """
+        if self.args.version:
+            self.version()
+        elif self.args.plugins:
+            self.plugins()
+        else:
+            self.start_ui()
 
-    args = parser.parse_args()
+    def version(self):
+        """Print Skippy version
+        """
+        print(f"skippy v{skippy.config.version}")
 
-    logger.log.setLevel(logger.LOG_LEVELS[args.logging_level])
-
-    standarddir.initdirs()
-
-    if args.version:
-        logger.log.info(f"skippy v{skippy.config.version}")
-    elif args.plugins:
+    def plugins(self):
+        """Print plugins list with additional data
+        """
         table = PrettyTable()
         table.field_names = ["Alias", "Description", "Author", "Version"]
 
@@ -72,7 +92,13 @@ def run():
             )
 
         print(table)
-    else:
+
+    def start_ui(self):
+        """Initialize everything and run the application.
+        """
+        logger.log.setLevel(logger.LOG_LEVELS[self.args.logging_level])
+
+        standarddir.initdirs()
         logger.log.info("Initializing directories...")
 
         logger.log.info("Initializing plugin loader...")
@@ -99,4 +125,17 @@ def run():
         logger.log.info("Stop Discord RPC..")
         rpc.close()
 
-        sys.exit(exit_code)
+        self.exit_code = exit_code
+
+
+def run():
+    """Initialize everything and run the application.
+    """
+    excepthook.init()
+
+    parser = get_argparser()
+
+    app = App(parser.parse_args())
+    app.run()
+
+    sys.exit(app.exit_code)

@@ -16,7 +16,7 @@ import os
 class PreviewerWorker(thread.AbstractWorker):
     finished = QtCore.pyqtSignal(str)
 
-    def __init__(self, pdata: PageData, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, pdata: PageData, parent: Optional[QtWidgets.QWidget] = None):
         super(PreviewerWorker, self).__init__()
         self.pdata = pdata
 
@@ -25,9 +25,9 @@ class PreviewerWorker(thread.AbstractWorker):
 
 
 class Previewer(QtWidgets.QDialog):
-    def __init__(self, pdata: PageData, parent: Optional[QtCore.QObject] = None):
+    def __init__(self, pdata: PageData, parent: Optional[QtWidgets.QWidget] = None):
         super(Previewer, self).__init__(parent)
-        self.layout = QtWidgets.QVBoxLayout(self)
+        self._layout = QtWidgets.QVBoxLayout(self)
 
         self.webEngineView = QtWebEngineWidgets.QWebEngineView(self)
 
@@ -35,9 +35,9 @@ class Previewer(QtWidgets.QDialog):
         self._thread.worker.finished.connect(self.load)
         self._thread.start()
 
-        self.layout.addWidget(self.webEngineView)
+        self._layout.addWidget(self.webEngineView)
 
-        self.setLayout(self.layout)
+        self.setLayout(self._layout)
 
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
         self.setWindowIcon(

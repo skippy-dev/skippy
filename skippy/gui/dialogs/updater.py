@@ -15,7 +15,9 @@ def UpdaterDialog(version: str, update_func: Callable[[], None]):
         .translate("DIALOG_NEW_VERSION_AVAILABLE_LABEL")
         .format(version)
     )
-    msgBox.setInformativeText(translator.Translator().translate("DIALOG_YOU_CAN_DOWNLOAD_IT_LABEL"))
+    msgBox.setInformativeText(
+        translator.Translator().translate("DIALOG_YOU_CAN_DOWNLOAD_IT_LABEL")
+    )
 
     msgBox.addButton(
         translator.Translator().translate("DIALOG_CANCEL_BUTTON"),
@@ -28,8 +30,8 @@ def UpdaterDialog(version: str, update_func: Callable[[], None]):
 
     msgBox.setWindowTitle(f"Skippy - {skippy.config.version}")
     msgBox.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
+    )
 
     msgBox.exec_()
 

@@ -1,4 +1,4 @@
-from typing import NamedTuple, TypedDict, Callable, Tuple, Dict, List, Any
+from typing import NamedTuple, TypedDict, Callable, Optional, Tuple, Dict, List, Any
 
 
 class Language(NamedTuple):
@@ -27,10 +27,10 @@ class BlockSyntax(NamedTuple):
 
 class PageData(TypedDict):
     title: str
-    source: str 
+    source: str
     tags: List[str]
     files: Dict[str, str]
-    link: Tuple[str, str]
+    link: Optional[Tuple[str, str]]
 
 
 __all__ = ["Language", "Action", "InlineSyntax", "BlockSyntax", "PageData"]

@@ -23,12 +23,14 @@ class UserSitesWorker(thread.AbstractWorker):
     def sites(self) -> List[str]:
         return [
             urlparse(wiki.site).netloc
-            for wiki in pyscp.wikidot.User(filehandlers.ProfileHandler().load()[0]).member
+            for wiki in pyscp.wikidot.User(
+                filehandlers.ProfileHandler().load()[0]
+            ).member
         ]
 
 
 class SiteBox(QtWidgets.QComboBox):
-    def __init__(self, parent: Optional[QtCore.QObject] = None, default: str = ""):
+    def __init__(self, parent: Optional[QtWidgets.QWidget] = None, default: str = ""):
         super(SiteBox, self).__init__(parent)
         self.default = default
 

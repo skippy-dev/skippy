@@ -16,10 +16,10 @@ import re
 
 def render(pdata: PageData) -> str:
     """Summary
-    
+
     Args:
         pdata (PageData): Description
-    
+
     Returns:
         str: Description
     """
@@ -35,14 +35,13 @@ def render(pdata: PageData) -> str:
 #################################################
 class AbstractProcessor(metaclass=ABCMeta):
 
-    """Summary
-    """
+    """Summary"""
 
     pattern: str
 
     def __init__(self, source: str, pdata: PageData):
         """Summary
-        
+
         Args:
             source (str): Description
             pdata (PageData): Description
@@ -53,7 +52,7 @@ class AbstractProcessor(metaclass=ABCMeta):
     @property
     def matches(self) -> List[Union[Tuple[str, ...], str]]:
         """Summary
-        
+
         Returns:
             List[Union[Tuple[str, ...], str]]: Description
         """
@@ -64,22 +63,21 @@ class AbstractProcessor(metaclass=ABCMeta):
 
     @abstractmethod
     def process(self):
-        """Summary
-        """
+        """Summary"""
         pass
 
 
 class ProcessorsHandler(metaclass=ABCMeta):
 
     """Summary
-    
+
     Attributes:
         source (str): Description
     """
 
     def __init__(self, source: str, pdata: PageData):
         """Summary
-        
+
         Args:
             source (str): Description
             pdata (PageData): Description
@@ -90,7 +88,7 @@ class ProcessorsHandler(metaclass=ABCMeta):
 
     def register(self, processor: AbstractProcessor):
         """Summary
-        
+
         Args:
             processor (AbstractProcessor): Description
         """
@@ -98,7 +96,7 @@ class ProcessorsHandler(metaclass=ABCMeta):
 
     def process(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """
@@ -115,12 +113,11 @@ class ProcessorsHandler(metaclass=ABCMeta):
 #################################################
 class PreProcessorsHandler(ProcessorsHandler):
 
-    """Summary
-    """
+    """Summary"""
 
     def __init__(self, pdata: PageData):
         """Summary
-        
+
         Args:
             pdata (PageData): Description
         """
@@ -132,14 +129,14 @@ class PreProcessorsHandler(ProcessorsHandler):
 class HTMLProcessorsHandler(ProcessorsHandler):
 
     """Summary
-    
+
     Attributes:
         html (str): Description
     """
 
     def __init__(self, source: str, pdata: PageData):
         """Summary
-        
+
         Args:
             source (str): Description
             pdata (PageData): Description
@@ -151,7 +148,7 @@ class HTMLProcessorsHandler(ProcessorsHandler):
 
     def process(self):
         """Summary
-        
+
         Returns:
             TYPE: Description
         """
@@ -166,12 +163,11 @@ class HTMLProcessorsHandler(ProcessorsHandler):
 
 class PostProcessorsHandler(ProcessorsHandler):
 
-    """Summary
-    """
+    """Summary"""
 
     def __init__(self, source: str, pdata: PageData):
         """Summary
-        
+
         Args:
             source (str): Description
             pdata (PageData): Description
@@ -187,7 +183,7 @@ class PostProcessorsHandler(ProcessorsHandler):
 class IncludesProcessor(AbstractProcessor):
 
     """Summary
-    
+
     Attributes:
         source (str): Description
     """
@@ -196,10 +192,10 @@ class IncludesProcessor(AbstractProcessor):
 
     def process(self, iteration: int = 0) -> str:
         """Summary
-        
+
         Returns:
             str: Description
-        
+
         Args:
             iteration (int, optional): Description
         """
@@ -241,7 +237,7 @@ class IncludesProcessor(AbstractProcessor):
 class IftagsProcessor(AbstractProcessor):
 
     """Summary
-    
+
     Attributes:
         source (str): Description
     """
@@ -250,7 +246,7 @@ class IftagsProcessor(AbstractProcessor):
 
     def process(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """
@@ -274,14 +270,13 @@ class IftagsProcessor(AbstractProcessor):
 #################################################
 class MarkdownProcessor(AbstractProcessor):
 
-    """Summary
-    """
+    """Summary"""
 
     wiki: pyscp.core.Wiki = pyscp.wikidot.Wiki("www.wikidot.com")
 
     def _wikidot(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """
@@ -289,7 +284,7 @@ class MarkdownProcessor(AbstractProcessor):
 
     def _ftml(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """
@@ -297,7 +292,7 @@ class MarkdownProcessor(AbstractProcessor):
 
     def process(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """
@@ -309,8 +304,7 @@ class MarkdownProcessor(AbstractProcessor):
 
 class InsertDataProcessor(AbstractProcessor):
 
-    """Summary
-    """
+    """Summary"""
 
     html_base: str = """
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -384,7 +378,7 @@ class InsertDataProcessor(AbstractProcessor):
 
     def __init__(self, source: str, pdata: PageData, html: str):
         """Summary
-        
+
         Args:
             source (str): Description
             pdata (PageData): Description
@@ -395,11 +389,13 @@ class InsertDataProcessor(AbstractProcessor):
 
     def process(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """
-        self.source = self.html_base.replace("<<TITLE>>", html.escape(self.pdata["title"]))
+        self.source = self.html_base.replace(
+            "<<TITLE>>", html.escape(self.pdata["title"])
+        )
         self.source = self.source.replace("<<CONTENT>>", self.html)
         self.source = self.source.replace(
             "<<TAGS>>",
@@ -411,7 +407,7 @@ class InsertDataProcessor(AbstractProcessor):
 class ModuleCSSProcessor(AbstractProcessor):
 
     """Summary
-    
+
     Attributes:
         html (str): Description
     """
@@ -420,7 +416,7 @@ class ModuleCSSProcessor(AbstractProcessor):
 
     def __init__(self, source: str, pdata: PageData, html: str):
         """Summary
-        
+
         Args:
             source (str): Description
             pdata (PageData): Description
@@ -431,7 +427,7 @@ class ModuleCSSProcessor(AbstractProcessor):
 
     def process(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """
@@ -449,7 +445,7 @@ class ModuleCSSProcessor(AbstractProcessor):
 class LocalImagesProcessor(AbstractProcessor):
 
     """Summary
-    
+
     Attributes:
         source (str): Description
     """
@@ -458,7 +454,7 @@ class LocalImagesProcessor(AbstractProcessor):
 
     def process(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """
@@ -475,7 +471,7 @@ class LocalImagesProcessor(AbstractProcessor):
 class HTMLTagsProcessor(AbstractProcessor):
 
     """Summary
-    
+
     Attributes:
         source (str): Description
     """
@@ -484,7 +480,7 @@ class HTMLTagsProcessor(AbstractProcessor):
 
     def process(self) -> str:
         """Summary
-        
+
         Returns:
             str: Description
         """

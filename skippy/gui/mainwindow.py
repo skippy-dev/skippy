@@ -135,10 +135,8 @@ class Skippy(QtWidgets.QMainWindow):
             self, "Load files", "", "All files (*.*)"
         )
         loadFileThread = thread.Thread(workers.FileWorker(files))
-        self.loadFileThreads.append(loadFileThread)
-        loadFileThread.worker.progress.connect(
-            self.tab.currentWidget().uploadFile
-        )
+        self._loadFileThreads.append(loadFileThread)
+        loadFileThread.worker.progress.connect(self.tab.currentWidget().uploadFile)
         loadFileThread.start()
 
     def toggle_theme(self):

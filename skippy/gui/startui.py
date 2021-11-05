@@ -14,12 +14,11 @@ import sys
 
 @critical
 def start_ui():
-    """Start Skippy application.
-    """
+    """Start Skippy application."""
     logger.log.info("Skippy was started...")
 
     scpclient.SCPClient(*filehandlers.ProfileHandler().load())
-    
+
     exit_code = Skippy.EXIT_CODE_REBOOT
     while exit_code == Skippy.EXIT_CODE_REBOOT:
         app = QtWidgets.QApplication(sys.argv)

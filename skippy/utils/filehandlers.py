@@ -11,7 +11,7 @@ import os
 class AbstractFileHandler(metaclass=ABCMeta):
 
     """Abstract file handler
-    
+
     Attributes:
         filepath (str): Path to handle file
     """
@@ -20,7 +20,7 @@ class AbstractFileHandler(metaclass=ABCMeta):
 
     def __init__(self, filepath: Optional[str] = None):
         """Init FileHandler
-        
+
         Args:
             filepath (Optional[str], optional): Path to handle file
         """
@@ -32,7 +32,7 @@ class AbstractFileHandler(metaclass=ABCMeta):
 
     def read(self) -> str:
         """Read file
-        
+
         Returns:
             str: File text
         """
@@ -41,7 +41,7 @@ class AbstractFileHandler(metaclass=ABCMeta):
 
     def write(self, text: str):
         """Write file
-        
+
         Args:
             text (str): File text
         """
@@ -50,21 +50,19 @@ class AbstractFileHandler(metaclass=ABCMeta):
 
     @abstractmethod
     def load(self):
-        """Abstract load method
-        """
+        """Abstract load method"""
         pass
 
     @abstractmethod
     def save(self, *args, **kwargs):
-        """Abstract save method
-        """
+        """Abstract save method"""
         pass
 
 
 class ProfileHandler(AbstractFileHandler):
 
     """Profile handler
-    
+
     Attributes:
         file (str): Handled file name
     """
@@ -73,7 +71,7 @@ class ProfileHandler(AbstractFileHandler):
 
     def load(self) -> Tuple[str, str]:
         """Load profile
-        
+
         Returns:
             Tuple[str, str]: Tuple of user login and password
         """
@@ -84,7 +82,7 @@ class ProfileHandler(AbstractFileHandler):
 
     def save(self, login: str, password: str):
         """Save profile
-        
+
         Args:
             login (str): User login
             password (str): User password
@@ -95,15 +93,14 @@ class ProfileHandler(AbstractFileHandler):
         self.write(profile)
 
     def logout(self):
-        """Logout from account
-        """
+        """Logout from account"""
         self.save("", "")
 
 
 class SessionHandler(AbstractFileHandler):
 
     """Session Handler
-    
+
     Attributes:
         file (str): Handled file name
     """
@@ -112,7 +109,7 @@ class SessionHandler(AbstractFileHandler):
 
     def load(self) -> Dict[str, Any]:
         """Load session
-        
+
         Returns:
             Dict[str, Any]: Session
         """
@@ -122,7 +119,7 @@ class SessionHandler(AbstractFileHandler):
 
     def save(self, session: Dict[str, Any]):
         """Save session
-        
+
         Args:
             session (Dict[str, Any]): Save session
         """

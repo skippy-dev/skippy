@@ -12,7 +12,7 @@ class DiscordRPC(Presence, metaclass=Singleton):
     """Discord Rich Presence class"""
 
     def __init__(self):
-        """Init DiscordRPC"""        
+        """Init DiscordRPC"""
         super(DiscordRPC, self).__init__("828818867568640071")
 
         self._words = 0
