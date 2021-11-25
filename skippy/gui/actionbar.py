@@ -163,7 +163,7 @@ class ActionBarBase:
         for lang in translator.Translator().languages():
             name = translator.Translator().getLangName(lang)
             self.addAction(
-                Action(name, name, partial(mainwindow.updateTranslate, lang), None),
+                Action(name, name, partial(mainwindow.update_translate, lang), None),
                 self.language_menu,
             )
 

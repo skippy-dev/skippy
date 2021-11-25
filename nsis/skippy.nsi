@@ -61,6 +61,9 @@ Section "Skippy core" SecCore
 	;Store installation folder
 	WriteRegStr HKCU "Software\skippy" "" $INSTDIR
 
+	AccessControl::GrantOnFile "$INSTDIR\logs" "(BU)" "FullAccess"
+	AccessControl::GrantOnFile "$INSTDIR\property" "(BU)" "FullAccess"
+
 	;Create uninstaller
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 SectionEnd

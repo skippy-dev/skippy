@@ -11,6 +11,8 @@ Attributes:
 """
 from skippy import __version__
 
+from skippy.utils import is_frozen
+
 import os
 
 version = __version__
@@ -26,3 +28,10 @@ LOGS_FOLDER = os.path.join(SKIPPY_FOLDER, "logs")
 LANG_FOLDER = os.path.join(SKIPPY_FOLDER, "lang")
 
 PLUGINS_FOLDER = os.path.join(SKIPPY_FOLDER, "plugins")
+
+if is_frozen():
+    APPDATA_FOLDER = os.path.join(os.getenv("APPDATA"), "Skippy")
+
+    PROPERTY_FOLDER = os.path.join(APPDATA_FOLDER, "property")
+
+    LOGS_FOLDER = os.path.join(APPDATA_FOLDER, "logs")

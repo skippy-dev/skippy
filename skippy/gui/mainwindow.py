@@ -44,7 +44,7 @@ class Skippy(QtWidgets.QMainWindow):
         self.addToolBar(self.settings.toolbarArea, self.toolBar)
 
         self.tab = tabwidget.ProjectList(self)
-        self.tab.titleChanged.connect(self.updateTitle)
+        self.tab.titleChanged.connect(self.update_title)
         self.tab.statsChanged.connect(self.rpc.update)
         self.tab.load()
 
@@ -72,7 +72,7 @@ class Skippy(QtWidgets.QMainWindow):
         self._uploadPageThreads = []
         self._loadFileThreads = []
 
-    def updateTitle(self, title: str):
+    def update_title(self, title: str):
         """Update title for Skippy window."""
         self.setWindowTitle(f"{title} | Skippy - {skippy.config.version}")
 
@@ -148,7 +148,7 @@ class Skippy(QtWidgets.QMainWindow):
 
         self.restart()
 
-    def updateTranslate(self, lang: str):
+    def update_translate(self, lang: str):
         """Update translate language.
 
         Args:
