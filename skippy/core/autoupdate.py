@@ -1,29 +1,17 @@
 """Autoupdater classes
 """
-from skippy.api import ConnectionErrors, ignore
+from skippy.api import ignore
+
+from skippy.utils import cached_property, is_frozen
 
 import skippy.config
 
-from typing import Callable, Tuple, Union, List, Dict, Any
+from typing import Tuple, Union, List, Dict, Any
 from abc import ABCMeta, abstractmethod
 import requests
-import sys
 
-try:
-    from functools import cached_property
-except ImportError:
-    from functools import lru_cache
 
-    def cached_property(func: Callable[[None], Any]) -> property:
-        """Cached property
-
-        Args:
-            func (Callable[[None], Any]): Property method
-
-        Returns:
-            property: Property instance
-        """
-        return property(lru_cache(func))
+RequestException = requests.exceptions.RequestException
 
 
 def version2tuple(version: str) -> Tuple[int]:
@@ -36,15 +24,6 @@ def version2tuple(version: str) -> Tuple[int]:
         Tuple[int]: Tuple version
     """
     return tuple(map(int, version.split(".")))
-
-
-def isFrozen() -> bool:
-    """Is Skippy compiled to exe
-
-    Returns:
-        bool: Compiled or not
-    """
-    return getattr(sys, "frozen", False)
 
 
 class AbstractUpdateClient(metaclass=ABCMeta):
@@ -60,12 +39,12 @@ class AbstractUpdateClient(metaclass=ABCMeta):
         Returns:
             AbstractUpdateClient: Update client
         """
-        if isFrozen():
+        if is_frozen():
             return GithubReleasesClient()
         return PyPIClient()
 
     @cached_property
-    @ignore(ConnectionErrors, {})
+    @ignore(RequestException, {})
     def data(self) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """Update data property
 

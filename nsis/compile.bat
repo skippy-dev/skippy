@@ -8,3 +8,7 @@ makensis skippy.nsi
 
 RD /S /Q "venv"
 RD /S /Q "build"
+
+ECHO Success compiled!
+
+PAUSE

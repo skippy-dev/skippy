@@ -48,7 +48,6 @@ class App:
     
     Attributes:
         args (argparse.Namespace): Command-line arguments
-        exit_code (int): Application exit code (default - 0)
     """
     
     def __init__(self, args: argparse.Namespace):
@@ -58,7 +57,6 @@ class App:
             args (argparse.Namespace): Command-line arguments
         """
         self.args = args
-        self.exit_code = 0
 
     def run(self):
         """Run application by command-line arguments
@@ -81,7 +79,7 @@ class App:
         table = PrettyTable()
         table.field_names = ["Alias", "Description", "Author", "Version"]
 
-        for plugin in plugins.PluginLoader.pluginsData():
+        for plugin in plugins.PluginLoader.plugins_data():
             table.add_row(
                 [
                     plugin["__alias__"],
@@ -105,10 +103,10 @@ class App:
         pluginLoader = plugins.PluginLoader()
 
         logger.log.info("Load plugins...")
-        pluginLoader.loadPlugins()
+        pluginLoader.load_plugins()
 
         logger.log.info("Start plugins...")
-        pluginLoader.startPlugins()
+        pluginLoader.start_plugins()
 
         logger.log.info("Initializing Discord RPC..")
         rpc = discord_rpc.DiscordRPC()
@@ -120,12 +118,12 @@ class App:
         exit_code = start_ui()
 
         logger.log.info("Stop plugins...")
-        pluginLoader.stopPlugins()
+        pluginLoader.stop_plugins()
 
         logger.log.info("Stop Discord RPC..")
         rpc.close()
 
-        self.exit_code = exit_code
+        return exit_code
 
 
 def run():
@@ -136,6 +134,4 @@ def run():
     parser = get_argparser()
 
     app = App(parser.parse_args())
-    app.run()
-
-    sys.exit(app.exit_code)
+    sys.exit(app.run())

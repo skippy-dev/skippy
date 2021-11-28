@@ -1,14 +1,14 @@
 from PyQt5 import QtWidgets, QtCore
 
-from skippy.api import ConnectionErrors, ignore
+from skippy.api import ignore
 
 from skippy.gui import thread
 
-from skippy.utils import translator, filehandlers
+from skippy.utils import cached_property, translator, filehandlers
 
-from typing import Optional, List
+from requests.exceptions import RequestException
+from typing import Optional, Callable, List, Any
 from urllib.parse import urlparse
-import functools
 import pyscp
 
 
@@ -18,8 +18,8 @@ class UserSitesWorker(thread.AbstractWorker):
     def run(self):
         self.finished.emit(self.sites)
 
-    @functools.cached_property
-    @ignore(ConnectionErrors, [])
+    @cached_property
+    @ignore(RequestException, [])
     def sites(self) -> List[str]:
         return [
             urlparse(wiki.site).netloc
@@ -34,12 +34,12 @@ class SiteBox(QtWidgets.QComboBox):
         super(SiteBox, self).__init__(parent)
         self.default = default
 
-        self.lineEdit = QtWidgets.QLineEdit(self)
-        self.lineEdit.setPlaceholderText(
+        self._lineEdit = QtWidgets.QLineEdit(self)
+        self._lineEdit.setPlaceholderText(
             translator.Translator().translate("SITE_BOX_LINEEDIT")
         )
 
-        self.setLineEdit(self.lineEdit)
+        self.setLineEdit(self._lineEdit)
         self.setEditable(True)
 
         self.setCurrentText(default)
@@ -53,4 +53,4 @@ class SiteBox(QtWidgets.QComboBox):
         self.setCurrentText(self.default)
         self.setCompleter(QtWidgets.QCompleter(sites))
         if not self.currentText():
-            self.lineEdit.clear()
+            self._lineEdit.clear()

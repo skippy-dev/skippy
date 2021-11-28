@@ -1,5 +1,7 @@
 """Various file handlers.
 """
+from skippy.utils import is_frozen
+
 import skippy.config
 
 from abc import ABCMeta, abstractmethod
@@ -16,7 +18,7 @@ class AbstractFileHandler(metaclass=ABCMeta):
         filepath (str): Path to handle file
     """
 
-    file: str
+    _file: str
 
     def __init__(self, filepath: Optional[str] = None):
         """Init FileHandler
@@ -24,11 +26,7 @@ class AbstractFileHandler(metaclass=ABCMeta):
         Args:
             filepath (Optional[str], optional): Path to handle file
         """
-        self.filepath = (
-            filepath
-            if filepath
-            else os.path.join(skippy.config.PROPERTY_FOLDER, self.file)
-        )
+        self.filepath = (filepath if filepath else os.path.join(skippy.config.PROPERTY_FOLDER, self._file))
 
     def read(self) -> str:
         """Read file
@@ -64,10 +62,10 @@ class ProfileHandler(AbstractFileHandler):
     """Profile handler
 
     Attributes:
-        file (str): Handled file name
+        _file (str): Handled file name
     """
 
-    file = "profile.json"
+    _file = "profile.json"
 
     def load(self) -> Tuple[str, str]:
         """Load profile
@@ -77,8 +75,8 @@ class ProfileHandler(AbstractFileHandler):
         """
         if os.path.exists(self.filepath) and self.read():
             profile = json.loads(self.read())
-            return (profile["login"], profile["password"])
-        return ("", "")
+            return profile["login"], profile["password"]
+        return "", ""
 
     def save(self, login: str, password: str):
         """Save profile
@@ -102,10 +100,10 @@ class SessionHandler(AbstractFileHandler):
     """Session Handler
 
     Attributes:
-        file (str): Handled file name
+        _file (str): Handled file name
     """
 
-    file = "session.json"
+    _file = "session.json"
 
     def load(self) -> Dict[str, Any]:
         """Load session

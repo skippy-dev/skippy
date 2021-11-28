@@ -1,10 +1,10 @@
 """Example plugin
 """
-from skippy.core.plugins import BasePlugin
+from skippy.core.plugins import AbstractPlugin
 from skippy.utils.logger import log
 
 
-class ExamplePlugin(BasePlugin):
+class ExamplePlugin(AbstractPlugin):
 
     """This is a Example plugin class"""
 

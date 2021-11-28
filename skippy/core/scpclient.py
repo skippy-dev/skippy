@@ -1,12 +1,15 @@
 """Singleton facade for pyscp module.
 """
-from skippy.api import ConnectionErrors, Singleton, PageData, critical, ignore
+from skippy.api import Singleton, PageData, critical, ignore
 
 from urllib.parse import urlparse
 from pyscp.wikidot import Wiki
 from typing import Optional
 import requests
 import base64
+
+
+RequestException = requests.exceptions.RequestException
 
 
 class SCPClient(metaclass=Singleton):
@@ -26,7 +29,7 @@ class SCPClient(metaclass=Singleton):
             self.auth(login, password)
 
     @critical
-    @ignore(ConnectionErrors)
+    @ignore(RequestException)
     def auth(self, login: str, password: str):
         """Retrieving Wikidot Session from Credentials.
 
@@ -40,8 +43,8 @@ class SCPClient(metaclass=Singleton):
         self._session = wikidot.cookies
 
     @critical
-    @ignore(ConnectionErrors)
-    def getWiki(self, site: str) -> Wiki:
+    @ignore(RequestException)
+    def get_wiki(self, site: str) -> Wiki:
         """Get Wiki object instance by Wikidot site name with current session cookies.
 
         Args:
@@ -56,8 +59,13 @@ class SCPClient(metaclass=Singleton):
 
         return wiki
 
+    @staticmethod
+    def download_file(url: str):
+        with requests.get(url) as res:
+            return base64.b64encode(res.content).decode("utf-8")
+
     @critical
-    @ignore(ConnectionErrors)
+    @ignore(RequestException)
     def upload(self, page: PageData, comment: str = "Edit using Skippy"):
         """Upload page with tags and files to selected Wikidot site.
 
@@ -65,23 +73,25 @@ class SCPClient(metaclass=Singleton):
             page (PageData): Page for given Wikidot site
             comment (str, optional): Comment for uploaded changes
         """
-        wiki = self.getWiki(page["link"][0])
+        wiki = self.get_wiki(page["link"][0])
         p = wiki(page["link"][1])
 
-        p.edit(title=page["title"], source=page["source"], comment=comment)
+        try:
+            p.edit(title=page["title"], source=page["source"], comment=comment)
+        except AttributeError:
+            p.create(title=page["title"], source=page["source"], comment=comment)
 
         p.set_tags(page["tags"])
 
+        file_urls = {file.name: file.url for file in p.files}
+
         for file in page["files"]:
             file_source = base64.b64decode(page["files"][file])
-            try:
+            if file not in file_urls:
                 p.upload(file, file_source)
-            except RuntimeError:
-                try:
-                    p.remove_file(file)
-                    p.upload(file, file_source)
-                except RuntimeError:
-                    pass
+            elif file in file_urls and page["files"][file] != self.download_file(file_urls[file]):
+                p.remove_file(file)
+                p.upload(file, file_source)
 
         for file in p.files:
             name = file.name
@@ -89,7 +99,7 @@ class SCPClient(metaclass=Singleton):
                 p.remove_file(name)
 
     @ignore(Exception, {})
-    @ignore(ConnectionErrors)
+    @ignore(RequestException)
     def download(self, site: str, page: str) -> PageData:
         """Download page with tags and files fron selected Wikidot site.
 
@@ -100,13 +110,12 @@ class SCPClient(metaclass=Singleton):
         Returns:
             PageData: Page data
         """
-        wiki = self.getWiki(site)
+        wiki = self.get_wiki(site)
         p = wiki(page)
 
         files = {}
         for file in p.files:
-            with requests.get(file.url) as res:
-                files[file.name] = base64.b64encode(res.content).decode("utf-8")
+            files[file.name] = self.download_file(file.url)
 
         return {
             "title": p.title,

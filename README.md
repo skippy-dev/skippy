@@ -52,6 +52,7 @@ Features
 * Support all wikidot sites
 * Autoupdating system
 * Multi language interface
+* Advanced autocomplete, suggestion and syntax checking engine to the Wikidot syntax
 * and many other features!
 
 <h2>
