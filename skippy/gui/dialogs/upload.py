@@ -68,7 +68,7 @@ class UploadDialog(QtWidgets.QDialog):
         if site and page:
             comment = self.comment_box.text()
 
-            self.pdata["link"] = [site, page]
+            self.pdata["link"] = (site, page)
 
             self._thread = thread.Thread(workers.UploadWorker(self.pdata, comment))
             self._thread.start()

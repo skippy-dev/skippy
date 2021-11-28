@@ -216,7 +216,7 @@ class IncludesProcessor(AbstractProcessor):
                     args = []
                 for arg in args:
                     arg = re.findall(
-                        r"(?:([\w-]+)(?:(?:\s|)=(?:\s|))((?:.|\n+?)+))",
+                        r"([\w-]+)(?:(?:\s|)=(?:\s|))((?:.|\n+?)+)",
                         arg,
                     )[0]
                     p = p.replace("{$" + arg[0] + "}", arg[1])
@@ -225,7 +225,7 @@ class IncludesProcessor(AbstractProcessor):
                 log.error(e)
         if (
             re.findall(
-                r"(\[\[include(?:(?:.|\n)+?)]])",
+                r"(\[\[include(?:.|\n)+?]])",
                 self.source,
             )
             and iteration != 5
