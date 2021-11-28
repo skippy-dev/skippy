@@ -113,10 +113,7 @@ class SCPClient(metaclass=Singleton):
         wiki = self.get_wiki(site)
         p = wiki(page)
 
-        files = {}
-        for file in p.files:
-            files[file.name] = self.download_file(file.url)
-
+        files = {file.name: self.download_file(file.url) for file in p.files}
         return {
             "title": p.title,
             "source": p.source,

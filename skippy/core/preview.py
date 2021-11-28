@@ -25,9 +25,7 @@ def render(pdata: PageData) -> str:
     """
     preprocess = PreProcessorsHandler(pdata).process()
     htmlprocess = HTMLProcessorsHandler(preprocess, pdata).process()
-    postprocess = PostProcessorsHandler(htmlprocess, pdata).process()
-
-    return postprocess
+    return PostProcessorsHandler(htmlprocess, pdata).process()
 
 
 #################################################
@@ -257,9 +255,8 @@ class IftagsProcessor(AbstractProcessor):
                 if e.startswith("+"):
                     if e[1:] not in self.pdata["tags"]:
                         match = False
-                else:
-                    if e[1:] in self.pdata["tags"]:
-                        match = False
+                elif e[1:] in self.pdata["tags"]:
+                    match = False
             if match:
                 self.source = self.source.replace(iftag[0], iftag[2])
         return self.source
