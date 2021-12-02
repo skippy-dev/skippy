@@ -25,9 +25,7 @@ def render(pdata: PageData) -> str:
     """
     preprocess = PreProcessorsHandler(pdata).process()
     htmlprocess = HTMLProcessorsHandler(preprocess, pdata).process()
-    postprocess = PostProcessorsHandler(htmlprocess, pdata).process()
-
-    return postprocess
+    return PostProcessorsHandler(htmlprocess, pdata).process()
 
 
 #################################################
@@ -257,9 +255,8 @@ class IftagsProcessor(AbstractProcessor):
                 if e.startswith("+"):
                     if e[1:] not in self.pdata["tags"]:
                         match = False
-                else:
-                    if e[1:] in self.pdata["tags"]:
-                        match = False
+                elif e[1:] in self.pdata["tags"]:
+                    match = False
             if match:
                 self.source = self.source.replace(iftag[0], iftag[2])
         return self.source
@@ -272,7 +269,7 @@ class MarkdownProcessor(AbstractProcessor):
 
     """Summary"""
 
-    wiki: pyscp.core.Wiki = pyscp.wikidot.Wiki("www.wikidot.com")
+    wiki: pyscp.wikidot.Wiki = pyscp.wikidot.Wiki("www.wikidot.com")
 
     def _wikidot(self) -> str:
         """Summary
@@ -484,6 +481,6 @@ class HTMLTagsProcessor(AbstractProcessor):
         Returns:
             str: Description
         """
-        for htmltags in self.matches:
-            self.source = self.source.replace(htmltags[0], html.unescape(htmltags[1]))
+        for tag in self.matches:
+            self.source = self.source.replace(tag[0], html.unescape(tag[1]))
         return self.source
