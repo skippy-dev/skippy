@@ -272,7 +272,7 @@ class MarkdownProcessor(AbstractProcessor):
 
     """Summary"""
 
-    wiki: pyscp.core.Wiki = pyscp.wikidot.Wiki("www.wikidot.com")
+    wiki: pyscp.wikidot.Wiki = pyscp.wikidot.Wiki("www.wikidot.com")
 
     def _wikidot(self) -> str:
         """Summary
@@ -484,6 +484,6 @@ class HTMLTagsProcessor(AbstractProcessor):
         Returns:
             str: Description
         """
-        for htmltags in self.matches:
-            self.source = self.source.replace(htmltags[0], html.unescape(htmltags[1]))
+        for tag in self.matches:
+            self.source = self.source.replace(tag[0], html.unescape(tag[1]))
         return self.source
