@@ -9,7 +9,7 @@ import skippy.config
 from typing import Iterator, Optional, Callable, Union, Dict, List, Any
 from abc import ABCMeta, abstractmethod
 import importlib
-import json
+import toml
 import sys
 import os
 
@@ -61,7 +61,9 @@ class AbstractPlugin(metaclass=ABCMeta):
     __version__: str
 
     def __init__(self):
-        self._settingsPath: str = os.path.join(skippy.config.PLUGINS_FOLDER, f"{self.__alias__}.json")
+        self._settingsPath: str = os.path.join(
+            skippy.config.PLUGINS_SETTINGS_FOLDER, f"{self.__alias__}.toml"
+        )
         self._settings: Dict[str, AbstractSetting] = {}
 
     def addSetting(self, name: str, setting: AbstractSetting):
@@ -69,16 +71,22 @@ class AbstractPlugin(metaclass=ABCMeta):
 
     def load_settings(self):
         if self._settings and os.path.exists(self._settingsPath):
-            with open(self._settingsPath, "r") as f:
-                settings = json.loads(f.read())
+            with open(self._settingsPath) as f:
+                settings = toml.load(f)
             for setting in settings:
                 if setting in self._settings:
-                    self._settings[setting].fromJson(settings[setting])
+                    self._settings[setting].from_toml(settings[setting])
 
     def save_settings(self):
         if self._settings:
             with open(self._settingsPath, "w") as f:
-                f.write(json.dumps({setting: self._settings[setting].toJson() for setting in self._settings}))
+                toml.dump(
+                    {
+                        setting: self._settings[setting].to_toml()
+                        for setting in self._settings
+                    },
+                    f,
+                )
 
     @abstractmethod
     def start(self):

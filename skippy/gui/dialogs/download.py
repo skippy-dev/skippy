@@ -30,18 +30,18 @@ class DownloadDialog(QtWidgets.QDialog):
         self._layout = QtWidgets.QVBoxLayout(self)
 
         self.label = QtWidgets.QLabel(
-            translator.Translator().translate("DIALOG_ENTER_PAGE_LABEL"), self
+            translator.Translator().translate("DIALOG.ENTER_PAGE_LABEL"), self
         )
 
         self.site_box = sitebox.SiteBox(self)
 
         self.page_box = QtWidgets.QLineEdit()
         self.page_box.setPlaceholderText(
-            translator.Translator().translate("DIALOG_PAGE_BOX_PLACEHOLDER")
+            translator.Translator().translate("DIALOG.PAGE_BOX_PLACEHOLDER")
         )
 
         self.button = QtWidgets.QPushButton(
-            translator.Translator().translate("DIALOG_OK_BUTTON"), self
+            translator.Translator().translate("DIALOG.OK_BUTTON"), self
         )
         self.button.clicked.connect(self.download)
 
@@ -53,9 +53,7 @@ class DownloadDialog(QtWidgets.QDialog):
         self.setLayout(self._layout)
 
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico")))
         self.move(300, 300)
         self.resize(200, 100)
 
@@ -67,7 +65,7 @@ class DownloadDialog(QtWidgets.QDialog):
 
         self._thread = thread.Thread(DownloadWorker(site, page))
         self._thread.worker.finished.connect(
-            lambda pageData: utils.getMainWindow().tab.newTab(*pageData.values())
+            lambda page_data: utils.getMainWindow().tab.newTab(*page_data.values())
         )
         self._thread.start()
 

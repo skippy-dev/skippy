@@ -15,9 +15,7 @@ class FilesDialog(QtWidgets.QDialog):
         super(FilesDialog, self).__init__(parent)
         self._layout = QtWidgets.QVBoxLayout(self)
 
-        self.label = QtWidgets.QLabel(
-            translator.Translator().translate("FILES_DIALOG_FILES_LIST_LABEL"), self
-        )
+        self.label = QtWidgets.QLabel(translator.Translator().translate("DIALOG.FILES_LIST_LABEL"), self)
         self.label.setFont(QtGui.QFont("Arial", 10))
 
         self.scrollArea = QtWidgets.QScrollArea()
@@ -80,11 +78,7 @@ class FileLineEdit(QtWidgets.QLineEdit):
         self._prevText = title
 
         self.button = QtWidgets.QToolButton(self)
-        self.button.setIcon(
-            QtGui.QIcon(
-                os.path.join(skippy.config.RESOURCES_FOLDER, theme, "close.png")
-            )
-        )
+        self.button.setIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, theme, "close.png")))
         self.button.setStyleSheet("padding: 0px;")
         self.button.setCursor(QtCore.Qt.ArrowCursor)
         self.button.clicked.connect(lambda: self.fileRemoved.emit(self.text()))
@@ -94,11 +88,7 @@ class FileLineEdit(QtWidgets.QLineEdit):
 
         self.textEdited.connect(self.textEditedEvent)
 
-        self.setStyleSheet(
-            "QLineEdit {padding-right: "
-            + str(buttonSize.width() + frameWidth + 1)
-            + "px; }"
-        )
+        self.setStyleSheet("QLineEdit {padding-right: "+ str(buttonSize.width() + frameWidth + 1)+ "px; }")
         self.setFixedSize(200, 40)
 
     def textEditedEvent(self, new_text: str):

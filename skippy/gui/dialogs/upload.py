@@ -19,7 +19,7 @@ class UploadDialog(QtWidgets.QDialog):
         self._layout = QtWidgets.QVBoxLayout(self)
 
         self.label = QtWidgets.QLabel(
-            translator.Translator().translate("DIALOG_ENTER_PAGE_LABEL"), self
+            translator.Translator().translate("DIALOG.ENTER_PAGE_LABEL"), self
         )
 
         self.site_box = sitebox.SiteBox(
@@ -28,20 +28,20 @@ class UploadDialog(QtWidgets.QDialog):
 
         self.page_box = QtWidgets.QLineEdit()
         self.page_box.setPlaceholderText(
-            translator.Translator().translate("DIALOG_PAGE_BOX_PLACEHOLDER")
+            translator.Translator().translate("DIALOG.PAGE_BOX_PLACEHOLDER")
         )
         self.page_box.setText(self.pdata["link"][1] if self.pdata["link"] else "")
 
         self.comment_box = QtWidgets.QLineEdit()
         self.comment_box.setText(
-            translator.Translator().translate("DIALOG_COMMENT_BOX_TEXT")
+            translator.Translator().translate("DIALOG.COMMENT_BOX_TEXT")
         )
         self.comment_box.setPlaceholderText(
-            translator.Translator().translate("DIALOG_COMMENT_BOX_PLACEHOLDER")
+            translator.Translator().translate("DIALOG.COMMENT_BOX_PLACEHOLDER")
         )
 
         self.button = QtWidgets.QPushButton(
-            translator.Translator().translate("DIALOG_OK_BUTTON"), self
+            translator.Translator().translate("DIALOG.OK_BUTTON"), self
         )
         self.button.clicked.connect(self.upload)
 

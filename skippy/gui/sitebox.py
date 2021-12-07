@@ -35,9 +35,7 @@ class SiteBox(QtWidgets.QComboBox):
         self.default = default
 
         self._lineEdit = QtWidgets.QLineEdit(self)
-        self._lineEdit.setPlaceholderText(
-            translator.Translator().translate("SITE_BOX_LINEEDIT")
-        )
+        self._lineEdit.setPlaceholderText(translator.Translator().translate("DIALOG.SITE_BOX_LINEEDIT"))
 
         self.setLineEdit(self._lineEdit)
         self.setEditable(True)

@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/skippy-dev/skippy/main/img/skippy.png" width="200px" alt="skippy">
+  <img src="https://raw.githubusercontent.com/skippy-dev/skippy/main/img/banner.png" alt="skippy">
 </h1>
 
 <p align="center">
@@ -8,10 +8,15 @@
   <a href="https://pypi.python.org/pypi/skippy-pad/"><img src="https://img.shields.io/pypi/v/skippy-pad.svg"></a>
   <a href="https://pypi.python.org/pypi/skippy-pad/"><img src="https://img.shields.io/pypi/pyversions/skippy-pad.svg"></a>
   <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+  <a href="https://GitHub.com/skippy-dev/skippy/"><img src="https://img.shields.io/github/downloads/skippy-dev/skippy/total.svg"></a>
 </p>
 
 <p align="center">
-<a href="https://GitHub.com/MrNereof/"><img src="http://ForTheBadge.com/images/badges/built-with-love.svg"></a>
+  <a href="https://discord.gg/jQgWsT2umu"><img src="https://img.shields.io/discord/836620906755129386.svg?label=Discord&logo=Discord&colorB=008aff&style=for-the-badge"></a>
+</p>
+
+<p align="center">
+  <a href="https://GitHub.com/MrNereof/"><img src="http://ForTheBadge.com/images/badges/built-with-love.svg"></a>
 </p>
 
 <h3 align="center">
@@ -22,7 +27,7 @@ Skippy - Simple. Comfortable. Powerful. notepad for www.scpwiki.com
 Installation
 </h2>
 
-If you have Python you can install Skippy using pip:
+If you have Python 3.7 or later you can install Skippy using pip:
 
 ```
 $ python -m pip install skippy-pad
@@ -52,7 +57,7 @@ Features
 * Support all wikidot sites
 * Autoupdating system
 * Multi language interface
-* Advanced autocomplete, suggestion and syntax checking engine to the Wikidot syntax
+* Advanced autocomplete, suggestion and syntax engine to the Wikidot syntax
 * and many other features!
 
 <h2>
@@ -92,8 +97,18 @@ Author
 Donating
 </h2>
 
+* Buy me a coffee:
+
+<a href="https://www.buymeacoffee.com/mrnereof" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 * Cryptocurrencies:
   * Binance Smart Chain (BSC) - 0x581cc7acbe921b1fa9fccbbfe008c86f68bc097d (BTC, ETH, DOGE and etc.)
+
+## Sponsors
+
+Skippy would like to thank the following organizations for graciously permitting us to use their services for free:
+
+* [JetBrains](https://www.jetbrains.com/pycharm/) ([info](https://www.jetbrains.com/community/opensource/#support))
 
 <h2>
 License

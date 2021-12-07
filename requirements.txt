@@ -1,7 +1,8 @@
 pypresence==4.2.0
 requests==2.25.1
 prettytable==2.0.0
-pyscp>=1.1.19
-pyftml>=0.1.2
+pyscp==1.1.19
+pyftml==0.1.2
 PyQt5==5.15.5
-PyQtWebEngine==5.15.4
+PyQtWebEngine==5.15.5
+toml==0.10.2

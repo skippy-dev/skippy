@@ -1,16 +1,22 @@
-from typing import NamedTuple, TypedDict, Callable, Optional, Tuple, Dict, List, Any
+from typing import MutableMapping, NamedTuple, TypedDict, Callable, Optional, Tuple, Dict, List, Any
 
 
 class Language(NamedTuple):
     code: str
-    dictionary: Dict[str, str]
+    dictionary: MutableMapping[str, Any]
+
+
+class Field(NamedTuple):
+    tag: str
+    name: str
+    description: str
 
 
 class Action(NamedTuple):
     label: str
     statusTip: str
     func: Callable[..., Any]
-    img: str
+    img: Optional[str] = None
 
 
 class InlineSyntax(NamedTuple):
@@ -33,4 +39,4 @@ class PageData(TypedDict):
     link: Optional[Tuple[str, str]]
 
 
-__all__ = ["Language", "Action", "InlineSyntax", "BlockSyntax", "PageData"]
+__all__ = ["Language", "Field", "Action", "InlineSyntax", "BlockSyntax", "PageData"]

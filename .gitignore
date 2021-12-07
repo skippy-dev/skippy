@@ -27,6 +27,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+nsis/output/
 
 # Installer logs
 pip-log.txt

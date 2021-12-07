@@ -13,6 +13,7 @@ def initdirs():
         makedir(skippy.config.APPDATA_FOLDER)
     makedir(skippy.config.LOGS_FOLDER)
     makedir(skippy.config.PROPERTY_FOLDER)
+    makedir(skippy.config.PLUGINS_SETTINGS_FOLDER)
 
 
 def makedir(path: str):

@@ -16,7 +16,7 @@ from skippy.gui import (
     utils,
 )
 
-from skippy.utils import translator, filehandlers, discord_rpc
+from skippy.utils import translator, filehandlers
 
 import skippy.config
 
@@ -32,7 +32,7 @@ class Skippy(QtWidgets.QMainWindow):
     def __init__(self):
         """Create a new main window."""
         super(Skippy, self).__init__()
-        self.rpc = discord_rpc.DiscordRPC()
+        self._threads = []
 
         self.settings = settings.Settings()
 
@@ -44,8 +44,8 @@ class Skippy(QtWidgets.QMainWindow):
         self.addToolBar(self.settings.toolbarArea, self.toolBar)
 
         self.tab = tabwidget.ProjectList(self)
+        self.tab.statsChanged.connect(self.update_rpc)
         self.tab.titleChanged.connect(self.update_title)
-        self.tab.statsChanged.connect(self.rpc.update)
         self.tab.load()
 
         self.loginStatus = loginstatus.LoginStatus(self)
@@ -55,9 +55,7 @@ class Skippy(QtWidgets.QMainWindow):
         self.status = QtWidgets.QStatusBar(self)
         self.setStatusBar(self.status)
 
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico")))
         self.resize(self.settings.size)
         self.move(self.settings.pos)
         self.setWindowState(QtCore.Qt.WindowState(self.settings.state))
@@ -68,9 +66,6 @@ class Skippy(QtWidgets.QMainWindow):
             styles.light()
         else:
             styles.dark()
-
-        self._uploadPageThreads = []
-        self._loadFileThreads = []
 
     def update_title(self, title: str):
         """Update title for Skippy window."""
@@ -89,7 +84,8 @@ class Skippy(QtWidgets.QMainWindow):
         """
         if pdata["link"]:
             uploadPageThread = thread.Thread(workers.UploadWorker(pdata))
-            self._uploadPageThreads.append(uploadPageThread)
+            uploadPageThread.finished.connect(lambda: self.removeThread(uploadPageThread))
+            self._threads.append(uploadPageThread)
             uploadPageThread.start()
         else:
             self.upload_as(pdata)
@@ -135,9 +131,19 @@ class Skippy(QtWidgets.QMainWindow):
             self, "Load files", "", "All files (*.*)"
         )
         loadFileThread = thread.Thread(workers.FileWorker(files))
-        self._loadFileThreads.append(loadFileThread)
+        loadFileThread.finished.connect(lambda: self.removeThread(loadFileThread))
+        self._threads.append(loadFileThread)
         loadFileThread.worker.progress.connect(self.tab.currentWidget().uploadFile)
         loadFileThread.start()
+
+    def update_rpc(self, title: str, words: int, letters: int):
+        for thr in self._threads:
+            if type(thr.worker) == workers.DiscordRPCWorker:
+                return
+        updateRPCThread = thread.Thread(workers.DiscordRPCWorker(title, words, letters))
+        updateRPCThread.finished.connect(lambda: self.removeThread(updateRPCThread))
+        self._threads.append(updateRPCThread)
+        updateRPCThread.start()
 
     def toggle_theme(self):
         """Toggle current theme."""
@@ -157,6 +163,10 @@ class Skippy(QtWidgets.QMainWindow):
     def restart(cls):
         """Restart window."""
         utils.getApplication().exit(cls.EXIT_CODE_REBOOT)
+
+    def removeThread(self, thr: thread.Thread):
+        if thr in self._threads:
+            self._threads.remove(thr)
 
     def resizeEvent(self, event: QtCore.QEvent):
         """Change size of login status widget when window resized.

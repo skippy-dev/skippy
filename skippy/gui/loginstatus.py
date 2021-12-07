@@ -14,7 +14,7 @@ class LoginStatus(QtWidgets.QLabel):
     def updateStatus(self, username: str):
         if username:
             self.setText(
-                translator.Translator().translate("SIGNED_IN_AS_LABEL").format(username)
+                translator.Translator().translate("MAIN.SIGNED_IN_AS_LABEL").format(username)
             )
         else:
             self.setText("")

@@ -22,9 +22,9 @@ class AbstractSetting(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def fromJson(self, text: str):
+    def from_toml(self, text: str):
         pass
 
     @abstractmethod
-    def toJson(self) -> str:
+    def to_toml(self) -> str:
         pass
