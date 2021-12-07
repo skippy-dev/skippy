@@ -19,8 +19,6 @@ class CriticalMessageBox(QtWidgets.QDialog):
         self.setLayout(self._layout)
 
         self.setWindowTitle(f"Error: {error}")
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico")))
 
         self.resize(530, 390)

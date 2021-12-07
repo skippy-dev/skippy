@@ -1,0 +1,152 @@
+LANGUAGE = "English"
+
+[MAIN]
+SIGNED_IN_AS_LABEL = "Signed in as {}"
+FILES_BUTTON = "Files"
+
+[MENU_BAR]
+FILE_MENU = "&File"
+EDIT_MENU = "&Edit"
+SETTINGS_MENU = "&Settings"
+
+[MENU_BAR.ACTION]
+
+[MENU_BAR.ACTION.FILE]
+NEW_NAME = "New"
+NEW_STATUS_TIP = "New"
+OPEN_NAME = "Open"
+OPEN_STATUS_TIP = "Open page"
+UPLOAD_NAME = "Upload"
+UPLOAD_STATUS_TIP = "Upload page"
+UPLOAD_AS_NAME = "Upload as..."
+UPLOAD_AS_STATUS_TIP = "Upload page as..."
+CLOSE_NAME = "Close"
+CLOSE_STATUS_TIP = "Close"
+LOAD_FILES_NAME = "Load files..."
+LOAD_FILES_STATUS_TIP = "Load files to the current page"
+LOAD_SESSION_NAME = "Load Session..."
+LOAD_SESSION_STATUS_TIP = "Load Session..."
+SAVE_SESSION_NAME = "Save Session as..."
+SAVE_SESSION_STATUS_TIP = "Save Session as..."
+EXIT_NAME = "Exit"
+EXIT_STATUS_TIP = "Exit"
+
+[MENU_BAR.ACTION.EDIT]
+UNDO_NAME = "Undo"
+UNDO_STATUS_TIP = "Undo last change"
+REDO_NAME = "Redo"
+REDO_STATUS_TIP = "Redo last change"
+CUT_NAME = "Cut"
+CUT_STATUS_TIP = "Cut selected text"
+COPY_NAME = "Copy"
+COPY_STATUS_TIP = "Copy selected text"
+PASTE_NAME = "Paste"
+PASTE_STATUS_TIP = "Paste from clipboard"
+SELECT_ALL_NAME = "Select all"
+SELECT_ALL_STATUS_TIP = "Select all text"
+FIND_NAME = "Find..."
+FIND_STATUS_TIP = "Find in text"
+PREVIEW_NAME = "Preview"
+PREVIEW_STATUS_TIP = "Preview"
+INSERT_MENU = "Insert element..."
+
+[MENU_BAR.ACTION.SETTINGS]
+TOGGLE_THEME_NAME = "Toggle Theme"
+TOGGLE_THEME_STATUS_TIP = "Toggle Theme"
+LANGUAGES_MENU = "Languages..."
+LOGIN_NAME = "Login"
+LOGIN_STATUS_TIP = "Login"
+LOGOUT_NAME = "Logout"
+LOGOUT_STATUS_TIP = "Logout"
+
+[DIALOG]
+FILES_LIST_LABEL = "Files list"
+EMPTY_FILES_LIST_LABEL = "Files list is empty..."
+
+FINDER_FIND_BUTTON = "Find"
+FINDER_REPLACE_BUTTON = "Replace"
+FINDER_REPLACE_ALL_BUTTON = "Replace all"
+FINDER_NORMAL_MODE = "Normal"
+FINDER_REGEX_MODE = "RegEx"
+
+NEW_VERSION_AVAILABLE_LABEL = "New Skippy version available: v{}!"
+YOU_CAN_DOWNLOAD_IT_LABEL = "You can install it by press Install button."
+SIGN_IN_TO_WIKIDOT_LABEL = "Sign in to your Wikidot account"
+LOGIN_PLACEHOLDER = "Login"
+PASSWORD_PLACEHOLDER = "Password"
+ENTER_PAGE_LABEL = "Enter page url"
+PAGE_BOX_PLACEHOLDER = "Page name"
+COMMENT_BOX_PLACEHOLDER = "Comment"
+COMMENT_BOX_TEXT = "Edit using Skippy"
+GENERATE_BUTTON = "Generate"
+INSTALL_BUTTON = "Install"
+CANCEL_BUTTON = "Cancel"
+OK_BUTTON = "Ok"
+
+SITE_BOX_LINEEDIT = "Enter wiki url"
+
+[ELEMENTS]
+
+[ELEMENTS.BASE_IMAGE]
+
+[ELEMENTS.BASE_IMAGE.NAME]
+NAME = "Name"
+DESC = "Image url or local name"
+
+[ELEMENTS.BASE_IMAGE.CAPTION]
+NAME = "Caption"
+DESC = "Image caption"
+
+[ELEMENTS.BASE_IMAGE.WIDTH]
+NAME = "Width"
+DESC = "Image block width"
+
+[ELEMENTS.BASE_IMAGE.LINK]
+NAME = "Link"
+DESC = "Link on clicking"
+
+[ELEMENTS.RIGHT_IMAGE_BLOCK]
+ALIAS = "Right image block"
+DESC = "right-aligned image block"
+
+[ELEMENTS.LEFT_IMAGE_BLOCK]
+ALIAS = "Left image block"
+DESC = "left-aligned image block"
+
+[ELEMENTS.CENTER_IMAGE_BLOCK]
+ALIAS = "Center image block"
+DESC = "centred image block"
+
+[ELEMENTS.ACS_BAR]
+ALIAS = "ACS Bar"
+DESC = "Anomaly Classification System Bar component"
+
+[ELEMENTS.ACS_BAR.ITEM]
+NAME = "Item #"
+DESC = "Item number of SCP"
+
+[ELEMENTS.ACS_BAR.CLEARANCE]
+NAME = "Clearance"
+DESC = "Clearance Level (5,4,3,2,1,0)"
+
+[ELEMENTS.ACS_BAR.CONTAINER]
+NAME = "Container Class"
+DESC = "Container Class (Also known as Object Class)"
+
+[ELEMENTS.ACS_BAR.DISRUPTION]
+NAME = "Disruption Class"
+DESC = "Object disruption Class"
+
+[ELEMENTS.ACS_BAR.RISK]
+NAME = "Risk Class"
+DESC = "Object risk Class"
+
+[ELEMENTS.ACS_BAR.SEC_CLASS]
+NAME = "Secondary class"
+DESC = "OPTIONAL Secondary Class (If Using, set Container Class to Esoteric)"
+
+[ELEMENTS.ACS_BAR.SEC_ICON]
+NAME = "Secondary class icon"
+DESC = "If secondary class is used, place URL to Class Icon"
+
+

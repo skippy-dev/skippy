@@ -20,17 +20,9 @@ class ProjectList(QtWidgets.QTabWidget):
         resources.qInitResources()
 
         self.tabCloseRequested.connect(self.removeTab)
-        self.currentChanged.connect(
-            lambda: self.titleChanged.emit(self.currentTabText())
-        )
-        self.currentChanged.connect(
-            lambda: self.currentWidget().statusBarStats()
-            if self.currentWidget()
-            else None
-        )
-        self.titleChanged.connect(
-            lambda title: self.statsChanged.emit(title, *self.currentEditorStats())
-        )
+        self.currentChanged.connect(lambda: self.titleChanged.emit(self.currentTitle()))
+        self.currentChanged.connect(lambda: self.currentWidget().statusBarStats() if self.currentWidget() else None)
+        self.titleChanged.connect(lambda title: self.statsChanged.emit(title, *self.currentEditorStats()))
 
         self.setStyleSheet(
             "QTabBar{font-family: Arial; font-size:10pt;} QTabBar::close-button {image: url(:"
@@ -55,7 +47,7 @@ class ProjectList(QtWidgets.QTabWidget):
         tab.sourceChanged.connect(self.save)
         tab.sourceChanged.connect(
             lambda: self.statsChanged.emit(
-                self.currentTabText(), *self.currentEditorStats()
+                self.currentTitle(), *self.currentEditorStats()
             )
         )
 
@@ -64,7 +56,7 @@ class ProjectList(QtWidgets.QTabWidget):
 
         self.save()
 
-    def currentTabText(self) -> str:
+    def currentTitle(self) -> str:
         return self.tabText(self.currentIndex())
 
     @ignore(AttributeError, (0, 0))
@@ -108,7 +100,7 @@ class ProjectList(QtWidgets.QTabWidget):
         self.checkCount()
         self.setCurrentIndex(session["pos"] if "pos" in session else self.count() - 1)
 
-        self.titleChanged.emit(self.currentTabText())
+        self.titleChanged.emit(self.currentTitle())
 
         self.save()
 
@@ -145,23 +137,15 @@ class TabWidget(QtWidgets.QWidget):
         self.editor = editor.AdvancedEditor(self)
         self.editor.setPlainText(source)
         self.editor.textChanged.connect(self.statusBarStats)
-        self.editor.textChanged.connect(
-            lambda: self.setData("source", self.editor.toPlainText())
-        )
+        self.editor.textChanged.connect(lambda: self.setData("source", self.editor.toPlainText()))
         self.editor.fileDragAndDroped.connect(self.uploadFile)
 
         self.tags_box = QtWidgets.QLineEdit()
         self.tags_box.setText(" ".join(tags))
-        self.tags_box.textChanged.connect(
-            lambda text: self.setData("tags", text.split())
-        )
+        self.tags_box.textChanged.connect(lambda text: self.setData("tags", text.split()))
 
-        self.files_button = QtWidgets.QPushButton(
-            translator.Translator().translate("FILES_BUTTON"), self
-        )
-        self.files_button.clicked.connect(
-            lambda: filesdialog.FilesDialog(self.pdata["files"], self)
-        )
+        self.files_button = QtWidgets.QPushButton(translator.Translator().translate("MAIN.FILES_BUTTON"), self)
+        self.files_button.clicked.connect(lambda: filesdialog.FilesDialog(self.pdata["files"], self))
 
         self._layout.addWidget(self.title_box)
         self._layout.addWidget(self.editor)
@@ -169,9 +153,7 @@ class TabWidget(QtWidgets.QWidget):
         self._layout.addWidget(self.files_button)
         self.setLayout(self._layout)
 
-        self.setStyleSheet(
-            "QLineEdit, QPlainTextEdit {font-family: Arial; font-size:12pt;}"
-        )
+        self.setStyleSheet("QLineEdit, QPlainTextEdit {font-family: Arial; font-size:12pt;}")
 
     def editorStats(self) -> Tuple[int, int]:
         content = self.editor.toPlainText()

@@ -17,19 +17,19 @@ class LoginDialog(QtWidgets.QDialog):
         self._layout = QtWidgets.QVBoxLayout(self)
 
         self.label = QtWidgets.QLabel(
-            translator.Translator().translate("DIALOG_SIGN_IN_TO_WIKIDOT_LABEL"), self
+            translator.Translator().translate("DIALOG.SIGN_IN_TO_WIKIDOT_LABEL"), self
         )
         self.login_box = QtWidgets.QLineEdit()
         self.login_box.setPlaceholderText(
-            translator.Translator().translate("DIALOG_LOGIN_PLACEHOLDER")
+            translator.Translator().translate("DIALOG.LOGIN_PLACEHOLDER")
         )
         self.password_box = QtWidgets.QLineEdit()
         self.password_box.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password_box.setPlaceholderText(
-            translator.Translator().translate("DIALOG_PASSWORD_PLACEHOLDER")
+            translator.Translator().translate("DIALOG.PASSWORD_PLACEHOLDER")
         )
         self.button = QtWidgets.QPushButton(
-            translator.Translator().translate("DIALOG_OK_BUTTON"), self
+            translator.Translator().translate("DIALOG.OK_BUTTON"), self
         )
 
         self.button.clicked.connect(self.login)
@@ -42,9 +42,7 @@ class LoginDialog(QtWidgets.QDialog):
         self.setLayout(self._layout)
 
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico")))
         self.move(300, 300)
         self.resize(200, 100)
 

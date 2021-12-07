@@ -16,7 +16,7 @@ import os
 class PreviewerWorker(thread.AbstractWorker):
     finished = QtCore.pyqtSignal(str)
 
-    def __init__(self, pdata: PageData, parent: Optional[QtWidgets.QWidget] = None):
+    def __init__(self, pdata: PageData):
         super(PreviewerWorker, self).__init__()
         self.pdata = pdata
 
@@ -31,7 +31,7 @@ class Previewer(QtWidgets.QDialog):
 
         self.webEngineView = QtWebEngineWidgets.QWebEngineView(self)
 
-        self._thread = thread.Thread(PreviewerWorker(pdata, self))
+        self._thread = thread.Thread(PreviewerWorker(pdata))
         self._thread.worker.finished.connect(self.load)
         self._thread.start()
 
@@ -40,9 +40,7 @@ class Previewer(QtWidgets.QDialog):
         self.setLayout(self._layout)
 
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico")))
 
         mainwindow = utils.getMainWindow()
 
@@ -50,7 +48,7 @@ class Previewer(QtWidgets.QDialog):
         self.resize(mainwindow.width(), mainwindow.height())
         self.setWindowState(mainwindow.windowState())
 
-        self.show()
+        self.exec_()
 
     def load(self, html: str):
         with tempfile.NamedTemporaryFile(

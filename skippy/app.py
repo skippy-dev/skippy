@@ -91,8 +91,11 @@ class App:
 
         print(table)
 
-    def start_ui(self):
+    def start_ui(self) -> int:
         """Initialize everything and run the application.
+
+        Returns:
+            int: Exit code
         """
         logger.log.setLevel(logger.LOG_LEVELS[self.args.logging_level])
 
@@ -108,10 +111,10 @@ class App:
         logger.log.info("Start plugins...")
         pluginLoader.start_plugins()
 
-        logger.log.info("Initializing Discord RPC..")
+        logger.log.info("Initializing Discord RPC...")
         rpc = discord_rpc.DiscordRPC()
 
-        logger.log.info("Connect Discord RPC..")
+        logger.log.info("Connect Discord RPC...")
         rpc.connect()
 
         logger.log.info("Initializing application...")
@@ -120,7 +123,7 @@ class App:
         logger.log.info("Stop plugins...")
         pluginLoader.stop_plugins()
 
-        logger.log.info("Stop Discord RPC..")
+        logger.log.info("Stop Discord RPC...")
         rpc.close()
 
         return exit_code

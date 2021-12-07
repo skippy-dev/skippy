@@ -17,7 +17,7 @@ class DiscordRPC(Presence, metaclass=Singleton):
 
         self._words = 0
         self._letters = 0
-        self._time = time.mktime(time.localtime())
+        self._time = int(time.mktime(time.localtime()))
 
     @ignore((PyPresenceException, StructError))
     def connect(self):
@@ -29,7 +29,7 @@ class DiscordRPC(Presence, metaclass=Singleton):
     def update(self, title: str, words: int = 0, letters: int = 0):
         super(DiscordRPC, self).update(
             state=f"Words: {str(words)}, Letters: {str(letters)}",
-            details=f'Writing an "{title}"',
+            details=f"Writing an \"{title}\"",
             start=self._time,
             small_text="Skippy",
             small_image="none",

@@ -1,0 +1,151 @@
+LANGUAGE = "Русский"
+
+[MAIN]
+SIGNED_IN_AS_LABEL = "Вошел как {}"
+FILES_BUTTON = "Файлы"
+
+[MENU_BAR]
+FILE_MENU = "&Файл"
+EDIT_MENU = "&Редактирование"
+SETTINGS_MENU = "&Настройки"
+
+[MENU_BAR.ACTION]
+
+[MENU_BAR.ACTION.FILE]
+NEW_NAME = "Создать"
+NEW_STATUS_TIP = "Создать новую страницу"
+OPEN_NAME = "Открыть"
+OPEN_STATUS_TIP = "Открыть страницу"
+UPLOAD_NAME = "Сохранить"
+UPLOAD_STATUS_TIP = "Сохранить страницу"
+UPLOAD_AS_NAME = "Сохранить как..."
+UPLOAD_AS_STATUS_TIP = "Сохранить страницу как..."
+CLOSE_NAME = "Закрыть"
+CLOSE_STATUS_TIP = "Закрыть страницу"
+LOAD_FILES_NAME = "Загрузить файлы..."
+LOAD_FILES_STATUS_TIP = "Загрузить файлы на текущую страницу"
+LOAD_SESSION_NAME = "Загрузить сессию..."
+LOAD_SESSION_STATUS_TIP = "Загрузить сессию..."
+SAVE_SESSION_NAME = "Сохранить сессию как..."
+SAVE_SESSION_STATUS_TIP = "Сохранить сессию как..."
+EXIT_NAME = "Выйти"
+EXIT_STATUS_TIP = "Выйти"
+
+[MENU_BAR.ACTION.EDIT]
+UNDO_NAME = "Отменить"
+UNDO_STATUS_TIP = "Отменить последнее изменение"
+REDO_NAME = "Вернуть"
+REDO_STATUS_TIP = "Вернуть последнее изменение"
+CUT_NAME = "Вырезать"
+CUT_STATUS_TIP = "Вырезать выбранный текст"
+COPY_NAME = "Скопировать"
+COPY_STATUS_TIP = "Скопировать выбранный текст"
+PASTE_NAME = "Вставить"
+PASTE_STATUS_TIP = "Вставить из буфера обмена"
+SELECT_ALL_NAME = "Выбрать все"
+SELECT_ALL_STATUS_TIP = "Выбрать весь текст"
+FIND_NAME = "Найти..."
+FIND_STATUS_TIP = "Найти в тексте"
+PREVIEW_NAME = "Предпросмотр"
+PREVIEW_STATUS_TIP = "Предпросмотр"
+INSERT_MENU = "Вставить элемент..."
+
+[MENU_BAR.ACTION.SETTINGS]
+TOGGLE_THEME_NAME = "Переключить тему"
+TOGGLE_THEME_STATUS_TIP = "Переключить тему"
+LANGUAGES_MENU = "Выбрать язык..."
+LOGIN_NAME = "Войти"
+LOGIN_STATUS_TIP = "Войти в аккаунт"
+LOGOUT_NAME = "Выйти"
+LOGOUT_STATUS_TIP = "Выйти из аккаунта"
+
+[DIALOG]
+FILES_LIST_LABEL = "Список файлов"
+EMPTY_FILES_LIST_LABEL = "Здесь пусто"
+
+FINDER_FIND_BUTTON = "Найти"
+FINDER_REPLACE_BUTTON = "Заменить"
+FINDER_REPLACE_ALL_BUTTON = "Заменить всё"
+FINDER_NORMAL_MODE = "Обычный"
+FINDER_REGEX_MODE = "RegEx"
+
+NEW_VERSION_AVAILABLE_LABEL = "Доступна новая версия Skippy: v{}!"
+YOU_CAN_DOWNLOAD_IT_LABEL = "Вы можете установить его нажав на кнопку Установить."
+SIGN_IN_TO_WIKIDOT_LABEL = "Войдите в ваш аккаунт Wikidot"
+LOGIN_PLACEHOLDER = "Логин"
+PASSWORD_PLACEHOLDER = "Пароль"
+ENTER_PAGE_LABEL = "Введите адрес страницы"
+PAGE_BOX_PLACEHOLDER = "Имя страницы"
+COMMENT_BOX_PLACEHOLDER = "Комментарий"
+COMMENT_BOX_TEXT = "Edit using Skippy"
+GENERATE_BUTTON = "Сгенерировать"
+INSTALL_BUTTON = "Установить"
+CANCEL_BUTTON = "Отменить"
+OK_BUTTON = "Ок"
+
+SITE_BOX_LINEEDIT = "Введите адрес сайта"
+
+[ELEMENTS]
+
+[ELEMENTS.BASE_IMAGE]
+
+[ELEMENTS.BASE_IMAGE.NAME]
+NAME = "Название"
+DESC = "Локальное название картинки или ссылка на него"
+
+[ELEMENTS.BASE_IMAGE.CAPTION]
+NAME = "Подпись"
+DESC = "Подпись под картинкой"
+
+[ELEMENTS.BASE_IMAGE.WIDTH]
+NAME = "Ширина"
+DESC = "Ширина блока с картинкой"
+
+[ELEMENTS.BASE_IMAGE.LINK]
+NAME = "Ссылка"
+DESC = "Ссылка при нажатии"
+
+[ELEMENTS.RIGHT_IMAGE_BLOCK]
+ALIAS = "Правый блок изображения"
+DESC = "блок изображения с выравниванием по правому краю"
+
+[ELEMENTS.LEFT_IMAGE_BLOCK]
+ALIAS = "Левый блок изображения"
+DESC = "блок изображения с выравниванием по левому краю"
+
+[ELEMENTS.CENTER_IMAGE_BLOCK]
+ALIAS = "Центральный блок изображения"
+DESC = "блок изображения по центру"
+
+[ELEMENTS.ACS_BAR]
+ALIAS = "Плашка ACS"
+DESC = "компонент плашки Системы Классификации Аномалий"
+
+[ELEMENTS.ACS_BAR.ITEM]
+NAME = "Объект №"
+DESC = "Номер объекта"
+
+[ELEMENTS.ACS_BAR.CLEARANCE]
+NAME = "Уровень допуска"
+DESC = "Уровень допуска (5,4,3,2,1,0)"
+
+[ELEMENTS.ACS_BAR.CONTAINER]
+NAME = "Класс содержания"
+DESC = "Класс содержания (Также известен как Класс объекта)"
+
+[ELEMENTS.ACS_BAR.DISRUPTION]
+NAME = "Класс нарушения"
+DESC = "Класс нарушения объекта"
+
+[ELEMENTS.ACS_BAR.RISK]
+NAME = "Класс риска"
+DESC = "Класс риска объекта"
+
+[ELEMENTS.ACS_BAR.SEC_CLASS]
+NAME = "Вторичный класс"
+DESC = "Вторичный класс (поставьте Классом содержания \"Нестандартный\")"
+
+[ELEMENTS.ACS_BAR.SEC_ICON]
+NAME = "Иконка вторичного класса"
+DESC = "Если используется вторичный класс, вставьте ссылку на его иконку"
+

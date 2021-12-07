@@ -55,13 +55,15 @@ setuptools.setup(
     url="https://github.com/skippy-dev/skippy/",
     author=_get_constant("author"),
     author_email=_get_constant("email"),
-    python_requires=">=3.9",
+    python_requires=">=3.7",
     license=_get_constant("license"),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Other Audience",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
     keywords=["scp", "wikidot", "pyscp", "skippy"],
@@ -72,7 +74,7 @@ setuptools.setup(
         "skippy": [
             "resources/*",
             "resources/*/*",
-            "lang/*.json",
+            "lang/*.toml"
         ]
     },
     entry_points={

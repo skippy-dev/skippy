@@ -4,7 +4,7 @@ from skippy.api import Singleton, Language
 import skippy.config
 
 from typing import List
-import json
+import toml
 import os
 
 
@@ -27,7 +27,7 @@ class Translator(metaclass=Singleton):
             os.path.splitext(file)[0]
             for file in os.listdir(skippy.config.LANG_FOLDER)
             if os.path.isfile(os.path.join(skippy.config.LANG_FOLDER, file))
-            if os.path.splitext(file)[1] == ".json"
+            if os.path.splitext(file)[1] == ".toml"
         ]
 
     @staticmethod
@@ -40,9 +40,9 @@ class Translator(metaclass=Singleton):
         Returns:
             str: Language name
         """
-        path = os.path.join(skippy.config.LANG_FOLDER, f"{lang}.json")
+        path = os.path.join(skippy.config.LANG_FOLDER, f"{lang}.toml")
         with open(path, encoding="utf-8") as f:
-            return json.loads(f.read())["LANGUAGE"]
+            return toml.load(f)["LANGUAGE"]
 
     def load(self, lang: str = "en") -> Language:
         """Load language by code
@@ -53,9 +53,9 @@ class Translator(metaclass=Singleton):
         Returns:
             Language: Language namedtuple, with language code and dictionary
         """
-        path = os.path.join(skippy.config.LANG_FOLDER, f"{lang}.json")
+        path = os.path.join(skippy.config.LANG_FOLDER, f"{lang}.toml")
         with open(path, encoding="utf-8") as f:
-            dictionary = json.loads(f.read())
+            dictionary = toml.load(f)
         self._language = Language(lang, dictionary)
 
         return self._language
@@ -70,6 +70,9 @@ class Translator(metaclass=Singleton):
             str: Translated string if available, else return input context
         """
         try:
-            return self._language.dictionary[context]
+            out = self._language.dictionary
+            for text in context.split("."):
+                out = out[text]
+            return out
         except KeyError:
             return context

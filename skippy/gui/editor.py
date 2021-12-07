@@ -473,9 +473,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
             if (
                 event.text() == pattern.opening[-1:]
                 and left[-len(pattern.opening) :] == pattern.opening
-                and (
-                    right[: len(pattern.closing)] != pattern.closing or pattern.multiple
-                )
+                and (right[: len(pattern.closing)] != pattern.closing or pattern.multiple)
             ):
                 self.insertPlainText(pattern.closing)
                 cursor = self.textCursor()

@@ -1,4 +1,4 @@
-"""Summary
+"""Wikidot syntax previewer
 """
 from skippy.api import PageData
 
@@ -15,13 +15,13 @@ import re
 
 
 def render(pdata: PageData) -> str:
-    """Summary
+    """Render page by page data
 
     Args:
-        pdata (PageData): Description
+        pdata (PageData): Page data (title, source, tags and files)
 
     Returns:
-        str: Description
+        str: Rendered HTML
     """
     preprocess = PreProcessorsHandler(pdata).process()
     htmlprocess = HTMLProcessorsHandler(preprocess, pdata).process()
@@ -33,26 +33,26 @@ def render(pdata: PageData) -> str:
 #################################################
 class AbstractProcessor(metaclass=ABCMeta):
 
-    """Summary"""
+    """Abstract processor class"""
 
     pattern: str
 
     def __init__(self, source: str, pdata: PageData):
-        """Summary
+        """Initializing Processor
 
         Args:
-            source (str): Description
-            pdata (PageData): Description
+            source (str): Page source
+            pdata (PageData): Page data
         """
         self.source: str = source
         self.pdata: PageData = pdata
 
     @property
     def matches(self) -> List[Union[Tuple[str, ...], str]]:
-        """Summary
+        """Get all matches in source by pattern
 
         Returns:
-            List[Union[Tuple[str, ...], str]]: Description
+            List[Union[Tuple[str, ...], str]]: List of matches
         """
         return re.findall(
             self.pattern,
@@ -61,42 +61,38 @@ class AbstractProcessor(metaclass=ABCMeta):
 
     @abstractmethod
     def process(self):
-        """Summary"""
+        """Abstract process method"""
         pass
 
 
-class ProcessorsHandler(metaclass=ABCMeta):
+class ProcessorsHandlerBase:
 
-    """Summary
-
-    Attributes:
-        source (str): Description
-    """
+    """Abstract processors handler class"""
 
     def __init__(self, source: str, pdata: PageData):
         """Summary
 
         Args:
-            source (str): Description
-            pdata (PageData): Description
+            source (str): Page source
+            pdata (PageData): Page data
         """
         self.source: str = source
         self.pdata: PageData = pdata
         self.processors: List[AbstractProcessor] = []
 
-    def register(self, processor: AbstractProcessor):
-        """Summary
+    def register(self, processor: AbstractProcessor) -> object:
+        """Register a processor
 
         Args:
-            processor (AbstractProcessor): Description
+            processor (AbstractProcessor): Processor class
         """
         self.processors.append(processor)
 
     def process(self) -> str:
-        """Summary
+        """Run all processor
 
         Returns:
-            str: Description
+            str: Processed source
         """
         for processor in self.processors:
             try:
@@ -109,46 +105,42 @@ class ProcessorsHandler(metaclass=ABCMeta):
 #################################################
 # ProcessorsHandlers
 #################################################
-class PreProcessorsHandler(ProcessorsHandler):
+class PreProcessorsHandler(ProcessorsHandlerBase):
 
-    """Summary"""
+    """Handler of preprocessors"""
 
     def __init__(self, pdata: PageData):
-        """Summary
+        """Initializing preprocessors handler
 
         Args:
-            pdata (PageData): Description
+            pdata (PageData): Page data
         """
         super(PreProcessorsHandler, self).__init__(pdata["source"], pdata)
         self.register(IncludesProcessor)
         self.register(IftagsProcessor)
 
 
-class HTMLProcessorsHandler(ProcessorsHandler):
+class HTMLProcessorsHandler(ProcessorsHandlerBase):
 
-    """Summary
-
-    Attributes:
-        html (str): Description
-    """
+    """Handler of HTML processors"""
 
     def __init__(self, source: str, pdata: PageData):
-        """Summary
+        """Initializing HTML processors handler
 
         Args:
-            source (str): Description
-            pdata (PageData): Description
+            source (str): Page source
+            pdata (PageData): Page data
         """
         super(HTMLProcessorsHandler, self).__init__(source, pdata)
         self.register(MarkdownProcessor)
         self.register(InsertDataProcessor)
         self.register(ModuleCSSProcessor)
 
-    def process(self):
-        """Summary
+    def process(self) -> str:
+        """Run all processor
 
         Returns:
-            TYPE: Description
+            str: Processed source
         """
         self.html = self.processors[0](self.source, self.pdata).process()
         for processor in self.processors[1:]:
@@ -159,16 +151,16 @@ class HTMLProcessorsHandler(ProcessorsHandler):
         return self.html
 
 
-class PostProcessorsHandler(ProcessorsHandler):
+class PostProcessorsHandler(ProcessorsHandlerBase):
 
-    """Summary"""
+    """Handler of postprocessors"""
 
     def __init__(self, source: str, pdata: PageData):
-        """Summary
+        """Initializing postprocessors handler
 
         Args:
-            source (str): Description
-            pdata (PageData): Description
+            source (str): Page source
+            pdata (PageData): Page data
         """
         super(PostProcessorsHandler, self).__init__(source, pdata)
         self.register(LocalImagesProcessor)
@@ -180,22 +172,18 @@ class PostProcessorsHandler(ProcessorsHandler):
 #################################################
 class IncludesProcessor(AbstractProcessor):
 
-    """Summary
-
-    Attributes:
-        source (str): Description
-    """
+    """Include processor"""
 
     pattern: str = r"(\[\[include\s(?::.+?:|)(?:.+?:|)(?:.+)(?:\s((?:.|\n)+?)|)]])"
 
     def process(self, iteration: int = 0) -> str:
-        """Summary
-
-        Returns:
-            str: Description
+        """Replace all include tags with included page source
 
         Args:
-            iteration (int, optional): Description
+            iteration (int, optional): Include iteration (max=5)
+
+        Returns:
+            str: Processed source
         """
         for include in self.matches:
             path = re.findall(
@@ -234,19 +222,15 @@ class IncludesProcessor(AbstractProcessor):
 
 class IftagsProcessor(AbstractProcessor):
 
-    """Summary
-
-    Attributes:
-        source (str): Description
-    """
+    """Iftags processor"""
 
     pattern: str = r"(\[\[iftags (.+?)]]((?:(?:.|\n|\s)+?))\[\[\/iftags]])"
 
     def process(self) -> str:
-        """Summary
+        """Remove iftags if it not matches with page tags
 
         Returns:
-            str: Description
+            str: Processed source
         """
         for iftag in self.matches:
             match = True
@@ -267,31 +251,31 @@ class IftagsProcessor(AbstractProcessor):
 #################################################
 class MarkdownProcessor(AbstractProcessor):
 
-    """Summary"""
+    """Markdown processor"""
 
     wiki: pyscp.wikidot.Wiki = pyscp.wikidot.Wiki("www.wikidot.com")
 
     def _wikidot(self) -> str:
-        """Summary
+        """If connected to internet, get previewed HTML from Wikidot
 
         Returns:
-            str: Description
+            str: Previewed source
         """
         return self.wiki._module("edit/PagePreviewModule", source=self.source)["body"]
 
     def _ftml(self) -> str:
-        """Summary
+        """If don't have connection to internet, get previewed HTML from local FTML previewer
 
         Returns:
-            str: Description
+            str: Previewed source
         """
         return pyftml.render_html(self.source)["body"]
 
     def process(self) -> str:
-        """Summary
+        """Get previewed page with online/offline methods
 
         Returns:
-            str: Description
+            str: Processed source
         """
         try:
             return self._wikidot()
@@ -301,7 +285,7 @@ class MarkdownProcessor(AbstractProcessor):
 
 class InsertDataProcessor(AbstractProcessor):
 
-    """Summary"""
+    """InsertData processor"""
 
     html_base: str = """
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -374,21 +358,21 @@ class InsertDataProcessor(AbstractProcessor):
         """
 
     def __init__(self, source: str, pdata: PageData, html: str):
-        """Summary
+        """Initializing InsertData processor
 
         Args:
-            source (str): Description
-            pdata (PageData): Description
-            html (str): Description
+            source (str): Page source
+            pdata (PageData): Page data
+            html (str): Previewed page html
         """
         super(InsertDataProcessor, self).__init__(source, pdata)
         self.html: str = html
 
     def process(self) -> str:
-        """Summary
+        """Insert page data to HTML template
 
         Returns:
-            str: Description
+            str: Processed HTML page
         """
         self.source = self.html_base.replace(
             "<<TITLE>>", html.escape(self.pdata["title"])
@@ -403,30 +387,26 @@ class InsertDataProcessor(AbstractProcessor):
 
 class ModuleCSSProcessor(AbstractProcessor):
 
-    """Summary
-
-    Attributes:
-        html (str): Description
-    """
+    """Module CSS processor"""
 
     pattern: str = r"(?:(?:\[\[module) (?:CSS|css)(?:(.+?)|)\]\]\n)((.|\n)+?)(?:\n\[\[\/module\]\])"
 
     def __init__(self, source: str, pdata: PageData, html: str):
-        """Summary
+        """Initializing Module CSS processor
 
         Args:
-            source (str): Description
-            pdata (PageData): Description
-            html (str): Description
+            source (str): Page source
+            pdata (PageData): Page data
+            html (str): Previewed page html
         """
         super(ModuleCSSProcessor, self).__init__(source, pdata)
         self.html: str = html
 
     def process(self) -> str:
-        """Summary
+        """Convert [[module CSS]] block to <style> tag
 
         Returns:
-            str: Description
+            str: Processed HTML page
         """
         styles = ""
         for style in self.matches:
@@ -441,19 +421,15 @@ class ModuleCSSProcessor(AbstractProcessor):
 #################################################
 class LocalImagesProcessor(AbstractProcessor):
 
-    """Summary
-
-    Attributes:
-        source (str): Description
-    """
+    """Local images processor"""
 
     pattern: str = r'<img src="http://www.wdfiles.com/local--files//(.+?)"'
 
     def process(self) -> str:
-        """Summary
+        """Insert local images to page
 
         Returns:
-            str: Description
+            str: Processed HTML page
         """
         files = self.pdata["files"]
         for img in self.matches:
@@ -467,19 +443,15 @@ class LocalImagesProcessor(AbstractProcessor):
 
 class HTMLTagsProcessor(AbstractProcessor):
 
-    """Summary
-
-    Attributes:
-        source (str): Description
-    """
+    """HTML tags processor"""
 
     pattern: str = r"(\[\[html(?:(?:.+?)| |)]]((?:.|\n|\s)+?)\[\[\/html]])"
 
     def process(self) -> str:
-        """Summary
+        """Unescape [[html]] tags
 
         Returns:
-            str: Description
+            str: Processed HTML page
         """
         for tag in self.matches:
             self.source = self.source.replace(tag[0], html.unescape(tag[1]))
