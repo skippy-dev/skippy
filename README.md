@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="file:///C:/Users/MrNereof/Desktop/skippy/img/banner.png" alt="skippy">
+  <img src="https://raw.githubusercontent.com/skippy-dev/skippy/main/img/banner.png" alt="skippy">
 </h1>
 
 <p align="center">
