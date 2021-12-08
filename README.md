@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="https://GitHub.com/MrNereof/"><img src="https://ForTheBadge.com/images/badges/built-with-love.svg"></a>
+  <a href="https://GitHub.com/MrNereof/"><img src="http://ForTheBadge.com/images/badges/built-with-love.svg"></a>
 </p>
 
 <h3 align="center">
