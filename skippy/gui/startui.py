@@ -14,8 +14,7 @@ import sys
 
 @critical
 def start_ui():
-    """Start Skippy application.
-    """
+    """Start Skippy application."""
     logger.log.info("Skippy was started...")
 
     scpclient.SCPClient(*filehandlers.ProfileHandler().load())

@@ -135,20 +135,24 @@ class ActionBarBase:
         self.preview_action = Action(
             Translator().translate("MENU_BAR.ACTION.EDIT.PREVIEW_NAME"),
             Translator().translate("MENU_BAR.ACTION.EDIT.PREVIEW_STATUS_TIP"),
-            lambda: previewer.Previewer(mainwindow.tab.currentWidget().pdata, mainwindow).deleteLater(),
+            lambda: previewer.Previewer(
+                mainwindow.tab.currentWidget().pdata, mainwindow
+            ).deleteLater(),
             "preview",
         )
 
-        self.elements_menu = QtWidgets.QMenu(Translator().translate("MENU_BAR.ACTION.EDIT.INSERT_MENU"))
+        self.elements_menu = QtWidgets.QMenu(
+            Translator().translate("MENU_BAR.ACTION.EDIT.INSERT_MENU")
+        )
         for elem in elems:
             element = elem()
             self.addAction(
                 Action(
                     Translator().translate(element.__alias__),
                     Translator().translate(element.__description__),
-                    partial(elements.ElementDialog, element, mainwindow)
+                    partial(elements.ElementDialog, element, mainwindow),
                 ),
-                self.elements_menu
+                self.elements_menu,
             )
 
         self.toggle_theme_action = Action(
@@ -177,9 +181,14 @@ class ActionBarBase:
         )
         for lang in Translator().languages():
             name = Translator().getLangName(lang)
-            self.addAction(Action(name, name, partial(mainwindow.update_translate, lang)), self.language_menu)
+            self.addAction(
+                Action(name, name, partial(mainwindow.update_translate, lang)),
+                self.language_menu,
+            )
 
-    def addAction(self, action: Action, menu: Optional[QtWidgets.QMenu] = None) -> QtWidgets.QAction:
+    def addAction(
+        self, action: Action, menu: Optional[QtWidgets.QMenu] = None
+    ) -> QtWidgets.QAction:
         qaction = QtWidgets.QAction(action.label, self)
 
         if action.img:
@@ -201,7 +210,9 @@ class ActionBarBase:
 
         return qaction
 
-    def addMenu(self, qmenu: Union[str, QtWidgets.QMenu], menu: Optional[QtWidgets.QMenu] = None) -> QtWidgets.QMenu:
+    def addMenu(
+        self, qmenu: Union[str, QtWidgets.QMenu], menu: Optional[QtWidgets.QMenu] = None
+    ) -> QtWidgets.QMenu:
         if type(qmenu) == str:
             qmenu = QtWidgets.QMenu(qmenu, self)
 
@@ -218,9 +229,7 @@ class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
         super(MenuBar, self).__init__(parent)
         self.initActions()
 
-        self.file_menu = self.addMenu(
-            Translator().translate("MENU_BAR.FILE_MENU")
-        )
+        self.file_menu = self.addMenu(Translator().translate("MENU_BAR.FILE_MENU"))
         self.addAction(self.new_action, self.file_menu)
         self.addAction(self.open_action, self.file_menu)
         self.addAction(self.upload_action, self.file_menu)
@@ -234,9 +243,7 @@ class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
         self.file_menu.addSeparator()
         self.addAction(self.exit_action, self.file_menu)
 
-        self.edit_menu = self.addMenu(
-            Translator().translate("MENU_BAR.EDIT_MENU")
-        )
+        self.edit_menu = self.addMenu(Translator().translate("MENU_BAR.EDIT_MENU"))
         self.addAction(self.undo_action, self.edit_menu)
         self.addAction(self.redo_action, self.edit_menu)
         self.edit_menu.addSeparator()

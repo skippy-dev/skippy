@@ -12,14 +12,20 @@ from typing import Optional
 
 
 class ElementDialog(QtWidgets.QDialog):
-    def __init__(self, element: AbstractElement, parent: Optional[QtWidgets.QWidget] = None):
+    def __init__(
+        self, element: AbstractElement, parent: Optional[QtWidgets.QWidget] = None
+    ):
         super(ElementDialog, self).__init__(parent)
         self.element = element
 
         self._layout = QtWidgets.QVBoxLayout(self)
 
-        self.element_data = QtWidgets.QLabel(Translator().translate(self.element.__alias__) + " - " +
-                                             Translator().translate(self.element.__description__), self)
+        self.element_data = QtWidgets.QLabel(
+            Translator().translate(self.element.__alias__)
+            + " - "
+            + Translator().translate(self.element.__description__),
+            self,
+        )
         self.element_data.setWordWrap(True)
 
         self._layout.addWidget(self.element_data)
@@ -30,7 +36,9 @@ class ElementDialog(QtWidgets.QDialog):
         self.vbox = QtWidgets.QVBoxLayout()
         self.fields = {}
         for field in self.element.required_fields:
-            label = QtWidgets.QLabel(Translator().translate(field.name) if field.name else field.tag, self)
+            label = QtWidgets.QLabel(
+                Translator().translate(field.name) if field.name else field.tag, self
+            )
 
             line = QtWidgets.QPlainTextEdit(self)
             line.setFixedHeight(25)
@@ -55,13 +63,17 @@ class ElementDialog(QtWidgets.QDialog):
 
         self._layout.addWidget(self.previewer)
 
-        self.button = QtWidgets.QPushButton(Translator().translate("DIALOG.GENERATE_BUTTON"), self)
+        self.button = QtWidgets.QPushButton(
+            Translator().translate("DIALOG.GENERATE_BUTTON"), self
+        )
         self.button.clicked.connect(self.process)
         self._layout.addWidget(self.button, alignment=QtCore.Qt.AlignRight)
 
         self.setLayout(self._layout)
 
-        self.setWindowTitle(f"{Translator().translate(self.element.__alias__)} | skippy - {skippy.config.version}")
+        self.setWindowTitle(
+            f"{Translator().translate(self.element.__alias__)} | skippy - {skippy.config.version}"
+        )
         self.move(300, 300)
         self.resize(500, 400)
 
@@ -73,13 +85,13 @@ class ElementDialog(QtWidgets.QDialog):
         self.previewer.setPlainText(self.preview())
 
     def process(self):
-        getMainWindow().tab.currentWidget().editor.insertPlainText(
-            self.preview()
-        )
+        getMainWindow().tab.currentWidget().editor.insertPlainText(self.preview())
         self.close()
 
     def preview(self):
-        return self.element.preview({field: self.fields[field].toPlainText() for field in self.fields})
+        return self.element.preview(
+            {field: self.fields[field].toPlainText() for field in self.fields}
+        )
 
 
 class QHLine(QtWidgets.QFrame):

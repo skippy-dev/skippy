@@ -12,28 +12,27 @@ from typing import Dict, List
 class AbstractElement(metaclass=ABCMeta):
 
     """Abstract element class
-    
+
     Attributes:
         required_fields (List[Field]): List of element fields
     """
-    
+
     __alias__: str
     __description__: str
 
     base: str
 
     def __init__(self):
-        """Initializing element
-        """
+        """Initializing element"""
         self.required_fields: List[Field] = []
         self._init_fields()
 
     def check_args(self, args: Dict[str, str]):
         """Check required arguments
-        
+
         Args:
             args (Dict[str, str]): Arguments for fields
-        
+
         Raises:
             TypeError: Don't received required argument
         """
@@ -45,13 +44,12 @@ class AbstractElement(metaclass=ABCMeta):
 
     @abstractmethod
     def _init_fields(self):
-        """Abstract init fields method
-        """
+        """Abstract init fields method"""
         pass
 
     def add_field(self, tag: str, name: str = "", description: str = ""):
         """Add field to element
-        
+
         Args:
             tag (str): Field tag
             name (str, optional): Field name
@@ -61,10 +59,10 @@ class AbstractElement(metaclass=ABCMeta):
 
     def prepare_args(self, args: Dict[str, str]) -> Dict[str, str]:
         """Prepare arguments
-        
+
         Args:
             args (Dict[str, str]): Arguments for fields
-        
+
         Returns:
             Dict[str, str]: Prepared arguments
         """
@@ -72,10 +70,10 @@ class AbstractElement(metaclass=ABCMeta):
 
     def preview(self, args: Dict[str, str]) -> str:
         """Preview element using arguments
-        
+
         Args:
             args (Dict[str, str]): Arguments for fields
-        
+
         Returns:
             str: Description
         """
@@ -90,9 +88,8 @@ class AbstractElement(metaclass=ABCMeta):
 
 class AbstractComponent(AbstractElement):
 
-    """Abstract included component
-    """
-    
+    """Abstract included component"""
+
     component: str
     base: str = "[[include <<component>> <<args>>]]"
 
@@ -110,15 +107,16 @@ class AbstractComponent(AbstractElement):
         next_line = "\n" if self.multiline else " "
         return {
             "component": self.component,
-            "args": f" |{next_line}".join([f"{arg}={args[arg]}" for arg in args if args[arg]]),
+            "args": f" |{next_line}".join(
+                [f"{arg}={args[arg]}" for arg in args if args[arg]]
+            ),
         }
 
 
 class BaseImageBlock(AbstractComponent):
 
-    """Base image block
-    """
-    
+    """Base image block"""
+
     component: str = "component:image-block"
 
     multiline: bool = False
@@ -126,12 +124,21 @@ class BaseImageBlock(AbstractComponent):
     align: str
 
     def _init_fields(self):
-        """Initializing fields
-        """
-        self.add_field("name", "ELEMENTS.BASE_IMAGE.NAME.NAME", "ELEMENTS.BASE_IMAGE.NAME.DESC")
-        self.add_field("caption", "ELEMENTS.BASE_IMAGE.CAPTION.NAME", "ELEMENTS.BASE_IMAGE.CAPTION.DESC")
-        self.add_field("width", "ELEMENTS.BASE_IMAGE.WIDTH.NAME", "ELEMENTS.BASE_IMAGE.WIDTH.DESC")
-        self.add_field("link", "ELEMENTS.BASE_IMAGE.LINK.NAME", "ELEMENTS.BASE_IMAGE.LINK.DESC")
+        """Initializing fields"""
+        self.add_field(
+            "name", "ELEMENTS.BASE_IMAGE.NAME.NAME", "ELEMENTS.BASE_IMAGE.NAME.DESC"
+        )
+        self.add_field(
+            "caption",
+            "ELEMENTS.BASE_IMAGE.CAPTION.NAME",
+            "ELEMENTS.BASE_IMAGE.CAPTION.DESC",
+        )
+        self.add_field(
+            "width", "ELEMENTS.BASE_IMAGE.WIDTH.NAME", "ELEMENTS.BASE_IMAGE.WIDTH.DESC"
+        )
+        self.add_field(
+            "link", "ELEMENTS.BASE_IMAGE.LINK.NAME", "ELEMENTS.BASE_IMAGE.LINK.DESC"
+        )
 
     def prepare_args(self, args: Dict[str, str]) -> Dict[str, str]:
         """Prepare arguments
@@ -148,9 +155,8 @@ class BaseImageBlock(AbstractComponent):
 
 class RightImageBlock(BaseImageBlock):
 
-    """Right image block
-    """
-    
+    """Right image block"""
+
     __alias__: str = "ELEMENTS.RIGHT_IMAGE_BLOCK.ALIAS"
     __description__: str = "ELEMENTS.RIGHT_IMAGE_BLOCK.DESC"
 
@@ -159,8 +165,7 @@ class RightImageBlock(BaseImageBlock):
 
 class LeftImageBlock(BaseImageBlock):
 
-    """Left image block
-    """
+    """Left image block"""
 
     __alias__: str = "ELEMENTS.LEFT_IMAGE_BLOCK.ALIAS"
     __description__: str = "ELEMENTS.LEFT_IMAGE_BLOCK.DESC"
@@ -170,9 +175,8 @@ class LeftImageBlock(BaseImageBlock):
 
 class CenterImageBlock(BaseImageBlock):
 
-    """Center image block
-    """
-    
+    """Center image block"""
+
     __alias__: str = "ELEMENTS.CENTER_IMAGE_BLOCK.ALIAS"
     __description__: str = "ELEMENTS.CENTER_IMAGE_BLOCK.DESC"
 
@@ -181,8 +185,7 @@ class CenterImageBlock(BaseImageBlock):
 
 class ACSBarComponent(AbstractComponent):
 
-    """Anomaly Classification Bar component
-    """
+    """Anomaly Classification Bar component"""
 
     __alias__: str = "ELEMENTS.ACS_BAR.ALIAS"
     __description__: str = "ELEMENTS.ACS_BAR.DESC"
@@ -190,13 +193,42 @@ class ACSBarComponent(AbstractComponent):
     component: str = "component:anomaly-class-bar-source"
 
     def _init_fields(self):
-        self.add_field("item-number", "ELEMENTS.ACS_BAR.ITEM.NAME", "ELEMENTS.ACS_BAR.ITEM.DESC")
-        self.add_field("clearance", "ELEMENTS.ACS_BAR.CLEARANCE.NAME", "ELEMENTS.ACS_BAR.CLEARANCE.DESC")
-        self.add_field("container-class", "ELEMENTS.ACS_BAR.CONTAINER.NAME", "ELEMENTS.ACS_BAR.CONTAINER.DESC")
-        self.add_field("disruption-class", "ELEMENTS.ACS_BAR.DISRUPTION.NAME", "ELEMENTS.ACS_BAR.DISRUPTION.DESC")
-        self.add_field("risk-class", "ELEMENTS.ACS_BAR.RISK.NAME", "ELEMENTS.ACS_BAR.RISK.DESC")
-        self.add_field("secondary-class", "ELEMENTS.ACS_BAR.SEC_CLASS.NAME", "ELEMENTS.ACS_BAR.SEC_CLASS.DESC")
-        self.add_field("secondary-icon", "ELEMENTS.ACS_BAR.SEC_ICON.NAME", "ELEMENTS.ACS_BAR.SEC_ICON.DESC")
+        self.add_field(
+            "item-number", "ELEMENTS.ACS_BAR.ITEM.NAME", "ELEMENTS.ACS_BAR.ITEM.DESC"
+        )
+        self.add_field(
+            "clearance",
+            "ELEMENTS.ACS_BAR.CLEARANCE.NAME",
+            "ELEMENTS.ACS_BAR.CLEARANCE.DESC",
+        )
+        self.add_field(
+            "container-class",
+            "ELEMENTS.ACS_BAR.CONTAINER.NAME",
+            "ELEMENTS.ACS_BAR.CONTAINER.DESC",
+        )
+        self.add_field(
+            "disruption-class",
+            "ELEMENTS.ACS_BAR.DISRUPTION.NAME",
+            "ELEMENTS.ACS_BAR.DISRUPTION.DESC",
+        )
+        self.add_field(
+            "risk-class", "ELEMENTS.ACS_BAR.RISK.NAME", "ELEMENTS.ACS_BAR.RISK.DESC"
+        )
+        self.add_field(
+            "secondary-class",
+            "ELEMENTS.ACS_BAR.SEC_CLASS.NAME",
+            "ELEMENTS.ACS_BAR.SEC_CLASS.DESC",
+        )
+        self.add_field(
+            "secondary-icon",
+            "ELEMENTS.ACS_BAR.SEC_ICON.NAME",
+            "ELEMENTS.ACS_BAR.SEC_ICON.DESC",
+        )
 
 
-elements: List[AbstractElement] = [RightImageBlock, LeftImageBlock, CenterImageBlock, ACSBarComponent]
+elements: List[AbstractElement] = [
+    RightImageBlock,
+    LeftImageBlock,
+    CenterImageBlock,
+    ACSBarComponent,
+]

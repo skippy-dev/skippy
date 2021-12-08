@@ -2,12 +2,11 @@ from PyQt5 import QtWidgets, QtCore
 
 from typing import Optional
 
-
 ENTER_KEYS = (QtCore.Qt.Key_Return, QtCore.Qt.Key_Enter)
 DELETE_KEYS = (QtCore.Qt.Key_Backspace, QtCore.Qt.Key_Delete)
 
 
-def getApplication() -> QtWidgets.QApplication:
+def getApplication() -> Optional[QtCore.QCoreApplication]:
     return QtWidgets.QApplication.instance()
 
 

@@ -14,7 +14,7 @@ import sys
 
 def get_argparser() -> argparse.ArgumentParser:
     """Get the argument parser.
-    
+
     Returns:
         argparse.ArgumentParser: Argument parser
     """
@@ -45,22 +45,21 @@ def get_argparser() -> argparse.ArgumentParser:
 class App:
 
     """Application class
-    
+
     Attributes:
         args (argparse.Namespace): Command-line arguments
     """
-    
+
     def __init__(self, args: argparse.Namespace):
         """Initializing application class
-        
+
         Args:
             args (argparse.Namespace): Command-line arguments
         """
         self.args = args
 
     def run(self):
-        """Run application by command-line arguments
-        """
+        """Run application by command-line arguments"""
         if self.args.version:
             self.version()
         elif self.args.plugins:
@@ -69,13 +68,11 @@ class App:
             self.start_ui()
 
     def version(self):
-        """Print Skippy version
-        """
+        """Print Skippy version"""
         print(f"skippy v{skippy.config.version}")
 
     def plugins(self):
-        """Print plugins list with additional data
-        """
+        """Print plugins list with additional data"""
         table = PrettyTable()
         table.field_names = ["Alias", "Description", "Author", "Version"]
 
@@ -130,8 +127,7 @@ class App:
 
 
 def run():
-    """Initialize everything and run the application.
-    """
+    """Initialize everything and run the application."""
     excepthook.init()
 
     parser = get_argparser()

@@ -55,7 +55,9 @@ class Skippy(QtWidgets.QMainWindow):
         self.status = QtWidgets.QStatusBar(self)
         self.setStatusBar(self.status)
 
-        self.setWindowIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico")))
+        self.setWindowIcon(
+            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
+        )
         self.resize(self.settings.size)
         self.move(self.settings.pos)
         self.setWindowState(QtCore.Qt.WindowState(self.settings.state))
@@ -80,11 +82,13 @@ class Skippy(QtWidgets.QMainWindow):
         """Upload page at prepared URL from parent field, if don't has it run upload dialog.
 
         Args:
-            pdata (dict): Page data
+            pdata (PageData): Page data
         """
         if pdata["link"]:
             uploadPageThread = thread.Thread(workers.UploadWorker(pdata))
-            uploadPageThread.finished.connect(lambda: self.removeThread(uploadPageThread))
+            uploadPageThread.finished.connect(
+                lambda: self.removeThread(uploadPageThread)
+            )
             self._threads.append(uploadPageThread)
             uploadPageThread.start()
         else:
@@ -94,7 +98,7 @@ class Skippy(QtWidgets.QMainWindow):
         """Run upload dialog.
 
         Args:
-            pdata (dict): Page data
+            pdata (PageData): Page data
         """
         upload.UploadDialog(pdata, self)
 
@@ -168,11 +172,11 @@ class Skippy(QtWidgets.QMainWindow):
         if thr in self._threads:
             self._threads.remove(thr)
 
-    def resizeEvent(self, event: QtCore.QEvent):
+    def resizeEvent(self, event: QtGui.QResizeEvent):
         """Change size of login status widget when window resized.
 
         Args:
-            event (QtCore.QEvent): Resize event
+            event (QtGui.QResizeEvent): Resize event
         """
         self.loginStatus.move(self.width() - 200, -5)
         if self.width() < 350:
@@ -182,11 +186,11 @@ class Skippy(QtWidgets.QMainWindow):
 
         event.accept()
 
-    def closeEvent(self, event: QtCore.QEvent):
+    def closeEvent(self, event: QtGui.QCloseEvent):
         """Save window state and session when app closed.
 
         Args:
-            event (QtCore.QEvent): Close event
+            event (QtGui.QCloseEvent): Close event
         """
         self.settings.size = self.size()
         self.settings.pos = self.pos()

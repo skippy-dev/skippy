@@ -72,5 +72,5 @@ class UploadDialog(QtWidgets.QDialog):
 
             self._thread = thread.Thread(workers.UploadWorker(self.pdata, comment))
             self._thread.start()
-        
+
         self.close()

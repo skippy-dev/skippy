@@ -18,18 +18,28 @@ class FinderDialog(QtWidgets.QDialog):
 
         self.lastStart = 0
 
-        findButton = QtWidgets.QPushButton(translator.Translator().translate("DIALOG.FINDER_FIND_BUTTON"), self)
+        findButton = QtWidgets.QPushButton(
+            translator.Translator().translate("DIALOG.FINDER_FIND_BUTTON"), self
+        )
         findButton.clicked.connect(self.find)
 
-        replaceButton = QtWidgets.QPushButton(translator.Translator().translate("DIALOG.FINDER_REPLACE_BUTTON"), self)
+        replaceButton = QtWidgets.QPushButton(
+            translator.Translator().translate("DIALOG.FINDER_REPLACE_BUTTON"), self
+        )
         replaceButton.clicked.connect(self.replace)
 
-        allButton = QtWidgets.QPushButton(translator.Translator().translate("DIALOG.FINDER_REPLACE_ALL_BUTTON"), self)
+        allButton = QtWidgets.QPushButton(
+            translator.Translator().translate("DIALOG.FINDER_REPLACE_ALL_BUTTON"), self
+        )
         allButton.clicked.connect(self.replaceAll)
 
-        self.normalRadio = QtWidgets.QRadioButton(translator.Translator().translate("FINDER_NORMAL_MODE"), self)
+        self.normalRadio = QtWidgets.QRadioButton(
+            translator.Translator().translate("DIALOG.FINDER_NORMAL_MODE"), self
+        )
 
-        regexRadio = QtWidgets.QRadioButton(translator.Translator().translate("FINDER_REGEX_MODE"), self)
+        regexRadio = QtWidgets.QRadioButton(
+            translator.Translator().translate("DIALOG.FINDER_REGEX_MODE"), self
+        )
 
         self.findField = QtWidgets.QTextEdit(self)
         self.findField.resize(250, 50)
@@ -50,7 +60,9 @@ class FinderDialog(QtWidgets.QDialog):
 
         self.setGeometry(300, 300, 360, 250)
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
-        self.setWindowIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico")))
+        self.setWindowIcon(
+            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
+        )
         self.setLayout(layout)
 
         self.normalRadio.setChecked(True)
@@ -61,7 +73,7 @@ class FinderDialog(QtWidgets.QDialog):
         query = self.findField.toPlainText()
 
         if self.normalRadio.isChecked():
-            self.lastStart = text.find(query, self.lastStart+1)
+            self.lastStart = text.find(query, self.lastStart + 1)
 
             if self.lastStart >= 0:
                 end = self.lastStart + len(query)
@@ -97,6 +109,8 @@ class FinderDialog(QtWidgets.QDialog):
     def moveCursor(self, start, end):
         cursor = self.textEditor.textCursor()
         cursor.setPosition(start)
-        cursor.movePosition(QtGui.QTextCursor.Right, QtGui.QTextCursor.KeepAnchor, end-start)
+        cursor.movePosition(
+            QtGui.QTextCursor.Right, QtGui.QTextCursor.KeepAnchor, end - start
+        )
 
         self.textEditor.setTextCursor(cursor)

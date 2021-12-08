@@ -1,6 +1,6 @@
-<h1 align="center">
+<p align="center">
   <img src="https://raw.githubusercontent.com/skippy-dev/skippy/main/img/skippy.svg" alt="skippy">
-</h1>
+</p>
 
 <p align="center">
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg"></a>
@@ -68,17 +68,13 @@ Screenshots
 White theme
 </h3>
 
-<div align="center">
 <img src="https://raw.githubusercontent.com/skippy-dev/skippy/main/img/white.png">
-</div>
 
 <h3>
 Black theme
 </h3>
 
-<div align="center">
 <img src="https://raw.githubusercontent.com/skippy-dev/skippy/main/img/black.png">
-</div>
 
 <h2>
 Bugs/Requests

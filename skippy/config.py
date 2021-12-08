@@ -37,5 +37,5 @@ if is_frozen():
     LOGS_FOLDER = os.path.join(APPDATA_FOLDER, "logs")
 
     PLUGINS_SETTINGS_FOLDER = os.path.join(APPDATA_FOLDER, "plugins")
-    
+
 PLUGINS_SETTINGS_FOLDER = os.path.join(PLUGINS_FOLDER, "settings")
