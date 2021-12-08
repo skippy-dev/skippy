@@ -11,6 +11,7 @@ class Settings(QtCore.QSettings):
         "pos": QtCore.QPoint(200, 200),
         "state": QtCore.Qt.WindowNoState,
         "toolbarArea": QtCore.Qt.LeftToolBarArea,
+        "acEnabled": "true",
     }
 
     def __init__(self):

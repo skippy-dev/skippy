@@ -53,6 +53,8 @@ INSERT_MENU = "Вставить элемент..."
 [MENU_BAR.ACTION.SETTINGS]
 TOGGLE_THEME_NAME = "Переключить тему"
 TOGGLE_THEME_STATUS_TIP = "Переключить тему"
+TOGGLE_AC_NAME = "Переключить автозаполнение"
+TOGGLE_AC_STATUS_TIP = "Переключить автозаполнение"
 LANGUAGES_MENU = "Выбрать язык..."
 LOGIN_NAME = "Войти"
 LOGIN_STATUS_TIP = "Войти в аккаунт"

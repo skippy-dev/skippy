@@ -53,6 +53,8 @@ INSERT_MENU = "Insert element..."
 [MENU_BAR.ACTION.SETTINGS]
 TOGGLE_THEME_NAME = "Toggle Theme"
 TOGGLE_THEME_STATUS_TIP = "Toggle Theme"
+TOGGLE_AC_NAME = "Toggle autocomplete"
+TOGGLE_AC_STATUS_TIP = "Toggle autocomplete"
 LANGUAGES_MENU = "Languages..."
 LOGIN_NAME = "Login"
 LOGIN_STATUS_TIP = "Login"

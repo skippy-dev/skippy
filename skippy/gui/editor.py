@@ -329,6 +329,10 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
 
         return cursor.selectedText().replace("\u2029", "")
 
+    @property
+    def acEnabled(self) -> bool:
+        return {"true": True, "false": False}[utils.getMainWindow().settings.acEnabled]
+
     def keyPressEvent(self, event: QtGui.QKeyEvent):
         if (
             self.completer
@@ -346,7 +350,8 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
         self.suggestingBlockParams()
         self.closeBlocks(curentLine, pos, event)
         self.appendLists(curentLine, event)
-        self.completeInlineBrackets(event)
+        if self.acEnabled:
+            self.completeInlineBrackets(event)
 
     def openCompleterPopup(self, model: list, prefix: str):
         self.completer.setModel(QtCore.QStringListModel(model, self.completer))
@@ -429,8 +434,8 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
                 )
                 return
 
-    def closeBlocks(self, curentLine: str, pos: int, event: QtGui.QKeyEvent):
-        left = splitByPosition(curentLine, pos)[0]
+    def closeBlocks(self, currentLine: str, pos: int, event: QtGui.QKeyEvent):
+        left = splitByPosition(currentLine, pos)[0]
 
         block = re.match(self.RE_BLOCK, left)
         if block:
@@ -449,7 +454,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
                         and event.key() not in utils.ENTER_KEYS
                         and event.key() not in utils.DELETE_KEYS
                         and pattern.inline
-                        and closeBlock not in curentLine
+                        and closeBlock not in currentLine
                     ):
                         self.insertPlainText(closeBlock)
 
@@ -457,13 +462,13 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
                         cursor.movePosition(cursor.Left, n=len(closeBlock))
                         self.setTextCursor(cursor)
 
-    def appendLists(self, curentLine: str, event: QtGui.QKeyEvent):
+    def appendLists(self, currentLine: str, event: QtGui.QKeyEvent):
         if (
-            curentLine[:2] in ("* ", "# ")
-            and curentLine[:2] != curentLine
+            currentLine[:2] in ("* ", "# ")
+            and currentLine[:2] != currentLine
             and event.key() in utils.ENTER_KEYS
         ):
-            self.insertPlainText(curentLine[:2])
+            self.insertPlainText(currentLine[:2])
 
     def completeInlineBrackets(self, event: QtGui.QKeyEvent):
         selected = self.getLineUnderCursor()

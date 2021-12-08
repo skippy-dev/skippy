@@ -51,7 +51,7 @@ Features
 
 * Powerful functional
 * Full preview
-* Uploading pages with title, body, tags and files in one click
+* Uploading pages with title, source, tags and files in one click
 * Downloading pages with all data
 * Easy to use plugin system
 * Support all wikidot sites
