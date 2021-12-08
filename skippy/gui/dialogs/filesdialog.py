@@ -11,11 +11,15 @@ import os
 
 
 class FilesDialog(QtWidgets.QDialog):
-    def __init__(self, files: Dict[str, str], parent: Optional[QtWidgets.QWidget] = None):
+    def __init__(
+        self, files: Dict[str, str], parent: Optional[QtWidgets.QWidget] = None
+    ):
         super(FilesDialog, self).__init__(parent)
         self._layout = QtWidgets.QVBoxLayout(self)
 
-        self.label = QtWidgets.QLabel(translator.Translator().translate("DIALOG.FILES_LIST_LABEL"), self)
+        self.label = QtWidgets.QLabel(
+            translator.Translator().translate("DIALOG.FILES_LIST_LABEL"), self
+        )
         self.label.setFont(QtGui.QFont("Arial", 10))
 
         self.scrollArea = QtWidgets.QScrollArea()
@@ -42,7 +46,9 @@ class FilesDialog(QtWidgets.QDialog):
 class FilesWidget(QtWidgets.QWidget):
     filesListUpdated = QtCore.pyqtSignal()
 
-    def __init__(self, files: Dict[str, str], parent: Optional[QtWidgets.QWidget] = None):
+    def __init__(
+        self, files: Dict[str, str], parent: Optional[QtWidgets.QWidget] = None
+    ):
         super(FilesWidget, self).__init__(parent)
         self.files = files
         self._layout = QtWidgets.QVBoxLayout(self)
@@ -78,7 +84,11 @@ class FileLineEdit(QtWidgets.QLineEdit):
         self._prevText = title
 
         self.button = QtWidgets.QToolButton(self)
-        self.button.setIcon(QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, theme, "close.png")))
+        self.button.setIcon(
+            QtGui.QIcon(
+                os.path.join(skippy.config.RESOURCES_FOLDER, theme, "close.png")
+            )
+        )
         self.button.setStyleSheet("padding: 0px;")
         self.button.setCursor(QtCore.Qt.ArrowCursor)
         self.button.clicked.connect(lambda: self.fileRemoved.emit(self.text()))
@@ -88,14 +98,18 @@ class FileLineEdit(QtWidgets.QLineEdit):
 
         self.textEdited.connect(self.textEditedEvent)
 
-        self.setStyleSheet("QLineEdit {padding-right: "+ str(buttonSize.width() + frameWidth + 1)+ "px; }")
+        self.setStyleSheet(
+            "QLineEdit {padding-right: "
+            + str(buttonSize.width() + frameWidth + 1)
+            + "px; }"
+        )
         self.setFixedSize(200, 40)
 
     def textEditedEvent(self, new_text: str):
         self.fileNameChanged.emit(self._prevText, new_text)
         self._prevText = new_text
 
-    def resizeEvent(self, event: QtCore.QEvent):
+    def resizeEvent(self, event: QtGui.QResizeEvent):
         buttonSize = self.button.sizeHint()
         frameWidth = self.style().pixelMetric(QtWidgets.QStyle.PM_DefaultFrameWidth)
         self.button.move(

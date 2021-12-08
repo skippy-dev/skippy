@@ -1,4 +1,14 @@
-from typing import MutableMapping, NamedTuple, TypedDict, Callable, Optional, Tuple, Dict, List, Any
+from typing import (
+    MutableMapping,
+    NamedTuple,
+    TypedDict,
+    Callable,
+    Optional,
+    Tuple,
+    Dict,
+    List,
+    Any,
+)
 
 
 class Language(NamedTuple):

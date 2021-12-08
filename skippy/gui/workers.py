@@ -4,7 +4,7 @@ from skippy.api import PageData
 
 from skippy.core import scpclient
 
-from skippy.gui import thread, utils
+from skippy.gui import thread
 
 from skippy.utils import discord_rpc
 

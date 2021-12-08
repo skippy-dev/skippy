@@ -329,7 +329,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
 
         return cursor.selectedText().replace("\u2029", "")
 
-    def keyPressEvent(self, event: QtCore.QEvent):
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
         if (
             self.completer
             and event.key() in utils.ENTER_KEYS
@@ -429,7 +429,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
                 )
                 return
 
-    def closeBlocks(self, curentLine: str, pos: int, event: QtCore.QEvent):
+    def closeBlocks(self, curentLine: str, pos: int, event: QtGui.QKeyEvent):
         left = splitByPosition(curentLine, pos)[0]
 
         block = re.match(self.RE_BLOCK, left)
@@ -457,7 +457,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
                         cursor.movePosition(cursor.Left, n=len(closeBlock))
                         self.setTextCursor(cursor)
 
-    def appendLists(self, curentLine: str, event: QtCore.QEvent):
+    def appendLists(self, curentLine: str, event: QtGui.QKeyEvent):
         if (
             curentLine[:2] in ("* ", "# ")
             and curentLine[:2] != curentLine
@@ -465,7 +465,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
         ):
             self.insertPlainText(curentLine[:2])
 
-    def completeInlineBrackets(self, event: QtCore.QEvent):
+    def completeInlineBrackets(self, event: QtGui.QKeyEvent):
         selected = self.getLineUnderCursor()
 
         left, right = splitByPosition(selected, self.textCursor().positionInBlock())
@@ -473,23 +473,25 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
             if (
                 event.text() == pattern.opening[-1:]
                 and left[-len(pattern.opening) :] == pattern.opening
-                and (right[: len(pattern.closing)] != pattern.closing or pattern.multiple)
+                and (
+                    right[: len(pattern.closing)] != pattern.closing or pattern.multiple
+                )
             ):
                 self.insertPlainText(pattern.closing)
                 cursor = self.textCursor()
                 cursor.movePosition(cursor.Left, n=len(pattern.closing))
                 self.setTextCursor(cursor)
 
-    def contextMenuEvent(self, event: QtCore.QEvent):
+    def contextMenuEvent(self, event: QtGui.QContextMenuEvent):
         actionbar.ContextMenu(self).exec_(self.mapToGlobal(event.pos()))
 
-    def dragEnterEvent(self, event: QtCore.QEvent):
+    def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
         if event.mimeData().hasUrls():
             event.accept()
         else:
             event.ignore()
 
-    def dropEvent(self, event: QtCore.QEvent):
+    def dropEvent(self, event: QtGui.QDropEvent):
         self._thread = thread.Thread(
             workers.FileWorker([url.toLocalFile() for url in event.mimeData().urls()])
         )

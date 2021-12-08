@@ -89,7 +89,9 @@ class SCPClient(metaclass=Singleton):
             file_source = base64.b64decode(page["files"][file])
             if file not in file_urls:
                 p.upload(file, file_source)
-            elif file in file_urls and page["files"][file] != self.download_file(file_urls[file]):
+            elif file in file_urls and page["files"][file] != self.download_file(
+                file_urls[file]
+            ):
                 p.remove_file(file)
                 p.upload(file, file_source)
 
