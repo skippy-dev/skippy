@@ -16,7 +16,8 @@ import os
 
 
 class ActionBarBase:
-    def initActions(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.theme = settings.Settings().theme
         mainwindow = utils.getMainWindow()
 
@@ -141,6 +142,23 @@ class ActionBarBase:
             "preview",
         )
 
+        self.toggle_theme_action = Action(
+            Translator().translate("MENU_BAR.ACTION.SETTINGS.TOGGLE_THEME_NAME"),
+            Translator().translate("MENU_BAR.ACTION.SETTINGS.TOGGLE_THEME_STATUS_TIP"),
+            lambda: mainwindow.toggle_theme(),
+            "toggle",
+        )
+
+        self.toggle_autocomplete_action = Action(
+            Translator().translate("MENU_BAR.ACTION.SETTINGS.TOGGLE_AC_NAME"),
+            Translator().translate("MENU_BAR.ACTION.SETTINGS.TOGGLE_AC_STATUS_TIP"),
+            lambda: mainwindow.settings.setValue(
+                "acEnabled",
+                {"true": False, "false": True}[mainwindow.settings.acEnabled],
+            ),
+            "toggle",
+        )
+
         self.elements_menu = QtWidgets.QMenu(
             Translator().translate("MENU_BAR.ACTION.EDIT.INSERT_MENU")
         )
@@ -154,13 +172,6 @@ class ActionBarBase:
                 ),
                 self.elements_menu,
             )
-
-        self.toggle_theme_action = Action(
-            Translator().translate("MENU_BAR.ACTION.SETTINGS.TOGGLE_THEME_NAME"),
-            Translator().translate("MENU_BAR.ACTION.SETTINGS.TOGGLE_THEME_STATUS_TIP"),
-            lambda: mainwindow.toggle_theme(),
-            "toggle",
-        )
 
         self.login_action = Action(
             Translator().translate("MENU_BAR.ACTION.SETTINGS.LOGIN_NAME"),
@@ -227,8 +238,6 @@ class ActionBarBase:
 class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
     def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(MenuBar, self).__init__(parent)
-        self.initActions()
-
         self.file_menu = self.addMenu(Translator().translate("MENU_BAR.FILE_MENU"))
         self.addAction(self.new_action, self.file_menu)
         self.addAction(self.open_action, self.file_menu)
@@ -261,6 +270,7 @@ class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
             Translator().translate("MENU_BAR.SETTINGS_MENU")
         )
         self.addAction(self.toggle_theme_action, self.settings_menu)
+        self.addAction(self.toggle_autocomplete_action, self.settings_menu)
         self.settings_menu.addMenu(self.language_menu)
         self.settings_menu.addSeparator()
         self.addAction(self.login_action, self.settings_menu)
@@ -270,8 +280,6 @@ class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
 class ToolBar(ActionBarBase, QtWidgets.QToolBar):
     def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(ToolBar, self).__init__(parent)
-        self.initActions()
-
         self.addAction(self.new_action)
         self.addAction(self.open_action)
         self.addAction(self.upload_action)
@@ -292,8 +300,6 @@ class ToolBar(ActionBarBase, QtWidgets.QToolBar):
 class ContextMenu(ActionBarBase, QtWidgets.QMenu):
     def __init__(self, parent: Optional[QtWidgets.QWidget] = None):
         super(ContextMenu, self).__init__(parent)
-        self.initActions()
-
         self.addAction(self.new_action)
         self.addAction(self.load_files_action)
         self.addSeparator()
