@@ -1,4 +1,6 @@
-
+<h1 align="center">
+  <img src="https://raw.githubusercontent.com/skippy-dev/skippy/main/img/banner.png" alt="skippy">
+</h1>
 
 <p align="center">
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg"></a>
