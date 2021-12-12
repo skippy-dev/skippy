@@ -3,9 +3,8 @@
 from skippy.api import Singleton, Language
 import skippy.config
 
-from typing import List
+from typing import MutableMapping, List, Any
 import toml
-import os
 
 
 class Translator(metaclass=Singleton):
@@ -23,15 +22,24 @@ class Translator(metaclass=Singleton):
         Returns:
             List[str]: List of languages code
         """
-        return [
-            os.path.splitext(file)[0]
-            for file in os.listdir(skippy.config.LANG_FOLDER)
-            if os.path.isfile(os.path.join(skippy.config.LANG_FOLDER, file))
-            if os.path.splitext(file)[1] == ".toml"
-        ]
+        return [file.stem for file in skippy.config.LANG_FOLDER.iterdir() if file.is_file() and file.suffix == ".toml"]
 
     @staticmethod
-    def getLangName(lang: str) -> str:
+    def get_dictionary(lang: str) -> MutableMapping[str, Any]:
+        """Get translation dictionary by lang code
+
+        Args:
+            lang (str): Language code
+
+        Returns:
+            MutableMapping[str, Any]: Dictionary
+        """
+        path = skippy.config.LANG_FOLDER / f"{lang}.toml"
+        with path.open(encoding="utf-8") as f:
+            return toml.load(f)
+
+    @classmethod
+    def get_lang_name(cls, lang: str) -> str:
         """Get lang name by code
 
         Args:
@@ -40,9 +48,7 @@ class Translator(metaclass=Singleton):
         Returns:
             str: Language name
         """
-        path = os.path.join(skippy.config.LANG_FOLDER, f"{lang}.toml")
-        with open(path, encoding="utf-8") as f:
-            return toml.load(f)["LANGUAGE"]
+        return cls.get_dictionary(lang)["LANGUAGE"]
 
     def load(self, lang: str = "en") -> Language:
         """Load language by code
@@ -53,9 +59,7 @@ class Translator(metaclass=Singleton):
         Returns:
             Language: Language namedtuple, with language code and dictionary
         """
-        path = os.path.join(skippy.config.LANG_FOLDER, f"{lang}.toml")
-        with open(path, encoding="utf-8") as f:
-            dictionary = toml.load(f)
+        dictionary = self.get_dictionary(lang)
         self._language = Language(lang, dictionary)
 
         return self._language

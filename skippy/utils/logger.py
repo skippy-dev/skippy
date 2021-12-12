@@ -21,10 +21,7 @@ def get_file_handler() -> logging.FileHandler:
         logging.FileHandler: File handler
     """
     file_handler = logging.FileHandler(
-        os.path.join(
-            skippy.config.LOGS_FOLDER,
-            f"{datetime.datetime.today().strftime('%Y-%m-%d-%H-%M-%S')}.log",
-        ),
+        skippy.config.LOGS_FOLDER / f"{datetime.datetime.today().strftime('%Y-%m-%d-%H-%M-%S')}.log",
         "a",
         "utf-8",
         True,

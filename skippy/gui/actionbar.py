@@ -191,7 +191,7 @@ class ActionBarBase:
             Translator().translate("MENU_BAR.ACTION.SETTINGS.LANGUAGES_MENU")
         )
         for lang in Translator().languages():
-            name = Translator().getLangName(lang)
+            name = Translator().get_lang_name(lang)
             self.addAction(
                 Action(name, name, partial(mainwindow.update_translate, lang)),
                 self.language_menu,
@@ -203,13 +203,7 @@ class ActionBarBase:
         qaction = QtWidgets.QAction(action.label, self)
 
         if action.img:
-            qaction.setIcon(
-                QtGui.QIcon(
-                    os.path.join(
-                        skippy.config.RESOURCES_FOLDER, self.theme, f"{action.img}.png"
-                    )
-                )
-            )
+            qaction.setIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / self.theme / f"{action.img}.png").as_posix()))
 
         qaction.setStatusTip(action.statusTip)
         qaction.triggered.connect(action.func)

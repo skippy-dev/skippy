@@ -5,8 +5,8 @@ from skippy.api import PageData
 from skippy.utils.logger import log
 
 from requests.exceptions import RequestException
+from typing import TypeVar, List, Type
 from abc import ABCMeta, abstractmethod
-from typing import TypeVar, Union, Tuple, List, Type
 import unicodedata
 import pyftml
 import pyscp
@@ -48,11 +48,11 @@ class AbstractProcessor(metaclass=ABCMeta):
         self.pdata: PageData = pdata
 
     @property
-    def matches(self) -> List[Union[Tuple[str, ...], str]]:
+    def matches(self) -> List:
         """Get all matches in source by pattern
 
         Returns:
-            List[Union[Tuple[str, ...], str]]: List of matches
+            List: List of matches
         """
         return re.findall(
             self.pattern,
@@ -139,6 +139,8 @@ class HTMLProcessorsHandler(ProcessorsHandlerBase):
         self.register(InsertDataProcessor)
         self.register(ModuleCSSProcessor)
 
+        self.html: str = ""
+
     def process(self) -> str:
         """Run all processor
 
@@ -177,7 +179,7 @@ class IncludesProcessor(AbstractProcessor):
 
     """Include processor"""
 
-    pattern: str = r"(\[\[include\s(?::.+?:|)(?:.+?:|)(?:.+)(?:\s((?:.|\n)+?)|)]])"
+    pattern: str = r"(\[\[include\s(?::(.+?):|)((?:.+?:|)[\d\w-]+)(?:\s((?:.|\n)+)|)]])"
 
     def process(self, iteration: int = 0) -> str:
         """Replace all include tags with included page source
@@ -189,36 +191,20 @@ class IncludesProcessor(AbstractProcessor):
             str: Processed source
         """
         for include in self.matches:
-            path = re.findall(
-                r"(?::(.+?):|)((?:.+?:|).+)",
-                include[0].split()[1].replace("]]", ""),
-            )[0]
-            site = path[0]
-            page = path[1]
+            site = include[1]
+            page = include[2]
             try:
                 wiki = pyscp.wikidot.Wiki(site)
                 p = wiki(page).source
-                args = [
-                    i[1:] if i.startswith("\n") else i for i in include[1].split("|")
-                ]
-                if not args[0]:
-                    args = []
-                for arg in args:
-                    arg = re.findall(
-                        r"([\w-]+)(?:(?:\s|)=(?:\s|))((?:.|\n+?)+)",
-                        arg,
-                    )[0]
-                    p = p.replace("{$" + arg[0] + "}", arg[1])
+                args = [i[1:] if i.startswith("\n") else i for i in include[3].split("|")]
+                if args[0]:
+                    for arg in args:
+                        argument = re.match(r"([\w-]+)(?:\s|)=(?:\s|)((?:.|\n+?)+)", arg)
+                        p = p.replace("{$" + argument.group(0) + "}", argument.group(1))
                 self.source = self.source.replace(include[0], p)
             except Exception as e:
                 log.error(e)
-        if (
-            re.findall(
-                r"(\[\[include(?:.|\n)+?]])",
-                self.source,
-            )
-            and iteration != 5
-        ):
+        if self.matches and iteration != 5:
             self.process(iteration + 1)
         return self.source
 
@@ -361,16 +347,16 @@ class InsertDataProcessor(AbstractProcessor):
         </html>
         """
 
-    def __init__(self, source: str, pdata: PageData, html: str):
+    def __init__(self, source: str, pdata: PageData, html_text: str):
         """Initializing InsertData processor
 
         Args:
             source (str): Page source
             pdata (PageData): Page data
-            html (str): Previewed page html
+            html_text (str): Previewed page html
         """
         super(InsertDataProcessor, self).__init__(source, pdata)
-        self.html: str = html
+        self.html: str = html_text
 
     def process(self) -> str:
         """Insert page data to HTML template
@@ -393,18 +379,18 @@ class ModuleCSSProcessor(AbstractProcessor):
 
     """Module CSS processor"""
 
-    pattern: str = r"(?:(?:\[\[module) (?:CSS|css)(?:(.+?)|)\]\]\n)((.|\n)+?)(?:\n\[\[\/module\]\])"
+    pattern: str = r"\[\[module (?:CSS|css)(?:.+?|)]]\n((?:.|\n)+?)\n\[\[/module]]"
 
-    def __init__(self, source: str, pdata: PageData, html: str):
+    def __init__(self, source: str, pdata: PageData, html_text: str):
         """Initializing Module CSS processor
 
         Args:
             source (str): Page source
             pdata (PageData): Page data
-            html (str): Previewed page html
+            html_text (str): Previewed page html
         """
         super(ModuleCSSProcessor, self).__init__(source, pdata)
-        self.html: str = html
+        self.html: str = html_text
 
     def process(self) -> str:
         """Convert [[module CSS]] block to <style> tag
@@ -412,10 +398,7 @@ class ModuleCSSProcessor(AbstractProcessor):
         Returns:
             str: Processed HTML page
         """
-        styles = ""
-        for style in self.matches:
-            style = unicodedata.normalize("NFKD", style[1])
-            styles += f"<style>\n{style}\n</style>\n"
+        styles = "\n".join([f"<style>\n{unicodedata.normalize('NFKD', style)}\n</style>" for style in self.matches])
         self.html = self.html.replace("<<MODULE-CSS-PREVIEW>>", styles)
         return self.html
 

@@ -10,7 +10,6 @@ import skippy.config
 
 from typing import Optional
 import tempfile
-import os
 
 
 class PreviewerWorker(thread.AbstractWorker):
@@ -40,9 +39,7 @@ class Previewer(QtWidgets.QDialog):
         self.setLayout(self._layout)
 
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / "skippy.ico").as_posix()))
 
         mainwindow = utils.getMainWindow()
 

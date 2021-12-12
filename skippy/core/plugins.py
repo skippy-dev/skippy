@@ -8,10 +8,10 @@ import skippy.config
 
 from typing import Iterator, Optional, Callable, Union, Dict, List, Any
 from abc import ABCMeta, abstractmethod
+from pathlib import Path
 import importlib
 import toml
 import sys
-import os
 
 sys.path.append(skippy.config.PLUGINS_FOLDER)
 
@@ -61,17 +61,15 @@ class AbstractPlugin(metaclass=ABCMeta):
     __version__: str
 
     def __init__(self):
-        self._settingsPath: str = os.path.join(
-            skippy.config.PLUGINS_SETTINGS_FOLDER, f"{self.__alias__}.toml"
-        )
+        self._settingsPath: Path = skippy.config.PLUGINS_SETTINGS_FOLDER / f"{self.__alias__}.toml"
         self._settings: Dict[str, AbstractSetting] = {}
 
     def addSetting(self, name: str, setting: AbstractSetting):
         self._settings[name] = setting
 
     def load_settings(self):
-        if self._settings and os.path.exists(self._settingsPath):
-            with open(self._settingsPath) as f:
+        if self._settings and self._settingsPath.exists():
+            with self._settingsPath.open() as f:
                 settings = toml.load(f)
             for setting in settings:
                 if setting in self._settings:
@@ -79,14 +77,8 @@ class AbstractPlugin(metaclass=ABCMeta):
 
     def save_settings(self):
         if self._settings:
-            with open(self._settingsPath, "w") as f:
-                toml.dump(
-                    {
-                        setting: self._settings[setting].to_toml()
-                        for setting in self._settings
-                    },
-                    f,
-                )
+            with self._settingsPath.open("w") as f:
+                toml.dump({setting: self._settings[setting].to_toml() for setting in self._settings}, f)
 
     @abstractmethod
     def start(self):
@@ -114,12 +106,7 @@ class PluginLoader:
         Returns:
             list: List of plugins
         """
-        return [
-            os.path.splitext(file)[0]
-            for file in os.listdir(skippy.config.PLUGINS_FOLDER)
-            if os.path.isfile(os.path.join(skippy.config.PLUGINS_FOLDER, file))
-            if file.endswith("_plugin.py")
-        ]
+        return [file.stem for file in skippy.config.LANG_FOLDER.iterdir() if file.is_file() and file.name.endswith("_plugin.py")]
 
     @classmethod
     def plugins_data(cls) -> Iterator[Dict[str, str]]:

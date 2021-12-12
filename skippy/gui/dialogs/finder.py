@@ -8,7 +8,6 @@ import skippy.config
 
 from typing import Optional
 import re
-import os
 
 
 class FinderDialog(QtWidgets.QDialog):
@@ -60,9 +59,7 @@ class FinderDialog(QtWidgets.QDialog):
 
         self.setGeometry(300, 300, 360, 250)
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / "skippy.ico").as_posix()))
         self.setLayout(layout)
 
         self.normalRadio.setChecked(True)

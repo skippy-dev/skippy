@@ -20,8 +20,6 @@ from skippy.utils import translator, filehandlers
 
 import skippy.config
 
-import os
-
 
 class Skippy(QtWidgets.QMainWindow):
 
@@ -55,9 +53,7 @@ class Skippy(QtWidgets.QMainWindow):
         self.status = QtWidgets.QStatusBar(self)
         self.setStatusBar(self.status)
 
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / "skippy.ico").as_posix()))
         self.resize(self.settings.size)
         self.move(self.settings.pos)
         self.setWindowState(QtCore.Qt.WindowState(self.settings.state))
