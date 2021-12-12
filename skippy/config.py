@@ -29,6 +29,8 @@ LANG_FOLDER = os.path.join(SKIPPY_FOLDER, "lang")
 
 PLUGINS_FOLDER = os.path.join(SKIPPY_FOLDER, "plugins")
 
+PLUGINS_SETTINGS_FOLDER = os.path.join(PLUGINS_FOLDER, "settings")
+
 if is_frozen():
     APPDATA_FOLDER = os.path.join(os.getenv("APPDATA"), "Skippy")
 
@@ -37,5 +39,3 @@ if is_frozen():
     LOGS_FOLDER = os.path.join(APPDATA_FOLDER, "logs")
 
     PLUGINS_SETTINGS_FOLDER = os.path.join(APPDATA_FOLDER, "plugins")
-
-PLUGINS_SETTINGS_FOLDER = os.path.join(PLUGINS_FOLDER, "settings")

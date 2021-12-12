@@ -6,7 +6,7 @@ from skippy.utils.logger import log
 
 from requests.exceptions import RequestException
 from abc import ABCMeta, abstractmethod
-from typing import Union, Tuple, List
+from typing import TypeVar, Union, Tuple, List, Type
 import unicodedata
 import pyftml
 import pyscp
@@ -65,9 +65,12 @@ class AbstractProcessor(metaclass=ABCMeta):
         pass
 
 
+_Processor = TypeVar("_Processor", bound=AbstractProcessor)
+
+
 class ProcessorsHandlerBase:
 
-    """Abstract processors handler class"""
+    """Abstract processor's handler class"""
 
     def __init__(self, source: str, pdata: PageData):
         """Summary
@@ -78,13 +81,13 @@ class ProcessorsHandlerBase:
         """
         self.source: str = source
         self.pdata: PageData = pdata
-        self.processors: List[AbstractProcessor] = []
+        self.processors: List[Type[_Processor]] = []
 
-    def register(self, processor: AbstractProcessor) -> object:
+    def register(self, processor: Type[_Processor]):
         """Register a processor
 
         Args:
-            processor (AbstractProcessor): Processor class
+            processor (Type[_Processor]): Processor class
         """
         self.processors.append(processor)
 
@@ -294,6 +297,7 @@ class InsertDataProcessor(AbstractProcessor):
                 <style type="text/css">
                     @import url(http://d3g0gp89917ko0.cloudfront.net/v--3e3a6f7dbcc9/common--theme/base/css/style.css);
                     @import url(http://scp-ru.wdfiles.com/local--code/component:theme2/1);
+                    @import url(http://d3g0gp89917ko0.cloudfront.net/v--3e3a6f7dbcc9/common--modules/css/pagerate/PageRateWidgetModule.css);
                 </style>
                 <script type="text/javascript" src="http://d3g0gp89917ko0.cloudfront.net/v--3e3a6f7dbcc9/common--javascript/init.combined.js"></script>
                 <script type="text/javascript">
