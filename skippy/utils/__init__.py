@@ -1,3 +1,4 @@
+import pathlib
 import sys
 
 try:
@@ -17,4 +18,26 @@ def is_frozen() -> bool:
     return getattr(sys, "frozen", False)
 
 
-__all__ = ["cached_property", "is_frozen"]
+def get_datadir() -> pathlib.Path:
+
+    """Returns a parent directory path where persistent application data can be stored.
+
+    # linux: ~/.local/share
+    # macOS: ~/Library/Application Support
+    # windows: C:/Users/<USER>/AppData/Roaming
+
+    Returns:
+        pathlib.Path: Data dir path
+    """
+
+    home = pathlib.Path.home()
+
+    if sys.platform == "win32":
+        return home / "AppData/Roaming" / "Skippy"
+    elif sys.platform == "darwin":
+        return home / "Library/Application Support" / "Skippy"
+    elif sys.platform.startswith('linux'):
+        return home / ".local/share" / "Skippy"
+
+
+__all__ = ["cached_property", "is_frozen", "get_datadir"]

@@ -5,13 +5,20 @@ from skippy.api import PageData
 from skippy.utils.logger import log
 
 from requests.exceptions import RequestException
-from typing import TypeVar, List, Type
+from typing import TypeVar, Dict, List, Type
 from abc import ABCMeta, abstractmethod
 import unicodedata
-import pyftml
 import pyscp
 import html
 import re
+
+try:
+    import pyftml
+except ImportError:
+    class pyftml:
+        @staticmethod
+        def render_html(_: str) -> Dict[str, str]:
+            return {"body": "<h1>Error</h1><p>You don't have pyftml installed. Therefore, offline preview is not possible.</p>"}
 
 
 def render(pdata: PageData) -> str:
@@ -65,9 +72,6 @@ class AbstractProcessor(metaclass=ABCMeta):
         pass
 
 
-_Processor = TypeVar("_Processor", bound=AbstractProcessor)
-
-
 class ProcessorsHandlerBase:
 
     """Abstract processor's handler class"""
@@ -81,9 +85,9 @@ class ProcessorsHandlerBase:
         """
         self.source: str = source
         self.pdata: PageData = pdata
-        self.processors: List[Type[_Processor]] = []
+        self.processors: List[Type[AbstractProcessor]] = []
 
-    def register(self, processor: Type[_Processor]):
+    def register(self, processor: Type[AbstractProcessor]):
         """Register a processor
 
         Args:
@@ -179,7 +183,7 @@ class IncludesProcessor(AbstractProcessor):
 
     """Include processor"""
 
-    pattern: str = r"(\[\[include\s(?::(.+?):|)((?:.+?:|)[\d\w-]+)(?:\s((?:.|\n)+)|)]])"
+    pattern: str = r"(\[\[include\s(?::(.+?):|)((?:.+?:|)[\d\w-]+)(?:\s((?:.|\n)+?)|)]])"
 
     def process(self, iteration: int = 0) -> str:
         """Replace all include tags with included page source
@@ -200,7 +204,8 @@ class IncludesProcessor(AbstractProcessor):
                 if args[0]:
                     for arg in args:
                         argument = re.match(r"([\w-]+)(?:\s|)=(?:\s|)((?:.|\n+?)+)", arg)
-                        p = p.replace("{$" + argument.group(0) + "}", argument.group(1))
+                        if argument:
+                            p = p.replace("{$" + argument.group(1) + "}", argument.group(2))
                 self.source = self.source.replace(include[0], p)
             except Exception as e:
                 log.error(e)

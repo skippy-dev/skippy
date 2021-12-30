@@ -11,9 +11,10 @@ Attributes:
 """
 from skippy import __version__
 
-from skippy.utils import is_frozen
+from skippy.utils import is_frozen, get_datadir
 
 from pathlib import Path
+import datetime
 import os
 
 version = __version__
@@ -30,13 +31,13 @@ LANG_FOLDER = SKIPPY_FOLDER / "lang"
 
 PLUGINS_FOLDER = SKIPPY_FOLDER / "plugins"
 
-PLUGINS_SETTINGS_FOLDER = PLUGINS_FOLDER / "settings"
-
 if is_frozen():
-    APPDATA_FOLDER = Path(os.getenv("APPDATA")) / "Skippy"
+    APPDATA_FOLDER = get_datadir()
 
     PROPERTY_FOLDER = APPDATA_FOLDER / "property"
 
     LOGS_FOLDER = APPDATA_FOLDER / "logs"
 
-    PLUGINS_SETTINGS_FOLDER = APPDATA_FOLDER / "plugins"
+    PLUGINS_FOLDER = APPDATA_FOLDER / "plugins"
+
+LOG_FILE = LOGS_FOLDER / f"{datetime.datetime.today().strftime('%Y-%m-%d-%H-%M-%S')}.log"

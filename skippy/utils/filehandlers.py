@@ -1,11 +1,10 @@
 """Various file handlers.
 """
-from skippy.utils import is_frozen
-
 import skippy.config
 
 from typing import Optional, Tuple, Dict, Any
 from abc import ABCMeta, abstractmethod
+import pathlib
 import json
 import os
 
@@ -20,11 +19,11 @@ class AbstractFileHandler(metaclass=ABCMeta):
 
     _file: str
 
-    def __init__(self, filepath: Optional[str] = None):
+    def __init__(self, filepath: Optional[pathlib.Path] = None):
         """Init FileHandler
 
         Args:
-            filepath (Optional[str], optional): Path to handle file
+            filepath (Optional[pathlib.Path], optional): Path to handle file
         """
         self.filepath = filepath or skippy.config.PROPERTY_FOLDER / self._file
 

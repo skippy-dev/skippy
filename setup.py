@@ -69,6 +69,9 @@ setuptools.setup(
     keywords=["scp", "wikidot", "pyscp", "skippy"],
     packages=setuptools.find_packages(),
     install_requires=requirements,
+    extras_require={
+        "ftml": ["pyftml==0.1.2"],
+    },
     package_dir={"skippy": "skippy"},
     package_data={
         "skippy": [

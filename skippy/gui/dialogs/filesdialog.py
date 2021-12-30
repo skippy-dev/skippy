@@ -84,7 +84,7 @@ class FileLineEdit(QtWidgets.QLineEdit):
         self._prevText = title
 
         self.button = QtWidgets.QToolButton(self)
-        self.button.setIcon(QtGui.QIcon(skippy.config.RESOURCES_FOLDER / theme / "close.png"))
+        self.button.setIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / theme / "close.png").as_posix()))
         self.button.setStyleSheet("padding: 0px;")
         self.button.setCursor(QtCore.Qt.ArrowCursor)
         self.button.clicked.connect(lambda: self.fileRemoved.emit(self.text()))

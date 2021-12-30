@@ -14,7 +14,7 @@
 	Unicode True
 
 	;Default installation folder
-	InstallDir "C:\Program Files\skippy"
+	InstallDir "C:\Program Files\Skippy"
 
 	;Get installation folder from registry if available
 	InstallDirRegKey HKCU "Software\skippy" ""

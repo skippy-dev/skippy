@@ -1,6 +1,8 @@
 """Plugin system core module
 """
-from skippy.core.settings import AbstractSetting
+from skippy.api import Singleton
+
+from skippy.core.fields import AbstractField
 
 from skippy.utils.logger import log
 
@@ -13,11 +15,11 @@ import importlib
 import toml
 import sys
 
-sys.path.append(skippy.config.PLUGINS_FOLDER)
+sys.path.append(skippy.config.PLUGINS_FOLDER.as_posix())
 
 
 def inject(
-    module: str, attr: str, value: Optional[Any] = None
+        module: str, attr: str, value: Optional[Any] = None
 ) -> Union[Any, Callable[[Any], Any]]:
     """Inject value into selected module attribute.
 
@@ -50,8 +52,23 @@ def inject(
     return inject(value) if value else inject
 
 
-class AbstractPlugin(metaclass=ABCMeta):
+class PluginMeta(type):
+    def __call__(cls, *args, **kwargs):
+        obj = super(PluginMeta, cls).__call__(*args, **kwargs)
+        if hasattr(obj, "addField"):
+            for key, value in type(obj).__dict__.items():
+                if isinstance(value, AbstractField):
+                    obj.addField(key, value)
+        else:
+            raise AttributeError(f"\"{cls.__name__}\" class has no method \"addField\"")
+        return obj
 
+
+class ABCPluginMeta(PluginMeta, ABCMeta):
+    pass
+
+
+class AbstractPlugin(metaclass=ABCPluginMeta):
     """Base plugin class"""
 
     __alias__: str
@@ -61,24 +78,24 @@ class AbstractPlugin(metaclass=ABCMeta):
     __version__: str
 
     def __init__(self):
-        self._settingsPath: Path = skippy.config.PLUGINS_SETTINGS_FOLDER / f"{self.__alias__}.toml"
-        self._settings: Dict[str, AbstractSetting] = {}
+        self._settingsPath: Path = skippy.config.PLUGINS_FOLDER / f"{self.__alias__}.toml"
+        self._fields: Dict[str, AbstractField] = {}
 
-    def addSetting(self, name: str, setting: AbstractSetting):
-        self._settings[name] = setting
+    def addField(self, name: str, setting: AbstractField):
+        self._fields[name] = setting
 
     def load_settings(self):
-        if self._settings and self._settingsPath.exists():
+        if self._fields and self._settingsPath.exists():
             with self._settingsPath.open() as f:
                 settings = toml.load(f)
             for setting in settings:
-                if setting in self._settings:
-                    self._settings[setting].from_toml(settings[setting])
+                if setting in self._fields:
+                    self._fields[setting].from_toml(settings[setting])
 
     def save_settings(self):
-        if self._settings:
+        if self._fields:
             with self._settingsPath.open("w") as f:
-                toml.dump({setting: self._settings[setting].to_toml() for setting in self._settings}, f)
+                toml.dump({setting: self._fields[setting].to_toml() for setting in self._fields}, f)
 
     @abstractmethod
     def start(self):
@@ -91,8 +108,7 @@ class AbstractPlugin(metaclass=ABCMeta):
         pass
 
 
-class PluginLoader:
-
+class PluginLoader(metaclass=Singleton):
     """Plugin loader class"""
 
     def __init__(self):
@@ -106,7 +122,8 @@ class PluginLoader:
         Returns:
             list: List of plugins
         """
-        return [file.stem for file in skippy.config.LANG_FOLDER.iterdir() if file.is_file() and file.name.endswith("_plugin.py")]
+        return [file.stem for file in skippy.config.PLUGINS_FOLDER.iterdir() if
+                file.is_file() and file.name.endswith("_plugin.py")]
 
     @classmethod
     def plugins_data(cls) -> Iterator[Dict[str, str]]:

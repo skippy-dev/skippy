@@ -20,3 +20,5 @@ class CriticalMessageBox(QtWidgets.QDialog):
         self.setWindowIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / "skippy.ico").as_posix()))
 
         self.resize(530, 390)
+
+        self.exec_()

@@ -55,6 +55,7 @@ TOGGLE_THEME_NAME = "テーマの切り替え"
 TOGGLE_THEME_STATUS_TIP = "テーマの切り替え"
 TOGGLE_AC_NAME = "自動補完の切り替え"
 TOGGLE_AC_STATUS_TIP = "自動補完の切り替え"
+PLUGINS_MENU = "プラグイン..."
 LANGUAGES_MENU = "言語..."
 LOGIN_NAME = "ログイン"
 LOGIN_STATUS_TIP = "ログイン"
@@ -86,6 +87,10 @@ CANCEL_BUTTON = "Cancel"
 OK_BUTTON = "OK"
 
 SITE_BOX_LINEEDIT = "wikiのURLを入力"
+
+[DIALOG.PLUGINS]
+AUTHOR = "著者"
+VERSION = "バージョン"
 
 [ELEMENTS]
 
