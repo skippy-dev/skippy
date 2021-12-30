@@ -55,6 +55,7 @@ TOGGLE_THEME_NAME = "Переключить тему"
 TOGGLE_THEME_STATUS_TIP = "Переключить тему"
 TOGGLE_AC_NAME = "Переключить автозаполнение"
 TOGGLE_AC_STATUS_TIP = "Переключить автозаполнение"
+PLUGINS_MENU = "Плагины..."
 LANGUAGES_MENU = "Выбрать язык..."
 LOGIN_NAME = "Войти"
 LOGIN_STATUS_TIP = "Войти в аккаунт"
@@ -86,6 +87,10 @@ CANCEL_BUTTON = "Отменить"
 OK_BUTTON = "Ок"
 
 SITE_BOX_LINEEDIT = "Введите адрес сайта"
+
+[DIALOG.PLUGINS]
+AUTHOR = "Автор"
+VERSION = "Версия"
 
 [ELEMENTS]
 

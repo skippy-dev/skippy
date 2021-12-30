@@ -7,7 +7,6 @@ from skippy.utils import translator
 import skippy.config
 
 from typing import Optional, Dict
-import os
 
 
 class FilesDialog(QtWidgets.QDialog):
@@ -39,6 +38,7 @@ class FilesDialog(QtWidgets.QDialog):
         self.move(300, 300)
         self.resize(300, 200)
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
+        self.setWindowIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / "skippy.ico").as_posix()))
 
         self.show()
 
@@ -84,11 +84,7 @@ class FileLineEdit(QtWidgets.QLineEdit):
         self._prevText = title
 
         self.button = QtWidgets.QToolButton(self)
-        self.button.setIcon(
-            QtGui.QIcon(
-                os.path.join(skippy.config.RESOURCES_FOLDER, theme, "close.png")
-            )
-        )
+        self.button.setIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / theme / "close.png").as_posix()))
         self.button.setStyleSheet("padding: 0px;")
         self.button.setCursor(QtCore.Qt.ArrowCursor)
         self.button.clicked.connect(lambda: self.fileRemoved.emit(self.text()))

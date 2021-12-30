@@ -8,7 +8,6 @@ import skippy.config
 
 from typing import Optional
 import re
-import os
 
 
 class FinderDialog(QtWidgets.QDialog):
@@ -41,10 +40,15 @@ class FinderDialog(QtWidgets.QDialog):
             translator.Translator().translate("DIALOG.FINDER_REGEX_MODE"), self
         )
 
-        self.findField = QtWidgets.QTextEdit(self)
+        self.findField = QtWidgets.QPlainTextEdit(self)
         self.findField.resize(250, 50)
+        self.findField.setPlainText(self.textEditor.textCursor().selectedText().replace(" ", "\n"))
 
-        self.replaceField = QtWidgets.QTextEdit(self)
+        textCursor = self.findField.textCursor()
+        textCursor.select(QtGui.QTextCursor.Document)
+        self.findField.setTextCursor(textCursor)
+
+        self.replaceField = QtWidgets.QPlainTextEdit(self)
         self.replaceField.resize(250, 50)
 
         layout = QtWidgets.QGridLayout()
@@ -60,9 +64,7 @@ class FinderDialog(QtWidgets.QDialog):
 
         self.setGeometry(300, 300, 360, 250)
         self.setWindowTitle(f"Skippy - {skippy.config.version}")
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / "skippy.ico").as_posix()))
         self.setLayout(layout)
 
         self.normalRadio.setChecked(True)
@@ -73,20 +75,24 @@ class FinderDialog(QtWidgets.QDialog):
         query = self.findField.toPlainText()
 
         if self.normalRadio.isChecked():
-            self.lastStart = text.find(query, self.lastStart + 1)
+            self.lastStart = text.find(query, self.lastStart + 1 if self.lastStart else self.lastStart)
 
             if self.lastStart >= 0:
                 end = self.lastStart + len(query)
                 self.moveCursor(self.lastStart, end)
+                if not self.lastStart:
+                    self.lastStart += 1
             else:
                 self.lastStart = 0
         else:
             pattern = re.compile(query)
 
-            match = pattern.search(text, self.lastStart + 1)
+            match = pattern.search(text, self.lastStart + 1 if self.lastStart else self.lastStart)
             if match:
                 self.lastStart = match.start()
                 self.moveCursor(self.lastStart, match.end())
+                if not self.lastStart:
+                    self.lastStart += 1
             else:
                 self.lastStart = 0
 
@@ -95,7 +101,8 @@ class FinderDialog(QtWidgets.QDialog):
         cursor = self.textEditor.textCursor()
 
         if cursor.hasSelection():
-            cursor.insertText(self.replaceField.toPlainText())
+            replacement = self.replaceField.toPlainText()
+            cursor.insertText(replacement)
             cursor.select(QtGui.QTextCursor.WordUnderCursor)
             self.textEditor.setTextCursor(cursor)
 

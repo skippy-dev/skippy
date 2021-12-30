@@ -3,8 +3,10 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from skippy.api import Action
 
 from skippy.core.elements import elements as elems
+from skippy.core.plugins import PluginLoader
 
 from skippy.gui.dialogs import previewer, elements, finder
+from skippy.gui.dialogs import plugin as pluginDialog
 from skippy.gui import settings, utils
 
 from skippy.utils.translator import Translator
@@ -12,7 +14,6 @@ import skippy.config
 
 from typing import Optional, Union
 from functools import partial
-import os
 
 
 class ActionBarBase:
@@ -156,7 +157,6 @@ class ActionBarBase:
                 "acEnabled",
                 {"true": False, "false": True}[mainwindow.settings.acEnabled],
             ),
-            "toggle",
         )
 
         self.elements_menu = QtWidgets.QMenu(
@@ -191,28 +191,33 @@ class ActionBarBase:
             Translator().translate("MENU_BAR.ACTION.SETTINGS.LANGUAGES_MENU")
         )
         for lang in Translator().languages():
-            name = Translator().getLangName(lang)
+            name = Translator().get_lang_name(lang)
             self.addAction(
                 Action(name, name, partial(mainwindow.update_translate, lang)),
                 self.language_menu,
             )
 
+        self.plugins_menu = QtWidgets.QMenu(
+            Translator().translate("MENU_BAR.ACTION.SETTINGS.PLUGINS_MENU")
+        )
+        for plugin in PluginLoader()._plugins:
+            self.addAction(
+                Action(plugin.__alias__, plugin.__description__, partial(pluginDialog.PluginDialog, plugin, mainwindow)),
+                self.plugins_menu,
+            )
+
     def addAction(
-        self, action: Action, menu: Optional[QtWidgets.QMenu] = None
+        self, action: Action, menu: Optional[QtWidgets.QMenu] = None, shortcut: Optional[str] = None
     ) -> QtWidgets.QAction:
         qaction = QtWidgets.QAction(action.label, self)
 
         if action.img:
-            qaction.setIcon(
-                QtGui.QIcon(
-                    os.path.join(
-                        skippy.config.RESOURCES_FOLDER, self.theme, f"{action.img}.png"
-                    )
-                )
-            )
+            qaction.setIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / self.theme / f"{action.img}.png").as_posix()))
 
         qaction.setStatusTip(action.statusTip)
         qaction.triggered.connect(action.func)
+        if shortcut:
+            qaction.setShortcut(shortcut)
 
         if menu:
             menu.addAction(qaction)
@@ -240,9 +245,9 @@ class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
         super(MenuBar, self).__init__(parent)
         self.file_menu = self.addMenu(Translator().translate("MENU_BAR.FILE_MENU"))
         self.addAction(self.new_action, self.file_menu)
-        self.addAction(self.open_action, self.file_menu)
-        self.addAction(self.upload_action, self.file_menu)
-        self.addAction(self.upload_as_action, self.file_menu)
+        self.addAction(self.open_action, self.file_menu, "F1")
+        self.addAction(self.upload_action, self.file_menu, "Ctrl+S")
+        self.addAction(self.upload_as_action, self.file_menu, "Ctrl+Shift+S")
         self.addAction(self.close_action, self.file_menu)
         self.file_menu.addSeparator()
         self.addAction(self.load_files_action, self.file_menu)
@@ -261,16 +266,16 @@ class MenuBar(ActionBarBase, QtWidgets.QMenuBar):
         self.addAction(self.paste_action, self.edit_menu)
         self.addAction(self.select_all_action, self.edit_menu)
         self.edit_menu.addSeparator()
-        self.addAction(self.find_action, self.edit_menu)
+        self.addAction(self.find_action, self.edit_menu, "Ctrl+F")
         self.edit_menu.addSeparator()
-        self.addAction(self.preview_action, self.edit_menu)
+        self.addAction(self.preview_action, self.edit_menu, "Ctrl+R")
         self.addMenu(self.elements_menu, self.edit_menu)
 
-        self.settings_menu = self.addMenu(
-            Translator().translate("MENU_BAR.SETTINGS_MENU")
-        )
+        self.settings_menu = self.addMenu(Translator().translate("MENU_BAR.SETTINGS_MENU"))
         self.addAction(self.toggle_theme_action, self.settings_menu)
-        self.addAction(self.toggle_autocomplete_action, self.settings_menu)
+        self.addAction(self.toggle_autocomplete_action, self.settings_menu, "Ctrl+Shift+C")
+        self.settings_menu.addSeparator()
+        self.settings_menu.addMenu(self.plugins_menu)
         self.settings_menu.addMenu(self.language_menu)
         self.settings_menu.addSeparator()
         self.addAction(self.login_action, self.settings_menu)
@@ -310,6 +315,8 @@ class ContextMenu(ActionBarBase, QtWidgets.QMenu):
         self.addAction(self.copy_action)
         self.addAction(self.paste_action)
         self.addAction(self.select_all_action)
+        self.addSeparator()
+        self.addAction(self.find_action)
         self.addSeparator()
         self.addAction(self.preview_action)
         self.addMenu(self.elements_menu)

@@ -1,11 +1,10 @@
 """Various file handlers.
 """
-from skippy.utils import is_frozen
-
 import skippy.config
 
-from abc import ABCMeta, abstractmethod
 from typing import Optional, Tuple, Dict, Any
+from abc import ABCMeta, abstractmethod
+import pathlib
 import json
 import os
 
@@ -15,20 +14,18 @@ class AbstractFileHandler(metaclass=ABCMeta):
     """Abstract file handler
 
     Attributes:
-        filepath (str): Path to handle file
+        filepath (pathlib.Path): Path to handle file
     """
 
     _file: str
 
-    def __init__(self, filepath: Optional[str] = None):
+    def __init__(self, filepath: Optional[pathlib.Path] = None):
         """Init FileHandler
 
         Args:
-            filepath (Optional[str], optional): Path to handle file
+            filepath (Optional[pathlib.Path], optional): Path to handle file
         """
-        self.filepath = filepath or os.path.join(
-            skippy.config.PROPERTY_FOLDER, self._file
-        )
+        self.filepath = filepath or skippy.config.PROPERTY_FOLDER / self._file
 
     def read(self) -> str:
         """Read file
@@ -36,8 +33,7 @@ class AbstractFileHandler(metaclass=ABCMeta):
         Returns:
             str: File text
         """
-        with open(self.filepath, "r") as file:
-            return file.read()
+        return self.filepath.read_text()
 
     def write(self, text: str):
         """Write file
@@ -45,8 +41,7 @@ class AbstractFileHandler(metaclass=ABCMeta):
         Args:
             text (str): File text
         """
-        with open(self.filepath, "w") as file:
-            file.write(text)
+        self.filepath.write_text(text)
 
     @abstractmethod
     def load(self):

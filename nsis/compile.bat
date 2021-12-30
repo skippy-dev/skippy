@@ -3,7 +3,7 @@
 python -m venv venv
 
 venv\Scripts\python -m pip install -U pip
-venv\Scripts\python -m pip install -U cx_Freeze ../.
+venv\Scripts\python -m pip install -U cx_Freeze ../.[ftml]
 
 venv\Scripts\python scripts\build.py build
 

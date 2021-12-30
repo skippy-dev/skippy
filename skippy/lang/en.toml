@@ -55,6 +55,7 @@ TOGGLE_THEME_NAME = "Toggle Theme"
 TOGGLE_THEME_STATUS_TIP = "Toggle Theme"
 TOGGLE_AC_NAME = "Toggle autocomplete"
 TOGGLE_AC_STATUS_TIP = "Toggle autocomplete"
+PLUGINS_MENU = "Plugins..."
 LANGUAGES_MENU = "Languages..."
 LOGIN_NAME = "Login"
 LOGIN_STATUS_TIP = "Login"
@@ -79,13 +80,17 @@ PASSWORD_PLACEHOLDER = "Password"
 ENTER_PAGE_LABEL = "Enter page url"
 PAGE_BOX_PLACEHOLDER = "Page name"
 COMMENT_BOX_PLACEHOLDER = "Comment"
-COMMENT_BOX_TEXT = "Edit using Skippy"
+COMMENT_BOX_TEXT = "Edited using Skippy"
 GENERATE_BUTTON = "Generate"
 INSTALL_BUTTON = "Install"
 CANCEL_BUTTON = "Cancel"
 OK_BUTTON = "Ok"
 
 SITE_BOX_LINEEDIT = "Enter wiki url"
+
+[DIALOG.PLUGINS]
+AUTHOR = "Author"
+VERSION = "Version"
 
 [ELEMENTS]
 

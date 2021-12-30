@@ -464,7 +464,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
 
     def appendLists(self, currentLine: str, event: QtGui.QKeyEvent):
         if (
-            currentLine[:2] in ("* ", "# ")
+            currentLine[:2] in ("* ", "# ", "> ")
             and currentLine[:2] != currentLine
             and event.key() in utils.ENTER_KEYS
         ):

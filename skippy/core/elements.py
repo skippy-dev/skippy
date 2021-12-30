@@ -6,7 +6,7 @@ Attributes:
 from skippy.api import Field
 
 from abc import ABCMeta, abstractmethod
-from typing import Dict, List
+from typing import TypeVar, Type, Dict, List
 
 
 class AbstractElement(metaclass=ABCMeta):
@@ -84,6 +84,9 @@ class AbstractElement(metaclass=ABCMeta):
         for name in args:
             data = data.replace(f"<<{name}>>", args[name])
         return data
+
+
+_Element = TypeVar("_Element", bound=AbstractElement)
 
 
 class AbstractComponent(AbstractElement):
@@ -226,7 +229,7 @@ class ACSBarComponent(AbstractComponent):
         )
 
 
-elements: List[AbstractElement] = [
+elements: List[Type[_Element]] = [
     RightImageBlock,
     LeftImageBlock,
     CenterImageBlock,

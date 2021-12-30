@@ -8,6 +8,7 @@ from skippy.gui.dialogs import filesdialog
 from skippy.utils import translator, filehandlers
 
 from typing import Optional, List, Dict, Tuple, Any
+import pathlib
 import base64
 
 
@@ -80,7 +81,7 @@ class ProjectList(QtWidgets.QTabWidget):
         if not self.count():
             self.newTab()
 
-    def save(self, path: Optional[str] = None):
+    def save(self, path: Optional[pathlib.Path] = None):
         session = {"session": []}
         for i in range(self.count()):
             widget = self.widget(i)
@@ -91,7 +92,7 @@ class ProjectList(QtWidgets.QTabWidget):
 
         filehandlers.SessionHandler(path).save(session)
 
-    def load(self, path: Optional[str] = None):
+    def load(self, path: Optional[pathlib.Path] = None):
         session = filehandlers.SessionHandler(path).load()
 
         self.clear()

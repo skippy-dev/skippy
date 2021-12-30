@@ -5,7 +5,6 @@ from skippy.utils import translator
 import skippy.config
 
 from typing import Callable
-import os
 
 
 def UpdaterDialog(version: str, update_func: Callable[[], None]):
@@ -29,9 +28,7 @@ def UpdaterDialog(version: str, update_func: Callable[[], None]):
     )
 
     msgBox.setWindowTitle(f"Skippy - {skippy.config.version}")
-    msgBox.setWindowIcon(
-        QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-    )
+    msgBox.setWindowIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / "skippy.ico").as_posix()))
 
     msgBox.exec_()
 

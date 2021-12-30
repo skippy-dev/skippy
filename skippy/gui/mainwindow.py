@@ -20,7 +20,7 @@ from skippy.utils import translator, filehandlers
 
 import skippy.config
 
-import os
+import pathlib
 
 
 class Skippy(QtWidgets.QMainWindow):
@@ -55,9 +55,7 @@ class Skippy(QtWidgets.QMainWindow):
         self.status = QtWidgets.QStatusBar(self)
         self.setStatusBar(self.status)
 
-        self.setWindowIcon(
-            QtGui.QIcon(os.path.join(skippy.config.RESOURCES_FOLDER, "skippy.ico"))
-        )
+        self.setWindowIcon(QtGui.QIcon((skippy.config.RESOURCES_FOLDER / "skippy.ico").as_posix()))
         self.resize(self.settings.size)
         self.move(self.settings.pos)
         self.setWindowState(QtCore.Qt.WindowState(self.settings.state))
@@ -119,7 +117,7 @@ class Skippy(QtWidgets.QMainWindow):
             self, "Save file", "session.json", "JSON file (*.json)\nAll files (*.*)"
         )
         if path:
-            self.tab.save(path)
+            self.tab.save(pathlib.Path(path))
 
     def load_session(self):
         """Load session from selected file."""
@@ -127,7 +125,7 @@ class Skippy(QtWidgets.QMainWindow):
             self, "Load file", "", "JSON file (*.json)\nAll files (*.*)"
         )
         if path:
-            self.tab.load(path)
+            self.tab.load(pathlib.Path(path))
 
     def load_files(self):
         """Load files to the current page."""

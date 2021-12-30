@@ -1,0 +1,157 @@
+LANGUAGE = "日本語"
+
+[MAIN]
+SIGNED_IN_AS_LABEL = "{}としてサインイン"
+FILES_BUTTON = "ファイル"
+
+[MENU_BAR]
+FILE_MENU = "&ファイル"
+EDIT_MENU = "&編集"
+SETTINGS_MENU = "&設定"
+
+[MENU_BAR.ACTION]
+
+[MENU_BAR.ACTION.FILE]
+NEW_NAME = "新規"
+NEW_STATUS_TIP = "新規ページを作成"
+OPEN_NAME = "開く"
+OPEN_STATUS_TIP = "ページを開く"
+UPLOAD_NAME = "保存"
+UPLOAD_STATUS_TIP = "ページを保存"
+UPLOAD_AS_NAME = "別名で保存..."
+UPLOAD_AS_STATUS_TIP = "ページを別名で保存..."
+CLOSE_NAME = "閉じる"
+CLOSE_STATUS_TIP = "閉じる"
+LOAD_FILES_NAME = "ファイルを読み込む..."
+LOAD_FILES_STATUS_TIP = "現在のページにファイルを読み込む"
+LOAD_SESSION_NAME = "セッションの読み込み..."
+LOAD_SESSION_STATUS_TIP = "セッションの読み込み..."
+SAVE_SESSION_NAME = "セッションを別名で保存..."
+SAVE_SESSION_STATUS_TIP = "セッションを別名で保存..."
+EXIT_NAME = "終了"
+EXIT_STATUS_TIP = "終了"
+
+[MENU_BAR.ACTION.EDIT]
+UNDO_NAME = "元に戻す"
+UNDO_STATUS_TIP = "最後の変更を元に戻す"
+REDO_NAME = "やり直し"
+REDO_STATUS_TIP = "最後の変更をやり直す"
+CUT_NAME = "カット"
+CUT_STATUS_TIP = "選択されたテキストをカット"
+COPY_NAME = "コピー"
+COPY_STATUS_TIP = "選択されたテキストをコピー"
+PASTE_NAME = "貼り付け"
+PASTE_STATUS_TIP = "クリップボードから貼り付け"
+SELECT_ALL_NAME = "すべてを選択"
+SELECT_ALL_STATUS_TIP = "すべてのテキストを選択"
+FIND_NAME = "検索..."
+FIND_STATUS_TIP = "テキストで検索"
+PREVIEW_NAME = "プレビュー"
+PREVIEW_STATUS_TIP = "プレビュー"
+INSERT_MENU = "要素の挿入..."
+
+[MENU_BAR.ACTION.SETTINGS]
+TOGGLE_THEME_NAME = "テーマの切り替え"
+TOGGLE_THEME_STATUS_TIP = "テーマの切り替え"
+TOGGLE_AC_NAME = "自動補完の切り替え"
+TOGGLE_AC_STATUS_TIP = "自動補完の切り替え"
+PLUGINS_MENU = "プラグイン..."
+LANGUAGES_MENU = "言語..."
+LOGIN_NAME = "ログイン"
+LOGIN_STATUS_TIP = "ログイン"
+LOGOUT_NAME = "ログアウト"
+LOGOUT_STATUS_TIP = "ログアウト"
+
+[DIALOG]
+FILES_LIST_LABEL = "ファイルリスト"
+EMPTY_FILES_LIST_LABEL = "ファイルリストが空..."
+
+FINDER_FIND_BUTTON = "検索"
+FINDER_REPLACE_BUTTON = "置換"
+FINDER_REPLACE_ALL_BUTTON = "全て置換"
+FINDER_NORMAL_MODE = "通常"
+FINDER_REGEX_MODE = "正規表現"
+
+NEW_VERSION_AVAILABLE_LABEL = "新しいSkippyのバージョンが利用できます：v{}!"
+YOU_CAN_DOWNLOAD_IT_LABEL = "インストールボタンを押せばインストールできます。"
+SIGN_IN_TO_WIKIDOT_LABEL = "Wikidotアカウントにサインインしてください"
+LOGIN_PLACEHOLDER = "ログイン"
+PASSWORD_PLACEHOLDER = "パスワード"
+ENTER_PAGE_LABEL = "ページのURLを入力"
+PAGE_BOX_PLACEHOLDER = "ページ名"
+COMMENT_BOX_PLACEHOLDER = "コメント"
+COMMENT_BOX_TEXT = "Skippyを使用した編集"
+GENERATE_BUTTON = "生成"
+INSTALL_BUTTON = "インストール"
+CANCEL_BUTTON = "Cancel"
+OK_BUTTON = "OK"
+
+SITE_BOX_LINEEDIT = "wikiのURLを入力"
+
+[DIALOG.PLUGINS]
+AUTHOR = "著者"
+VERSION = "バージョン"
+
+[ELEMENTS]
+
+[ELEMENTS.BASE_IMAGE]
+
+[ELEMENTS.BASE_IMAGE.NAME]
+NAME = "タイトル"
+DESC = "画像のURLもしくはタイトル"
+
+[ELEMENTS.BASE_IMAGE.CAPTION]
+NAME = "説明"
+DESC = "画像の説明"
+
+[ELEMENTS.BASE_IMAGE.WIDTH]
+NAME = "幅指定"
+DESC = "画像ブロックの幅"
+
+[ELEMENTS.BASE_IMAGE.LINK]
+NAME = "リンク指定"
+DESC = "クリック時のリンク"
+
+[ELEMENTS.RIGHT_IMAGE_BLOCK]
+ALIAS = "右寄せの画像ブロック"
+DESC = "右寄せの画像ブロック"
+
+[ELEMENTS.LEFT_IMAGE_BLOCK]
+ALIAS = "左寄せの画像ブロック"
+DESC = "左寄せの画像ブロック"
+
+[ELEMENTS.CENTER_IMAGE_BLOCK]
+ALIAS = "中央寄せの画像ブロック"
+DESC = "中央寄せの画像ブロック"
+
+[ELEMENTS.ACS_BAR]
+ALIAS = "ACSコンポーネントバー"
+DESC = "アノマリー分類システムコンポーネントバー"
+
+[ELEMENTS.ACS_BAR.ITEM]
+NAME = "アイテム番号"
+DESC = "SCPのアイテム番号"
+
+[ELEMENTS.ACS_BAR.CLEARANCE]
+NAME = "クリアランス"
+DESC = "クリアランスレベル (5,4,3,2,1,0)"
+
+[ELEMENTS.ACS_BAR.CONTAINER]
+NAME = "収容クラス"
+DESC = "収容クラス（オブジェクトクラスとも呼ばれる）"
+
+[ELEMENTS.ACS_BAR.DISRUPTION]
+NAME = "撹乱クラス"
+DESC = "撹乱クラス"
+
+[ELEMENTS.ACS_BAR.RISK]
+NAME = "リスククラス"
+DESC = "リスククラス"
+
+[ELEMENTS.ACS_BAR.SEC_CLASS]
+NAME = "副次クラス"
+DESC = "（オプション）副次クラス (もし使うならば、収容クラスをEsotericに変更)"
+
+[ELEMENTS.ACS_BAR.SEC_ICON]
+NAME = "副次クラスアイコン"
+DESC = "副次クラスが使用されている場合は、URLを記入"

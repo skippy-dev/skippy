@@ -58,7 +58,7 @@ def critical(call):
         return call()
     except Exception as error:
         log.error(error, exc_info=True)
-        CriticalMessageBox(type(error).__name__, traceback.format_exc()).exec_()
+        CriticalMessageBox(type(error).__name__, traceback.format_exc())
 
 
 @decorator
