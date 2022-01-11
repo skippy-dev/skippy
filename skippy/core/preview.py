@@ -5,7 +5,7 @@ from skippy.api import PageData
 from skippy.utils.logger import log
 
 from requests.exceptions import RequestException
-from typing import TypeVar, Dict, List, Type
+from typing import Dict, List, Type
 from abc import ABCMeta, abstractmethod
 import unicodedata
 import pyscp
@@ -18,7 +18,7 @@ except ImportError:
     class pyftml:
         @staticmethod
         def render_html(_: str) -> Dict[str, str]:
-            return {"body": "<h1>Error</h1><p>You don't have pyftml installed. Therefore, offline preview is not possible.</p>"}
+            return {"body": "<h1>Error</h1><p>You don't have \"pyftml\" module installed. Therefore, offline preview is not possible.</p>"}
 
 
 def render(pdata: PageData) -> str:
@@ -415,7 +415,7 @@ class LocalImagesProcessor(AbstractProcessor):
 
     """Local images processor"""
 
-    pattern: str = r'<img src="http://www.wdfiles.com/local--files//(.+?)"'
+    pattern: str = r'<img src="(http://www.wdfiles.com/local--files//|https://sandbox.wjfiles.com/local--files/some-page/)(.+?)"'
 
     def process(self) -> str:
         """Insert local images to page
@@ -425,11 +425,8 @@ class LocalImagesProcessor(AbstractProcessor):
         """
         files = self.pdata["files"]
         for img in self.matches:
-            if img in files:
-                self.source = self.source.replace(
-                    f"http://www.wdfiles.com/local--files//{img}",
-                    f"data:{img.split('.')[1]}/;base64,{files[img]}",
-                )
+            if img[1] in files:
+                self.source = self.source.replace("".join(img), f"data:{img[1].split('.')[1]}/;base64,{files[img[1]]}")
         return self.source
 
 

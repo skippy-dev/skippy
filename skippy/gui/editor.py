@@ -334,11 +334,7 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
         return {"true": True, "false": False}[utils.getMainWindow().settings.acEnabled]
 
     def keyPressEvent(self, event: QtGui.QKeyEvent):
-        if (
-            self.completer
-            and event.key() in utils.ENTER_KEYS
-            and self.completer.popup().isVisible()
-        ):
+        if self.completer and event.key() in utils.ENTER_KEYS and self.completer.popup().isVisible():
             self.completer.insertText.emit(self.completer.selected)
             self.completer.popup().hide()
             return
@@ -347,10 +343,10 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
         pos = self.textCursor().positionInBlock()
 
         super().keyPressEvent(event)
-        self.suggestingBlockParams()
-        self.closeBlocks(curentLine, pos, event)
-        self.appendLists(curentLine, event)
         if self.acEnabled:
+            self.suggestingBlockParams()
+            self.closeBlocks(curentLine, pos, event)
+            self.appendLists(curentLine, event)
             self.completeInlineBrackets(event)
 
     def openCompleterPopup(self, model: list, prefix: str):
@@ -463,12 +459,9 @@ class AdvancedEditor(QtWidgets.QPlainTextEdit):
                         self.setTextCursor(cursor)
 
     def appendLists(self, currentLine: str, event: QtGui.QKeyEvent):
-        if (
-            currentLine[:2] in ("* ", "# ", "> ")
-            and currentLine[:2] != currentLine
-            and event.key() in utils.ENTER_KEYS
-        ):
-            self.insertPlainText(currentLine[:2])
+        prefix = re.match(r"(>+|( +|)[*#]) ", currentLine)
+        if prefix and prefix.group() != currentLine and event.key() in utils.ENTER_KEYS:
+            self.insertPlainText(prefix.group())
 
     def completeInlineBrackets(self, event: QtGui.QKeyEvent):
         selected = self.getLineUnderCursor()
