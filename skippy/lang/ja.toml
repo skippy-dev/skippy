@@ -74,6 +74,7 @@ FINDER_REGEX_MODE = "正規表現"
 
 NEW_VERSION_AVAILABLE_LABEL = "新しいSkippyのバージョンが利用できます：v{}!"
 YOU_CAN_DOWNLOAD_IT_LABEL = "インストールボタンを押せばインストールできます。"
+DONT_HAVE_QTWEBENGINE_LABEL = "「QtWebEngine」モジュールがインストールされていません。プレビューア機能を使用するためにインストールします。"
 SIGN_IN_TO_WIKIDOT_LABEL = "Wikidotアカウントにサインインしてください"
 LOGIN_PLACEHOLDER = "ログイン"
 PASSWORD_PLACEHOLDER = "パスワード"

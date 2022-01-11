@@ -1,0 +1,160 @@
+LANGUAGE = "한국어"
+
+[MAIN]
+SIGNED_IN_AS_LABEL = "로그인한 계정: {}"
+FILES_BUTTON = "파일"
+
+[MENU_BAR]
+FILE_MENU = "&파일"
+EDIT_MENU = "&편집"
+SETTINGS_MENU = "&설정"
+
+[MENU_BAR.ACTION]
+
+[MENU_BAR.ACTION.FILE]
+NEW_NAME = "새 파일"
+NEW_STATUS_TIP = "새 파일"
+OPEN_NAME = "열기"
+OPEN_STATUS_TIP = "페이지 열기"
+UPLOAD_NAME = "업로드"
+UPLOAD_STATUS_TIP = "페이지 업로드"
+UPLOAD_AS_NAME = "다른 이름으로 업로드"
+UPLOAD_AS_STATUS_TIP = "다른 이름으로 업로드"
+CLOSE_NAME = "닫기"
+CLOSE_STATUS_TIP = "닫기"
+LOAD_FILES_NAME = "불러오기"
+LOAD_FILES_STATUS_TIP = "현재 페이지에 불러오기"
+LOAD_SESSION_NAME = "세션 불러오기"
+LOAD_SESSION_STATUS_TIP = "세션 불러오기"
+SAVE_SESSION_NAME = "다른 이름으로 세션 저장"
+SAVE_SESSION_STATUS_TIP = "다른 이름으로 세션 저장"
+EXIT_NAME = "종료"
+EXIT_STATUS_TIP = "종료"
+
+[MENU_BAR.ACTION.EDIT]
+UNDO_NAME = "되돌리기"
+UNDO_STATUS_TIP = "마지막 편집 되돌리기"
+REDO_NAME = "다시 실행"
+REDO_STATUS_TIP = "마지막 편집 다시 실행"
+CUT_NAME = "잘라내기"
+CUT_STATUS_TIP = "선택한 텍스트 잘라내기"
+COPY_NAME = "복사"
+COPY_STATUS_TIP = "선택한 텍스트 복사"
+PASTE_NAME = "붙여넣기"
+PASTE_STATUS_TIP = "클립보드에 담은 내용 붙여넣기"
+SELECT_ALL_NAME = "모두 선택"
+SELECT_ALL_STATUS_TIP = "텍스트 모두 선택"
+FIND_NAME = "찾기"
+FIND_STATUS_TIP = "텍스트에서 찾기"
+PREVIEW_NAME = "미리보기"
+PREVIEW_STATUS_TIP = "미리보기"
+INSERT_MENU = "삽입"
+
+[MENU_BAR.ACTION.SETTINGS]
+TOGGLE_THEME_NAME = "테마 토글"
+TOGGLE_THEME_STATUS_TIP = "테마 토글"
+TOGGLE_AC_NAME = "자동완성 토글"
+TOGGLE_AC_STATUS_TIP = "자동완성 토글"
+PLUGINS_MENU = "플러그인"
+LANGUAGES_MENU = "언어 설정"
+LOGIN_NAME = "로그인"
+LOGIN_STATUS_TIP = "로그인"
+LOGOUT_NAME = "로그아웃"
+LOGOUT_STATUS_TIP = "로그아웃"
+
+[DIALOG]
+FILES_LIST_LABEL = "파일 목록"
+EMPTY_FILES_LIST_LABEL = "파일 목록이 비었음"
+
+FINDER_FIND_BUTTON = "찾기"
+FINDER_REPLACE_BUTTON = "바꾸기"
+FINDER_REPLACE_ALL_BUTTON = "모두 바꾸기"
+FINDER_NORMAL_MODE = "보통"
+FINDER_REGEX_MODE = "정규식"
+
+NEW_VERSION_AVAILABLE_LABEL = "Skippy 새 버전 사용 가능: v{}!"
+YOU_CAN_DOWNLOAD_IT_LABEL = "설치 버튼을 눌러서 설치하세요."
+DONT_HAVE_QTWEBENGINE_LABEL = "\"QtWebEngine\" 모듈이 설치되어 있지 않습니다. 미리보기 기능을 사용하려면 설치하세요."
+SIGN_IN_TO_WIKIDOT_LABEL = "위키닷 계정 입력"
+LOGIN_PLACEHOLDER = "계정 이름"
+PASSWORD_PLACEHOLDER = "비밀번호"
+ENTER_PAGE_LABEL = "페이지 url 입력"
+PAGE_BOX_PLACEHOLDER = "페이지 이름"
+COMMENT_BOX_PLACEHOLDER = "편집 코멘트"
+COMMENT_BOX_TEXT = "Skippy로 편집됨"
+GENERATE_BUTTON = "생성"
+INSTALL_BUTTON = "설치"
+CANCEL_BUTTON = "취소"
+OK_BUTTON = "OK"
+
+SITE_BOX_LINEEDIT = "위키 url 입력"
+
+[DIALOG.PLUGINS]
+AUTHOR = "작가"
+VERSION = "버전"
+
+[ELEMENTS]
+
+[ELEMENTS.BASE_IMAGE]
+
+[ELEMENTS.BASE_IMAGE.NAME]
+NAME = "이름"
+DESC = "이미지 url 또는 로컬네임"
+
+[ELEMENTS.BASE_IMAGE.CAPTION]
+NAME = "캡션"
+DESC = "이미지 캡션"
+
+[ELEMENTS.BASE_IMAGE.WIDTH]
+NAME = "너비"
+DESC = "이미지 블록 너비"
+
+[ELEMENTS.BASE_IMAGE.LINK]
+NAME = "링크"
+DESC = "클릭하는 링크"
+
+[ELEMENTS.RIGHT_IMAGE_BLOCK]
+ALIAS = "오른쪽 이미지 블록"
+DESC = "오른쪽 정렬 이미지 블록"
+
+[ELEMENTS.LEFT_IMAGE_BLOCK]
+ALIAS = "왼쪽 이미지 블록"
+DESC = "왼쪽 정렬 이미지 블록"
+
+[ELEMENTS.CENTER_IMAGE_BLOCK]
+ALIAS = "가운데 이미지 블록"
+DESC = "중앙 정렬 이미지 블록"
+
+[ELEMENTS.ACS_BAR]
+ALIAS = "ACS 틀"
+DESC = "ACS 틀 구성요소"
+
+[ELEMENTS.ACS_BAR.ITEM]
+NAME = "일련번호"
+DESC = "SCP 일련번호"
+
+[ELEMENTS.ACS_BAR.CLEARANCE]
+NAME = "인가"
+DESC = "인가 등급 (5,4,3,2,1,0)"
+
+[ELEMENTS.ACS_BAR.CONTAINER]
+NAME = "격리 등급"
+DESC = "격리 등급 (개체 등급)"
+
+[ELEMENTS.ACS_BAR.DISRUPTION]
+NAME = "혼란 등급"
+DESC = "개체 혼란 등급"
+
+[ELEMENTS.ACS_BAR.RISK]
+NAME = "위험 등급"
+DESC = "개체 위험 등급"
+
+[ELEMENTS.ACS_BAR.SEC_CLASS]
+NAME = "2차 등급"
+DESC = "2차 등급 (선택사항: 사용 시 격리 등급은 [난해]로 설정"
+
+[ELEMENTS.ACS_BAR.SEC_ICON]
+NAME = "2차 등급 아이콘"
+DESC = "2차 등급 사용 시 아이콘 자리에 URL 삽입"
+
+

@@ -29,7 +29,7 @@ def start_ui():
         result = True
         updateClient = autoupdate.AbstractUpdateClient.getClient()
         if updateClient.checkVersion():
-            result = updater.UpdaterDialog(updateClient.version, updateClient.update)
+            result = updater.show(updateClient.version, updateClient.update)
 
         if not filehandlers.ProfileHandler().load()[0]:
             result = login.LoginDialog().result()

@@ -74,6 +74,7 @@ FINDER_REGEX_MODE = "RegEx"
 
 NEW_VERSION_AVAILABLE_LABEL = "New Skippy version available: v{}!"
 YOU_CAN_DOWNLOAD_IT_LABEL = "You can install it by press Install button."
+DONT_HAVE_QTWEBENGINE_LABEL = "You don't have \"QtWebEngine\" module installed. Install it to use previewer feature."
 SIGN_IN_TO_WIKIDOT_LABEL = "Sign in to your Wikidot account"
 LOGIN_PLACEHOLDER = "Login"
 PASSWORD_PLACEHOLDER = "Password"
