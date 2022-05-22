@@ -16,6 +16,8 @@ class SCPClient(metaclass=Singleton):
 
     """Singleton facade for pyscp module."""
 
+    _session: Optional[str] = None
+
     def __init__(self, login: Optional[str] = None, password: Optional[str] = None):
         """Initialize SCPClient.
 
@@ -23,13 +25,11 @@ class SCPClient(metaclass=Singleton):
             login (Optional[str], optional): User login
             password (Optional[str], optional): User password
         """
-        self._session = None
-
         if login and password:
             self.auth(login, password)
 
     @critical
-    @ignore(RequestException)
+    @ignore((RequestException, KeyError))
     def auth(self, login: str, password: str):
         """Retrieving Wikidot Session from Credentials.
 
@@ -100,8 +100,7 @@ class SCPClient(metaclass=Singleton):
             if name not in page["files"]:
                 p.remove_file(name)
 
-    @ignore(Exception, {})
-    @ignore(RequestException)
+    @ignore(RequestException, {})
     def download(self, site: str, page: str) -> PageData:
         """Download page with tags and files fron selected Wikidot site.
 
